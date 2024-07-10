@@ -12,5 +12,5 @@ An Exiled 9 plugin that aims to port TTT to SCP Sl, probably my last plugin for 
 + Class loadouts for detective
 + clean the bad code up!
 + Better weapon spawning system, (Right now just spawns stuff in specific places on surface)
-+ Switch "Map" to Light containment after above is done
++ ~~Switch "Map" to Light containment after above is done~~ Make a map system where it chooses a random zone for the map?
 + Disable Light Containment Decontamination?
