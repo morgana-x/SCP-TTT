@@ -11,7 +11,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 ## Current issues:
 + Players occasionally crash (Either due to the odd 50 items on surface or due to spamming hints every second, or the 30 npcs when testing, Or northwood are bad programmers, (but more likely I'm the bad programer)
 + Health State (Healthy, Injured, Etc) isn't updated properlly due to the config dictionary being unordered, need to make local copy of dictionary and sort by keys before looping through them
-+ Spawntime isn't set when team is set to innocent etc, resulting in no spawn screen being showed for that
++ Spawntime isn't set when team is set to innocent etc, resulting in no spawn screen being showed for that (MAYBE I'm too tired to check now)
 
 ## Todo:
 + Corpse info system
