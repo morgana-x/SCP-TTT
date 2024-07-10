@@ -6,6 +6,7 @@ An Exiled 9 plugin that aims to port TTT to SCP Sl
 
 ## Current issues:
 + Players occasionally crash (Either due to the odd 50 items on surface or due to spamming hints every second. Or northwood are bad programmers, (but more likely I'm the bad programer)
++ Health State (Healthy, Injured, Etc) isn't updated properlly due to the config dictionary being unordered, need to make local copy of dictionary and sort by keys before looping through them
 
 ## Todo:
 + Corpse info system
