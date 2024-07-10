@@ -26,3 +26,4 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Hud System (Show role, time left) (Works with spectators)
 + Basic Role Allocation ( (Mostly) Faithfully recreated the original Gmod function for this)
 + Highly customisable configuration for team colors, names, win phrases, spawn phrases etc
++ Config option to spawn 30 debug NPCs for testing
