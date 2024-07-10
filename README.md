@@ -15,7 +15,8 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 
 ## Todo:
 + Corpse info system
-+ Class loadouts for detective
++ Configurable loadout for detective
++ Configurable loadout for all Teams (Keycards, etc)
 + clean the bad code up!
 + Better weapon spawning system, (Right now just spawns stuff in specific places on surface)
 + ~~Switch "Map" to Light containment after above is done~~ Make a map system where it chooses a random zone for the map?
