@@ -17,3 +17,8 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Better weapon spawning system, (Right now just spawns stuff in specific places on surface)
 + ~~Switch "Map" to Light containment after above is done~~ Make a map system where it chooses a random zone for the map?
 + Disable Light Containment Decontamination?
+
+## Features:
++ Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
++ Hud System (Show role, time left) (Works with spectators)
++ Basic Role Allocation ( (Mostly) Faithfully recreated the original Gmod function for this)
