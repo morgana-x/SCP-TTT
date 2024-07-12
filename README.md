@@ -16,7 +16,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + clean the bad code up!
 + Better weapon spawning system
 + Show karma display of players your looking at (Good, bad etc), and add karma to detective check
-+ Fix restarting round sometimes kicking players due to how long it takes
++ Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code)
 ## Features:
 + Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
 + Hud System (Show role, time left) (Works with spectators)
