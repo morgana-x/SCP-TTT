@@ -9,22 +9,17 @@ An Exiled ~~9~~ 8 plugin that aims to port TTT to SCP Sl (Exiled 9 is jank af!)
 Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana-x/ScpSL-DesertBus), as well!
 
 ## Current issues:
-+ Players occasionally crash (Either due to the odd 50 items on surface or due to spamming hints every second, or the 30 npcs when testing, Or northwood are bad programmers, (but more likely I'm the bad programer)
-+ Health State (Healthy, Injured, Etc) isn't updated properlly due to the config dictionary being unordered, need to make local copy of dictionary and sort by keys before looping through them
-+ Spawntime isn't set when team is set to innocent etc, resulting in no spawn screen being showed for that (MAYBE I'm too tired to check now)
-
++ ~~Players occasionally crash (Either due to the odd 50 items on surface or due to spamming hints every second, or the 30 npcs when testing, Or northwood are bad programmers, (but more likely I'm the bad programer)~~
++ (Crash issue is happening less often)
 ## Todo:
-+ Corpse info system
-+ Configurable loadout for detective
-+ Configurable loadout for all Teams (Keycards, etc)
++ Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
 + clean the bad code up!
-+ Better weapon spawning system, (Right now just spawns stuff in specific places on surface)
-+ ~~Switch "Map" to Light containment after above is done~~ Make a map system where it chooses a random zone for the map?
-+ Disable Light Containment Decontamination?
-
++ Better weapon spawning system
++ Show karma display of players your looking at (Good, bad etc), and add karma to detective check
 ## Features:
 + Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
 + Hud System (Show role, time left) (Works with spectators)
 + Basic Role Allocation ( (Mostly) Faithfully recreated the original Gmod function for this)
 + Highly customisable configuration for team colors, names, win phrases, spawn phrases etc
 + Config option to spawn 30 debug NPCs for testing
++ Custom Corpse Information System
