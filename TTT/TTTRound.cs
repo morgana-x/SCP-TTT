@@ -253,7 +253,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
                     break;
                 }
                 Player pick = remainingPlayers.RandomItem();
-                if (true) // Karma and player choices later
+                if (GetKarma(pick) > config.teamsConfig.DetectiveMinKarma) // Karma and player choices later
                 {
                     SetTeam(pick, Team.Detective, true);
                     numDetectives++;
@@ -271,7 +271,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
         }
         public void OnPlayerSpawned(Player pl)
         {
-
+            UpdateOldKarma(pl);
         }
         public void OnPlayerHurt(Player victim, Player attacker, DamageType damageType, DamageHandler handler)
         {
@@ -673,6 +673,24 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
                 return 0;
             }
             return Karma[pl];
+        }
+        public int GetOldKarma(Player pl)
+        {
+            if (!OldKarma.ContainsKey(pl))
+            {
+                OldKarma.Add(pl, GetKarma(pl));
+            }
+            return OldKarma[pl];
+        }
+        private void UpdateOldKarma(Player pl)
+        {
+            Log.Debug("Updating " + pl.DisplayNickname + "'s old karma!");
+            if (!OldKarma.ContainsKey(pl))
+            {
+                OldKarma.Add(pl, GetKarma(pl));
+                return;
+            }
+            OldKarma[pl] = GetKarma(pl);
         }
         public void AddKarma(Player pl, int amount)
         {

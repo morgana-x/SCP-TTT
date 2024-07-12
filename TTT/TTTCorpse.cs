@@ -19,6 +19,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
         private static string headShotTranslation = "\n\n<color=red>No time to scream!</color>\nThey were <color=yellow>shot in the head</color>.";
         private static string fellTranslation = "\n\n<color=red>My legs!</color>\nThey <color=red>fell to their death.</color>";
         private static string explodedTranslation = "\n\n<color=red>Crispy Demise</color>\nThey met a fiery end in an <color=orange>explosion</color>";
+        private static string poisonedTranslation = "\n\n<color=green>Don't feel too good...</color>\nThey have consumed some form <color=green>poison</color>.";
         private static bool isHeadshot(string serverLogsText)
         {
             return serverLogsText.Contains("Headshot");
@@ -79,13 +80,17 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
             {
                 baseText = type.ToString();
             }
-            if (handler.ServerLogsText.Contains("Falldown"))
+            if (handler.ServerLogsText.Contains("Falldown") || handler.ServerLogsText.ToLower().Contains("fell"))
             {
                 baseText = fellTranslation;
             }
             if (handler.ServerLogsText.Contains("Explosion"))
             {
                 baseText = explodedTranslation;
+            }
+            if (handler.ServerLogsText.ToLower().Contains("poison"))
+            {
+                baseText = poisonedTranslation;
             }
             if (handler.ServerLogsText.Contains("Shot"))
             {

@@ -19,6 +19,8 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
         public int DetectiveMax { get; set; } = 32; // Max num of detectives
         public int DetectiveMin { get; set; } = 8; // Min number of players for Detective to exist
 
+        public int DetectiveMinKarma { get; set; } = 0; // Min Karma needed for player to become detective
+
         public Dictionary<TTTRound.Team, string> TeamColor { get; set; } = new Dictionary<TTTRound.Team, string>()
         {
             [TTTRound.Team.Innocent] = "#6eeb34",
@@ -103,7 +105,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
     {
         public int ShowCustomSpawnMessageDuration { get; set; } = 5;
 
-        public string CustomInfoTemplate { get; set; } = "<color={TeamColor}>{TeamName}</color>\n\n<color={HealthColor}>{HealthStatus}</color>";
+        public string CustomInfoTemplate { get; set; } = "<color={TeamColor}>{TeamName}</color>\n<color={KarmaColor}>{KarmaStatus}</color>\n<color={HealthColor}>{HealthStatus}</color>";
 
         public Dictionary<int, string[]> HealthStatus { get; set; } = new Dictionary<int, string[]>()
         {
@@ -128,6 +130,37 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
                 "Near Death"
             },
         };
+        public Dictionary<int, string[]> KarmaStatus { get; set; } = new Dictionary<int, string[]>()
+        {
+            [50] = new string[] {
+                "gold",
+                "Saint"
+            },
+            [25] = new string[] {
+                "cyan",
+                "Kind"
+            },
+            [10] = new string[] {
+                "green",
+                "Friendly"
+            },
+            [0] = new string[] {
+                "#757575",
+                "Neutral"
+            },
+            [-10] = new string[] {
+                "orange",
+                "Trigger Happy"
+            },
+            [-25] = new string[] {
+                "red",
+                "Serial Killer"
+            },
+            [-50] = new string[] {
+                "red",
+                "Evil Incarnate"
+            },
+        };
         public string Hud { get; set; } = @"
         
 
@@ -141,11 +174,15 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
 
 
 
-
+        <align=""left"">{karma}
         <align=""left"">{role} {time}
         ";
         public string RoleWidget { get; set; } = "<color={TeamColor}>{TeamName}</color>";
         public string TimeWidget { get; set; } = "<color=#616161>{TimeLeft}</color>";
+
+        public string KarmaWidget { get; set; } = "<color={KarmaColor}>{Karma}</color>";
+
+        public bool ShowKarmaWidget { get; set; } = false;
     }
 
 

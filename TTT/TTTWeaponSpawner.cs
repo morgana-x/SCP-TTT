@@ -97,7 +97,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
             List<Pickup> spawned = new List<Pickup>();
             foreach (Room room in Room.Get(zone))
             {
-                if (room.Type == RoomType.LczArmory || room.Type == RoomType.Lcz173 || room.Type == RoomType.Lcz914 || room.Type == RoomType.HczArmory)
+                /*if (room.Type == RoomType.LczArmory || room.Type == RoomType.Lcz173 || room.Type == RoomType.Lcz914 || room.Type == RoomType.HczArmory)
                 {
                     try
                     {
@@ -132,15 +132,15 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
                         Log.Debug(e);
                     }
                 }
-                else if (room.RoomShape == MapGeneration.RoomShape.XShape || room.RoomShape == MapGeneration.RoomShape.TShape)
+                else */if (room.RoomShape == MapGeneration.RoomShape.XShape || room.RoomShape == MapGeneration.RoomShape.TShape)
                 {
                     Vector3 center = room.Position + (Vector3.up * 2); // ::pray::
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + Vector3.up);
                         spawned.AddRange(pickup);
                     }
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         var pickup = safeSpawnPickup(randomEtc.RandomItem(), center + Vector3.right + Vector3.up);
                         spawned.AddRange(pickup);

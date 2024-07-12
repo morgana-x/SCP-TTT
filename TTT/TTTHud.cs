@@ -64,14 +64,24 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
                 lookingAtInfo = GetInfoOfTarget(player, lookingAt);
             }
 
-            hud = hud.Replace("{lookingAtInfo}", lookingAtInfo);
+            hud = hud.Replace("{lookingAtInfo}", $"{lookingAtInfo}");
 
 
             TimeSpan timeLeft = round.NextRoundState.Subtract(DateTime.Now);
             string min = (timeLeft.Minutes <= 9 ? "0" : "") +  timeLeft.Minutes.ToString();
             string sec = (timeLeft.Seconds <= 9 ? "0" : "") + timeLeft.Seconds.ToString();
             hud = hud.Replace("{time}", round.config.hudConfig.TimeWidget.Replace("{TimeLeft}", min + ":" + sec ));
-           
+            string[] karmaStatus = GetKarmaStatus(player);
+
+            if (round.config.hudConfig.ShowKarmaWidget)
+            {
+                string karmaWidget = round.config.hudConfig.KarmaWidget.Replace("{KarmaColor}", karmaStatus[0]).Replace("{Karma}", karmaStatus[1]) + $"({round.GetKarma(player)})";
+                hud = hud.Replace("{karma}", karmaWidget);
+            }
+            else
+            {
+                hud = hud.Replace("{karma}", "");
+            }
             return hud;
         }
         private Dictionary<Player, string> lastHint = new Dictionary<Player, string>();
@@ -116,6 +126,32 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
             }
             return status;
         }
+        private string[] GetOldKarmaStatus(Exiled.API.Features.Player player) // Todo: reference old karma
+        {
+            string[] status = { "red", "ERROR GETTING OLD KARMA STATUS" };
+            foreach (int key in round.config.hudConfig.KarmaStatus.Keys.OrderBy((i) => i))
+            {
+                if (round.GetOldKarma(player) <= key)
+                {
+                    status = round.config.hudConfig.KarmaStatus[key];
+                    break;
+                }
+            }
+            return status;
+        }
+        private string[] GetKarmaStatus(Exiled.API.Features.Player player)
+        {
+            string[] status = { "red", "ERROR GETTING KARMA STATUS" };
+            foreach (int key in round.config.hudConfig.KarmaStatus.Keys.OrderBy((i) => i))
+            {
+                if (round.GetKarma(player) <= key)
+                {
+                    status = round.config.hudConfig.KarmaStatus[key];
+                    break;
+                }
+            }
+            return status;
+        }
         private string GetCustomInfo(Exiled.API.Features.Player player, TTTRound.Team playerTeam)
         {
             string tem = round.config.hudConfig.CustomInfoTemplate;
@@ -127,6 +163,9 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
             //{HealthColor}>{HealthStatus}
             string[] status = GetHealthStatus(player);
             tem = tem.Replace("{HealthColor}", status[0]).Replace("{HealthStatus}", status[1]);
+
+            string[] karmaStatus = GetOldKarmaStatus(player);
+            tem = tem.Replace("{KarmaColor}", karmaStatus[0]).Replace("{KarmaStatus}", karmaStatus[1]);
 
             return tem;
         }
