@@ -2,7 +2,7 @@
 
 Not finished! (Proudly written entirely within 3 nights between 12am and 3am, obviously bad code)
 
-If you want to contribute, please do because I do not have the time to finish this plugin! Feel free to also fork it!
+If you want to contribute, please do because I do not have the time to finish this plugin!
 
 An Exiled ~~9~~ 8 plugin that aims to port TTT to SCP Sl (Exiled 9 is jank af!)
 
