@@ -1,9 +1,11 @@
-﻿using Exiled.API.Enums;
+﻿using CommandSystem.Commands.RemoteAdmin;
+using Exiled.API.Enums;
 using Exiled.API.Extensions;
 using Exiled.API.Features;
 using Exiled.API.Features.DamageHandlers;
 using Exiled.API.Features.Roles;
 using Exiled.API.Features.Spawn;
+using Exiled.Events.Commands.Reload;
 using Exiled.Events.EventArgs.Player;
 using LightContainmentZoneDecontamination;
 using PlayerRoles;
@@ -19,6 +21,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using Utils;
 using static MapGeneration.ImageGenerator;
 using static SCP_SL_Trouble_In_Terrorist_Town.TTTRound;
 
@@ -333,10 +336,13 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
             }
             return deathReason[victim];
         }
+
+        private void JankSetRole(Player pl, RoleTypeId role)
+        {
+            Server.ExecuteCommand("forceclass " + pl.Id + " " + role.ToString() + " 0", new RemoteAdmin.PlayerCommandSender(ReferenceHub.HostHub));
+        }
         public void Spawn(Player pl, SpawnReason reason = SpawnReason.ForceClass, RoleTypeId spawnPoint = RoleTypeId.None, bool dontRespawn=false)
         {
-            // This function does not work well with EXILED npcs, take note.
-            // Reason why I skip setting NPC internal roles for models when role assignments happen
             var plTeam = GetTeam(pl);
             GiveLoadout(pl);
 
@@ -346,38 +352,16 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
             }
             RoleTypeId role = config.teamsConfig.TeamRole[GetTeam(pl)];
 
+
             if (pl.Role.Type == role)
             {
                 return;
             }
-            if (reason == null)
-            {
-                reason = SpawnReason.ForceClass;
-            }
-            /*if (pl.IsAlive)
-            {
-               
-            }
-            else
-            {
-                pl.Role.Set(role, reason, RoleSpawnFlags.None);
-            }*/
-            Vector3 lastPos = pl.Position;
-            if (!pl.IsAlive)
-            {
-                //pl.RoleManager.ServerSetRole(RoleTypeId.Spectator, RoleChangeReason.RemoteAdmin, RoleSpawnFlags.UseSpawnpoint);
-                pl.Role.Set(role, reason, RoleSpawnFlags.None);
-                //pl.RoleManager.ServerSetRole(role, RoleChangeReason.RemoteAdmin, RoleSpawnFlags.None);
-            }
-            else
-            {
-                // Literally don't know anymore...
-                // fakevar?
-            }
 
-            //pl.Health = pl.MaxHealth;
+            //pl.RoleManager.ServerSetRole(role, RoleChangeReason.RemoteAdmin, RoleSpawnFlags.None);
+           // JankSetRole(pl, role);
+            pl.Role.Set(role, RoleSpawnFlags.None);
 
-           // pl.Teleport(lastPos);
             if (spawnPoint != RoleTypeId.None && !dontRespawn)
             {
                 pl.Teleport(spawnPoint.GetRandomSpawnLocation());
