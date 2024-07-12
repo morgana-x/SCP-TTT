@@ -89,11 +89,11 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
             }
             if (handler.ServerLogsText.Contains("Shot"))
             {
-                baseText = "<color=red>Ouch!</color>\nThey were shot with a <color=yellow>" + baseText + "</color>.";
+                baseText = "\n\n<color=red>Ouch!</color>\nThey were shot with a <color=yellow>" + baseText + "</color>.";
             }
             string prefix = config.teamsConfig.TeamName[playerTeam].ToLower().StartsWith("i") ? "an" : "a";
             string corpseInfo =  $"\n\nThey were {prefix} <color={config.teamsConfig.TeamColor[playerTeam]}>{config.teamsConfig.TeamName[playerTeam]}</color>!";
-            corpseInfo = corpseInfo + "\n\n" + baseText;
+            corpseInfo = corpseInfo + baseText;
 
             if (isHeadshot(handler.ServerLogsText))
             {

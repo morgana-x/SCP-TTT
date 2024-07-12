@@ -36,6 +36,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
         public Dictionary<Player, Team> previousTeams = new Dictionary<Player, Team>();
         public Dictionary<Player, DateTime> spawnTimes = new Dictionary<Player, DateTime>();
         public Dictionary<Player, int> Karma = new Dictionary<Player, int>();
+        public Dictionary<Player, int> OldKarma = new Dictionary<Player, int>();
         public Dictionary<Player, DeathReason> deathReason = new Dictionary<Player, DeathReason>();
         private Task think_task;
 
