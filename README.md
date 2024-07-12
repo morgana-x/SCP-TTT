@@ -4,7 +4,7 @@ Not finished! (Proudly written entirely within 2 nights between 12am and 3am, ob
 
 If you want to contribute, please do because I do not have the time to finish this plugin! Feel free to also fork it!
 
-An Exiled 9 plugin that aims to port TTT to SCP Sl
+An Exiled ~~9~~ 8 plugin that aims to port TTT to SCP Sl (Exiled 9 is jank af!)
 
 Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana-x/ScpSL-DesertBus), as well!
 
