@@ -135,7 +135,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
                 else */if (room.RoomShape == MapGeneration.RoomShape.XShape || room.RoomShape == MapGeneration.RoomShape.TShape)
                 {
                     Vector3 center = room.Position + (Vector3.up * 2); // ::pray::
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                         var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + Vector3.up);
                         spawned.AddRange(pickup);

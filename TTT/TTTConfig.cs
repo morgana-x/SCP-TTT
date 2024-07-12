@@ -133,11 +133,11 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
         public Dictionary<int, string[]> KarmaStatus { get; set; } = new Dictionary<int, string[]>()
         {
             [50] = new string[] {
-                "gold",
+                "#f5e056",
                 "Saint"
             },
             [25] = new string[] {
-                "cyan",
+                "#63abb8",
                 "Kind"
             },
             [10] = new string[] {
