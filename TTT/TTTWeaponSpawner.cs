@@ -1,6 +1,10 @@
 ﻿using Exiled.API.Enums;
+using Exiled.API.Extensions;
+using Exiled.API.Features;
 using Exiled.API.Features.Items;
 using Exiled.API.Features.Pickups;
+using PlayerRoles;
+using PluginAPI.Roles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,193 +23,34 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
     }
     public class TTTWeaponSpawner
     {
-        public static List<WeaponSpawnPoint> tempWeaponList = new List<WeaponSpawnPoint>()
-        {
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunE11SR,
-                Location = new Vector3(121,996,-41)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo556x45,
-                Location = new Vector3(123,996,-41)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo12gauge,
-                Location = new Vector3(122,996,-41)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunAK,
-                Location = new Vector3(114,996,-39)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo762x39,
-                Location = new Vector3(121,996,-41)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunCOM18,
-                Location = new Vector3(130,996,-59)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GrenadeHE,
-                Location = new Vector3(130,996,-59)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo9x19,
-                Location = new Vector3(121,996,-41)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunFRMG0,
-                Location = new Vector3(140,996,-50)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunShotgun,
-                Location = new Vector3(89,996,-36)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo12gauge,
-                Location = new Vector3(89,996,-36)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunRevolver,
-                Location = new Vector3(64,996,-36)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo762x39,
-                Location = new Vector3(64,996,-36)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunE11SR,
-                Location = new Vector3(62,992,-50)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo9x19,
-                Location = new Vector3(64,996,-36)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo556x45,
-                Location = new Vector3(64,996,-36)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunE11SR,
-                Location = new Vector3(74,992,-44)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunShotgun,
-                Location = new Vector3(91,993,-43)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo12gauge,
-                Location = new Vector3(91,993,-43)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunCOM15,
-                Location = new Vector3(136,996,-20)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo9x19,
-                Location = new Vector3(136,996,-20)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunE11SR,
-                Location = new Vector3(136,994,-1)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo556x45,
-                Location = new Vector3(136,994,-1)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunE11SR,
-                Location = new Vector3(130,989,20)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo556x45,
-                Location = new Vector3(130,989,20)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GrenadeHE,
-                Location = new Vector3(130,989,20)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunCOM15,
-                Location = new Vector3(29,992,-26)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.ArmorHeavy,
-                Location = new Vector3(29,992,-26)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.ArmorLight,
-                Location = new Vector3(0,1001,-41)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunLogicer,
-                Location = new Vector3(0,1001,-41)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo762x39,
-                Location = new Vector3(0,1001,-41)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo9x19,
-                Location = new Vector3(0,1001,1)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunCrossvec,
-                Location = new Vector3(0,1001,1)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunRevolver,
-                Location = new Vector3(-13,1001,0.5f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo44cal,
-                Location = new Vector3(-13,1001,0.5f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Flashlight,
-                Location = new Vector3(-13,1001,0.5f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunFSP9,
-                Location = new Vector3(-11,992,-35f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunFSP9,
-                Location = new Vector3(140,996,-35f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo9x19,
-                Location = new Vector3(140,996,-35f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.ArmorLight,
-                Location = new Vector3(140,996,-35f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunCrossvec,
-                Location = new Vector3(118,996,-34f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo9x19,
-                Location = new Vector3(118,996,-34f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.ArmorLight,
-                Location = new Vector3(118,996,-34f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GunRevolver,
-                Location = new Vector3(113,996,-34f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.Ammo44cal,
-                Location = new Vector3(113,996,-34f)
-            },
-            new WeaponSpawnPoint(){
-                Item = ItemType.GrenadeFlash,
-                Location = new Vector3(113,996,-34f)
-            },
+        private static List<ItemType> randomGuns = new List<ItemType>() {
+
+            ItemType.GunA7,
+            ItemType.GunAK,
+            ItemType.GunCOM15,
+            ItemType.GunCOM18,
+            ItemType.GunCrossvec,
+            ItemType.GunE11SR,
+            ItemType.GunFSP9,
+            ItemType.GunFRMG0,// Maybe gun doesn't exist?
+            ItemType.GunLogicer,
+            ItemType.GunRevolver,
+            ItemType.GunShotgun,
         };
+
+
+        private static List<ItemType> randomEtc = new List<ItemType>()
+        {
+            ItemType.ArmorCombat,
+            ItemType.ArmorHeavy,
+            ItemType.ArmorLight,
+            ItemType.Coin,
+            ItemType.Flashlight,
+            ItemType.GrenadeFlash,
+            ItemType.GrenadeHE,
+        };
+
+
 
         public static List<Pickup> SpawnWeapons(List<WeaponSpawnPoint> weapons)
         {
@@ -216,7 +61,109 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
                 var i = Pickup.CreateAndSpawn(w.Item, w.Location, Quaternion.Euler(0, 0, 0));
                 spawned.Add(i);
             }
-            Exiled.API.Features.Log.Debug("Spawned " + weapons.Count + " weapons!");
+            Exiled.API.Features.Log.Debug("Spawned " + spawned.Count + " weapons!");
+            return spawned;
+        }
+        private static List<Pickup> safeSpawnPickup(ItemType type, Vector3 position)
+        {
+            List<Pickup> pickups = new List<Pickup>();
+            if (position == null)
+            {
+                Log.Debug("Warning position is null!");
+                return pickups;
+            }
+            if (type == ItemType.None)
+            {
+                return pickups;
+            }
+            var p = Pickup.CreateAndSpawn(type, position, Quaternion.Euler(0, 0, 0));
+            if (type.IsAmmo())
+            {
+                p.As<AmmoPickup>().Ammo = 100;
+            }
+            pickups.Add(p);
+            if (p.Type.IsWeapon())
+            {
+                var ammoItem = p.Type.GetFirearmType().GetWeaponAmmoType().GetItemType();
+                if (ammoItem != ItemType.None)
+                {
+                    pickups.AddRange(safeSpawnPickup(ammoItem, position));
+                }
+            }
+            return pickups;
+        }
+        public static List<Pickup> SpawnRandomWeapons(ZoneType zone) // Awful temporary code! Forgive me my sins
+        {
+            List<Pickup> spawned = new List<Pickup>();
+            foreach (Room room in Room.Get(zone))
+            {
+                if (room.Type == RoomType.LczArmory || room.Type == RoomType.Lcz173 || room.Type == RoomType.Lcz914 || room.Type == RoomType.HczArmory)
+                {
+                    try
+                    {
+                        List<Pickup> toSpawn = new List<Pickup>();
+                        foreach (Pickup ogpickup in room.Pickups)
+                        {
+                            toSpawn.Add(ogpickup);
+                        }
+                        foreach(var ogpickup in toSpawn)
+                        { 
+                            if (ogpickup.Type.IsWeapon())
+                            {
+                                for (int i = 0; i < 1; i++)
+                                {
+                                    var gunType = randomGuns.RandomItem();
+                                    var pickup = safeSpawnPickup(gunType, ogpickup.Position + Vector3.up);
+                                    spawned.AddRange(pickup);
+                                }
+                            }
+                            else if (!ogpickup.Type.IsScp() && !ogpickup.Type.IsAmmo()) ;
+                            {
+                                for (int i = 0; i < 1; i++)
+                                {
+                                    var pickup = safeSpawnPickup(randomEtc.RandomItem(), ogpickup.Position + Vector3.up);
+                                    spawned.AddRange(pickup);
+                                }
+                            }
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Log.Debug(e);
+                    }
+                }
+                else if (room.RoomShape == MapGeneration.RoomShape.XShape || room.RoomShape == MapGeneration.RoomShape.TShape)
+                {
+                    Vector3 center = room.Position + (Vector3.up * 2); // ::pray::
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + Vector3.up);
+                        spawned.AddRange(pickup);
+                    }
+                    for (int i = 0; i < 3; i++)
+                    {
+                        var pickup = safeSpawnPickup(randomEtc.RandomItem(), center + Vector3.right + Vector3.up);
+                        spawned.AddRange(pickup);
+                    }
+                }
+                else if (room.Type == RoomType.LczClassDSpawn)
+                {
+                    for (int i = 0; i < 12; i++)
+                    {
+                        Vector3 center = RoleTypeId.ClassD.GetRandomSpawnLocation().Position; // Wow what can go wrong!
+                        var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + Vector3.up);
+                        spawned.AddRange(pickup);
+                    }
+                    for (int i = 0; i < 12; i++)
+                    {
+                        Vector3 center = RoleTypeId.ClassD.GetRandomSpawnLocation().Position; // Wow what can go wrong!
+                        center = center + Vector3.right + Vector3.up;
+                        var pickup = safeSpawnPickup(randomEtc.RandomItem(), center);
+                        spawned.AddRange(pickup);
+                    }
+                }
+            }
+            Exiled.API.Features.Log.Debug("Spawned " + spawned.Count + " weapons!");
             return spawned;
         }
     }

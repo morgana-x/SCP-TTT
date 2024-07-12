@@ -47,7 +47,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
         {
             [TTTRound.Team.Innocent] = RoleTypeId.ChaosMarauder,
             [TTTRound.Team.Traitor] = RoleTypeId.ChaosMarauder,
-            [TTTRound.Team.Detective] = RoleTypeId.NtfCaptain,
+            [TTTRound.Team.Detective] = RoleTypeId.NtfSergeant,
             [TTTRound.Team.Spectator] = RoleTypeId.Spectator, 
             [TTTRound.Team.Undecided] = RoleTypeId.ChaosMarauder
         };
@@ -67,6 +67,28 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
             [TTTRound.Team.Detective] = "<color={TeamColor}>Detective</color>\nYou are a Detective! Kill Traitors and protect Innocents to win!",
             [TTTRound.Team.Spectator] = "<color={TeamColor}>Spectator</color>\nYou are a Spectator! (Don't) Have fun not existing!", // Actual coincidence I picked this when using the color picker
             [TTTRound.Team.Undecided] = "<color={TeamColor}>Undecided</color>\nPrepare for the round by picking up weapons!",
+        };
+
+        public Dictionary<TTTRound.Team, List<ItemType>> TeamLoadout { get; set; } = new Dictionary<TTTRound.Team, List<ItemType>>()
+        {
+            [TTTRound.Team.Undecided] = new List<ItemType>()
+            {
+                ItemType.KeycardMTFPrivate,
+                ItemType.Radio
+            },
+            [TTTRound.Team.Traitor] = new List<ItemType>()
+            {
+                ItemType.KeycardO5
+            },
+            [TTTRound.Team.Detective] = new List<ItemType>()
+            {
+                ItemType.KeycardMTFCaptain,
+                ItemType.ArmorCombat,
+                ItemType.GunRevolver,
+                ItemType.Ammo44cal,
+                ItemType.Ammo762x39,
+                ItemType.Medkit
+            }
         };
     }
 
@@ -120,7 +142,6 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
 
 
 
-
         <align=""left"">{role} {time}
         ";
         public string RoleWidget { get; set; } = "<color={TeamColor}>{TeamName}</color>";
@@ -138,8 +159,8 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
         public HUDConfig hudConfig { get; set; } = new HUDConfig();
 
 
-        public RoleTypeId spawnPoint { get; set; } = RoleTypeId.NtfPrivate;
-        public ZoneType spawnZone { get; set; } = ZoneType.Surface;
+        public RoleTypeId spawnPoint { get; set; } = RoleTypeId.ClassD;
+        public ZoneType spawnZone { get; set; } = ZoneType.LightContainment;
 
         public bool lockDownSpawnZone { get; set; } = true;
 

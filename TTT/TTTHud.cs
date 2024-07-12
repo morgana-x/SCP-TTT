@@ -43,7 +43,7 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
             }
             else
             {
-                hud = hud.Replace("{spawn}", "");
+                hud = hud.Replace("{spawn}", "\n");
             }
             if (round.currentRoundState == TTTRound.RoundState.Finished)
             {
@@ -106,11 +106,11 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.TTT
         private string[] GetHealthStatus(Exiled.API.Features.Player player)
         {
             string[] status = { "red", "ERROR GETTING HEALTH STATUS" };
-            foreach (var pair in round.config.hudConfig.HealthStatus)
+            foreach (int key in round.config.hudConfig.HealthStatus.Keys.OrderBy( (i) => i)) 
             {
-                if (player.Health >= pair.Key)
+                if (player.Health <= key)
                 {
-                    status = pair.Value;
+                    status = round.config.hudConfig.HealthStatus[key];
                     break;
                 }
             }

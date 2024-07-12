@@ -38,21 +38,24 @@ namespace SCP_SL_Trouble_In_Terrorist_Town
         }
         public void OnPlayerDamaged(HurtEventArgs ev)
         {
-            pluginRef.tttRound.OnPlayerHurt(ev.Player, ev.Attacker, ev.DamageHandler.Type);
+            pluginRef.tttRound.OnPlayerHurt(ev.Player, ev.Attacker, ev.DamageHandler.Type, ev.DamageHandler);
         }
         public void OnPlayerKilled(DiedEventArgs ev)
         {
-            pluginRef.tttRound.OnPlayerDeath(ev.Player, ev.Attacker);
+            pluginRef.tttRound.OnPlayerDeath(ev.Player, ev.Attacker, ev.DamageHandler);
         }
         public void OnSpawnedCorpse(SpawnedRagdollEventArgs ev)
         {
-            pluginRef.tttRound.OnSpawnedCorpse(ev.Player, ev.Ragdoll, ev.Info);
+
+
+            ev.Ragdoll.UnSpawn();
+            ev.Ragdoll.DamageHandler = pluginRef.tttRound.OnSpawnedCorpse(ev.Player, ev.DamageHandlerBase, ev.Ragdoll.DeathReason);
+            ev.Ragdoll.Spawn();
         }
         public void OnChangingRole(ChangingRoleEventArgs ev)
         {
             if (ev.Reason == Exiled.API.Enums.SpawnReason.RoundStart) // TTT doesn't use this flag... yet
             {
-                Log.Debug("Stopped original class change at start of round!");
                 ev.IsAllowed = false;
             }
         }
