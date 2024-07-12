@@ -23,3 +23,8 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Highly customisable configuration for team colors, names, win phrases, spawn phrases etc
 + Config option to spawn 30 debug NPCs for testing
 + Custom Corpse Information System
+
+## Screenshots:
+![Screenshot (4771)](https://github.com/user-attachments/assets/1316d1e1-6a70-49bf-9b58-35da426f8971)
+![Screenshot (4767)](https://github.com/user-attachments/assets/8712e3e6-2f2c-47d0-a204-0e2450f8fc21)
+![Screenshot (4769)](https://github.com/user-attachments/assets/335322cf-c376-4b13-b529-b4544ef0bd78)
