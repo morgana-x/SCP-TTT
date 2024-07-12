@@ -15,7 +15,6 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
 + clean the bad code up!
 + Better weapon spawning system
-+ Show karma display of players your looking at (Good, bad etc), and add karma to detective check
 + Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code)
 + Fix Firearm limit being 1
 ## Features:
@@ -25,6 +24,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Highly customisable configuration for team colors, names, win phrases, spawn phrases etc
 + Config option to spawn 30 debug NPCs for testing
 + Custom Corpse Information System
++ Karma System
 
 ## Screenshots:
 ![Screenshot (4770)](https://github.com/user-attachments/assets/1788940b-daa4-47b2-9611-128de3c1a152)
