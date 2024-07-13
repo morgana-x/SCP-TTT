@@ -1,4 +1,5 @@
 ﻿using CentralAuth;
+using Exiled.API.Enums;
 using Exiled.API.Features;
 using Exiled.API.Features.Components;
 using PlayerRoles;
@@ -29,6 +30,16 @@ namespace SCP_SL_Trouble_In_Terrorist_Town.Util
             }
         }
 
+        public static void LockdownZones()
+        {
+            foreach (Exiled.API.Features.Room room in Exiled.API.Features.Room.List)//.Where((x) => x.Zone == zone))
+            {
+                foreach (var d in (room.Doors.Where((x) => x.IsElevator)))
+                {
+                    d.ChangeLock(DoorLockType.AdminCommand);
+                }
+            }
+        }
       
     }
 }
