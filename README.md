@@ -14,10 +14,10 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Assigning roles for a player twice or more crashes the server, unknown reason why. Possibly just my dedicated server that had Exiled 9 at one point
 ## Todo:
 + Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
-+ clean the bad code up!
-+ Better weapon spawning system
 + Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code)
 + Fix Firearm limit being 1
++ Fix Spawn Crash (Might just be on my machine though)
++ ~~Switch to NorthwoodAPI~~
 ## Features:
 + Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
 + Hud System (Show role, time left) (Works with spectators)
