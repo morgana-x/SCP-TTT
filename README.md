@@ -17,7 +17,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code)
 + Fix Firearm limit being 1
 + Fix Spawn Crash (Might just be on my machine though)
-+ ~~Switch to NorthwoodAPI~~
++ ~~Switch to NorthwoodAPI~~ I don't want to though...
 ## Features:
 + Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
 + Hud System (Show role, time left) (Works with spectators)
