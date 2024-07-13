@@ -11,7 +11,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 ## Current issues:
 + ~~Players occasionally crash (Either due to the odd 50 items on surface or due to spamming hints every second, or the 30 npcs when testing, Or northwood are bad programmers, (but more likely I'm the bad programer)~~
 + (Crash issue is happening less often)
-+ Being dead when roles are being assigned crashes server
++ Assigning roles for a player twice or more crashes the server, unknown reason why. Possibly just my dedicated server that had Exiled 9 at one point
 ## Todo:
 + Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
 + clean the bad code up!
