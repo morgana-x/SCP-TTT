@@ -2,6 +2,7 @@
 namespace SCPTroubleInTerroristTown
 {
     using Mirror;
+    using PlayerRoles;
     using PlayerRoles.Ragdolls;
     using PlayerStatsSystem;
     using PluginAPI.Core;
@@ -44,7 +45,12 @@ namespace SCPTroubleInTerroristTown
 
 
             // Todo: Add config!
-            tttRound = new TTTRound(new TTTConfig());
+
+            TTTConfig tttConfig = new TTTConfig()
+            { 
+                spawnDebugNPCS = true
+            };
+            tttRound = new TTTRound(tttConfig);
 
         }
         [PluginEvent(ServerEventType.PlayerDeath)]
@@ -117,6 +123,12 @@ namespace SCPTroubleInTerroristTown
         public void MapGenerated()
         {
             tttRound.On_Map_Loaded();
+        }
+
+        [PluginEvent(ServerEventType.RoundStart)]
+        public void RoundStart()
+        {
+            tttRound.On_NewRound();
         }
     }
 }

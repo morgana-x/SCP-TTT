@@ -95,7 +95,7 @@ namespace SCPTroubleInTerroristTown.TTT
             spawnTimes.Clear();
             deathReason.Clear();
             SetRoundState(RoundState.WaitingForPlayers);
-            Round.IsLocked = false;
+            Round.IsLocked = true;
             Server.FriendlyFire = false; // Disable friendly fire to avoid killing before round start
             if (config.spawnDebugNPCS)
             {

@@ -37,7 +37,7 @@ namespace SCPTroubleInTerroristTown.TTT
             Player npc = new Player(ReferenceHub.GetHub(gameObject));
             try
             {
-                npc.ReferenceHub.roleManager.InitializeNewRole(RoleTypeId.None, RoleChangeReason.None);
+                //npc.ReferenceHub.roleManager.InitializeNewRole(RoleTypeId.None, RoleChangeReason.None);
             }
             catch (Exception arg)
             {
