@@ -1,6 +1,6 @@
 # SCP-TTT
 
-Not finished! (Proudly written entirely within 3 nights between 12am and 3am, obviously bad code)
+Not finished! (Proudly written entirely within ~~3~~ 4 nights between 12am and 3am, obviously bad code)
 
 If you want to contribute, please do because I do not have the time to finish this plugin!
 
