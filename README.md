@@ -12,7 +12,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Spawned weapons have 0 ammo in them (Need to reload them) (And ammo spawns don't have too much ammo in them)
 + Falling death missing corpse death translation
 ## Todo:
-+ Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
++ Corpse info system (Only thing left is adding missing death translations, and detective specialised things)(Also actually make death translations a dictionary not if statements)
 + Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code to figure out how to send player to load screen)
 + Automatically set the server to a HeavilyModded Server on plugin load
 ## Features:
