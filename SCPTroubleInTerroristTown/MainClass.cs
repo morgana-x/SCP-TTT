@@ -77,6 +77,7 @@ namespace SCPTroubleInTerroristTown
             tttRound.On_Player_Joined(player);
             Log.Info($"Player &6{player.UserId}&r joined this server");
         }
+       
         [PluginEvent(ServerEventType.PlayerDamage)]
         void OnPlayerDamage(Player player, Player target, DamageHandlerBase damageHandler)
         {

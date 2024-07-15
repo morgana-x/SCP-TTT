@@ -16,7 +16,8 @@ using UnityEngine;
 using Utils;
 using PluginAPI.Core;
 using static MapGeneration.ImageGenerator;
-
+using System.Collections;
+using MEC;
 namespace SCPTroubleInTerroristTown.TTT
 {
     public class DeathReason
@@ -29,7 +30,7 @@ namespace SCPTroubleInTerroristTown.TTT
     {
         public Dictionary<Player, DeathReason> deathReason = new Dictionary<Player, DeathReason>();
 
-        private Task think_task;
+        private MEC.CoroutineHandle think_task;
 
         public TTTConfig config;
 
@@ -65,6 +66,8 @@ namespace SCPTroubleInTerroristTown.TTT
 
             switch (state) 
             {
+                case RoundState.WaitingForPlayers:
+                    break;
                 case RoundState.Preperation:
                     NextRoundState = DateTime.Now.AddSeconds(config.roundConfig.PreRoundDuration);
                     break;
@@ -101,14 +104,18 @@ namespace SCPTroubleInTerroristTown.TTT
         {
             Round.Restart(true);
         }
+        private void Cleanup_Coroutines()
+        {
+            if (think_task != null && think_task.IsValid)
+            {
+                Timing.KillCoroutines(think_task);
+            }
+        }
         private void Cleanup_Round()
         {
             Log.Debug("Cleaning up round!");
             SetRoundState(RoundState.Reset);
-            if (think_task != null && think_task.Status == TaskStatus.Running)
-            {
-                think_task.Dispose();
-            }
+            Cleanup_Coroutines();
         }
         private void CheckWinConditions()
         {
@@ -139,12 +146,12 @@ namespace SCPTroubleInTerroristTown.TTT
             
         }
       
-        private async Task Think()
+        private IEnumerator<float> Think()
         {
             while (this.currentRoundState != RoundState.Reset) 
             {
-                System.Threading.Thread.Sleep(10);
-                
+                //System.Threading.Thread.Sleep(10);
+                yield return MEC.Timing.WaitForSeconds(0.01f);
                 hudUpdate();
 
                 // Is round finished, check if it's time to start the new round

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 
 using LightContainmentZoneDecontamination;
+using MEC;
 using PlayerRoles;
 using PlayerStatsSystem;
 using PluginAPI.Core;
@@ -77,7 +78,9 @@ namespace SCPTroubleInTerroristTown.TTT
                 SetTeam(pl, Team.Undecided);
                 Spawn(pl, spawnPoint: config.spawnPoint);
             }
-            think_task = Task.Run(Think);
+
+            Cleanup_Coroutines();
+            think_task = Timing.RunCoroutine(Think());
         }
         public void On_Round_Restarting()
         {
