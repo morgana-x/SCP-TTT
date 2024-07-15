@@ -13,7 +13,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Falling death missing corpse death translation
 ## Todo:
 + Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
-+ Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code)
++ Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code to figure out how to send player to load screen)
 + Automatically set the server to a HeavilyModded Server on plugin load
 ## Features:
 + Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
