@@ -9,9 +9,8 @@ An ~~Exiled ~~9~~ 8~~ PluginAPI plugin that aims to port TTT to SCP Sl
 Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana-x/ScpSL-DesertBus), as well!
 
 ## Current issues:
-+ ~~Players occasionally crash (Either due to the odd 50 items on surface or due to spamming hints every second, or the 30 npcs when testing, Or northwood are bad programmers, (but more likely I'm the bad programer)~~
-+ (Crash issue is happening less often)
-+ Assigning roles for a player twice or more crashes the server, unknown reason why. Possibly just my dedicated server that had Exiled 9 at one point
++ Spawned weapons have 0 ammo in them (Need to reload them) (And ammo spawns don't have too much ammo in them)
++ Falling death missing corpse death translation
 ## Todo:
 + Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
 + Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code)
