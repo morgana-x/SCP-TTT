@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
-
+using InventorySystem.Configs;
 using LightContainmentZoneDecontamination;
 using MEC;
 using PlayerRoles;
@@ -100,6 +98,7 @@ namespace SCPTroubleInTerroristTown.TTT
             SetRoundState(RoundState.WaitingForPlayers);
             Round.IsLocked = true;
             Server.FriendlyFire = false; // Disable friendly fire to avoid killing before round start
+            InventoryLimits.StandardCategoryLimits[ItemCategory.Firearm] = 2;
             if (config.spawnDebugNPCS)
             {
                 int numOfNpcs = 12;

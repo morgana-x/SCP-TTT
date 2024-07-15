@@ -80,7 +80,6 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 ItemType.KeycardMTFPrivate,
                 ItemType.Radio,
-                ItemType.ArmorLight
             },
             [TTTRound.Team.Traitor] = new List<ItemType>()
             {
