@@ -11,6 +11,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 ## Current issues:
 + Spawned weapons have 0 ammo in them (Need to reload them) (And ammo spawns don't have too much ammo in them)
 + Falling death missing corpse death translation
++ Due to giving everyone light armor by default on spawn (To allow the holding of more than 1 item) grenades do not kill anyone instantly
 ## Todo:
 + Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
 + Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code)
