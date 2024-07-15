@@ -104,7 +104,6 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 corpseInfo += headShotTranslation;
             }
-            Log.Debug("New corpse info: \n" + corpseInfo);
             return corpseInfo;
         }
     }

@@ -61,11 +61,6 @@ namespace SCPTroubleInTerroristTown
         void OnPlayerDied(Player player, Player attacker, DamageHandlerBase damageHandler)
         {
             tttRound.OnPlayerDeath(player, attacker);
-            if (attacker == null)
-                Log.Info($"Player &6{player.Nickname}&r (&6{player.UserId}&r) died, cause {damageHandler}");
-            else
-                Log.Info($"Player &6{attacker.Nickname}&r (&6{attacker.UserId}&r) killed &6{player.Nickname}&r (&6{player.UserId}&r), cause {damageHandler}");
-
 
         }
         [PluginEvent(ServerEventType.PlayerLeft)]
@@ -79,23 +74,17 @@ namespace SCPTroubleInTerroristTown
         void OnPlayerJoin(Player player)
         {
             tttRound.On_Player_Joined(player);
-            Log.Info($"Player &6{player.UserId}&r joined this server");
         }
        
         [PluginEvent(ServerEventType.PlayerDamage)]
         void OnPlayerDamage(Player player, Player target, DamageHandlerBase damageHandler)
         {
             tttRound.OnPlayerHurt(target, player, damageHandler);
-            if (player == null)
-                Log.Info($"Player &6{target.Nickname}&r (&6{target.UserId}&r) got damaged, cause {damageHandler}.");
-            else
-                Log.Info($"Player &6{target.Nickname}&r (&6{target.UserId}&r) received damage from &6{player.Nickname}&r (&6{player.UserId}&r), cause {damageHandler}.");
         }
         void OnRagdollSpawn(ReferenceHub hub, BasicRagdoll Ragdoll)
         {
             Player plr = Player.Get(hub);
             var damageHandler = Ragdoll.Info.Handler;
-            Log.Info($"Player &6{plr.Nickname}&r (&6{plr.UserId}&r) spawned ragdoll &6{Ragdoll}&r, reason &6{damageHandler}&r");
 
             NetworkServer.UnSpawn(Ragdoll.gameObject);
             var newDamageHandler = tttRound.OnSpawnedCorpse(plr, damageHandler, damageHandler.ServerLogsText);

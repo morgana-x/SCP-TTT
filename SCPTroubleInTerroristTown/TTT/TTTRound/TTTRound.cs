@@ -125,6 +125,11 @@ namespace SCPTroubleInTerroristTown.TTT
 
             if (DateTime.Now > NextRoundState) // Stalemate
             {
+                if (Innocents.Count > 0) // If Traitors fail to kill Innocents then give innocents the win!
+                { // Ignore detective I guess cause they fail their job pretty bad if all the innocents die, don't they.
+                    End(Team.Innocent);
+                    return;
+                }
                 End(Team.Spectator);
                 return;
             }
