@@ -1,3 +1,4 @@
+# Exiled Branch currently not active
 # SCP-TTT
 
 Not finished! (Proudly written entirely within 3 nights between 12am and 3am, obviously bad code)
@@ -18,6 +19,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Fix Firearm limit being 1
 + Fix Spawn Crash (Might just be on my machine though)
 + ~~Switch to NorthwoodAPI~~ I don't want to though...
++ SWITCH TO MEC rather than Task THIS IS WHAT CAUSES CRASH (Fixed in Northwood Branch)
 ## Features:
 + Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
 + Hud System (Show role, time left) (Works with spectators)
