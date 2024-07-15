@@ -48,7 +48,7 @@ namespace SCPTroubleInTerroristTown.TTT
             }
 
             pl.ReferenceHub.roleManager.ServerSetRole(role, RoleChangeReason.RemoteAdmin, RoleSpawnFlags.None);
-
+          
             if (spawnPointRole != RoleTypeId.None) // Teleport to spawnpoint
             {
                 ISpawnpointHandler spawnpoint = null;

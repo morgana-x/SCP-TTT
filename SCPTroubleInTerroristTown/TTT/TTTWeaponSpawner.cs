@@ -119,7 +119,10 @@ namespace SCPTroubleInTerroristTown.TTT
                 var ammoItem = GetWeaponAmmoType(p.Type);//p.Type //p.Type.GetFirearmType().GetWeaponAmmoType().GetItemType();
                 if (ammoItem != ItemType.None)
                 {
-                    pickups.AddRange(safeSpawnPickup(ammoItem, position));
+                    for (int i = 0; i < 2; i++)
+                    {
+                        pickups.AddRange(safeSpawnPickup(ammoItem, position));
+                    }
                 }
             }
             return pickups;
@@ -133,7 +136,7 @@ namespace SCPTroubleInTerroristTown.TTT
                 if (room.Identifier.Shape == MapGeneration.RoomShape.XShape || room.Identifier.Shape == MapGeneration.RoomShape.TShape)
                 {
                     Vector3 center = room.Position + (Vector3.up * 2); // ::pray::
-                    for (int i = 0; i < 1; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + Vector3.up);
                         spawned.AddRange(pickup);

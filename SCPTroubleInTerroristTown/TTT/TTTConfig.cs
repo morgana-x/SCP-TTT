@@ -76,10 +76,11 @@ namespace SCPTroubleInTerroristTown.TTT
 
         public Dictionary<TTTRound.Team, List<ItemType>> TeamLoadout { get; set; } = new Dictionary<TTTRound.Team, List<ItemType>>()
         {
-            [TTTRound.Team.Undecided] = new List<ItemType>()
+            [TTTRound.Team.Undecided] = new List<ItemType>() // Given to all players at start of round
             {
                 ItemType.KeycardMTFPrivate,
-                ItemType.Radio
+                ItemType.Radio,
+                ItemType.ArmorLight
             },
             [TTTRound.Team.Traitor] = new List<ItemType>()
             {
@@ -88,11 +89,11 @@ namespace SCPTroubleInTerroristTown.TTT
             [TTTRound.Team.Detective] = new List<ItemType>()
             {
                 ItemType.KeycardMTFCaptain,
-                ItemType.ArmorCombat,
                 ItemType.GunRevolver,
                 ItemType.Ammo44cal,
                 ItemType.Ammo762x39,
-                ItemType.Medkit
+                ItemType.Medkit,
+                ItemType.ArmorCombat
             }
         };
     }
