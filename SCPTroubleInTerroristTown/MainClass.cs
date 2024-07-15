@@ -46,15 +46,17 @@ namespace SCPTroubleInTerroristTown
 
             // Todo: Add config!
 
-            TTTConfig tttConfig = new TTTConfig()
-            { 
-                spawnDebugNPCS = true
-            };
-            tttRound = new TTTRound(tttConfig);
+
+            tttRound = new TTTRound(config.tttConfig);
 
             RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
 
+           
+
         }
+        [PluginConfig]
+        public Config config;
+
         [PluginEvent(ServerEventType.PlayerDeath)]
         void OnPlayerDied(Player player, Player attacker, DamageHandlerBase damageHandler)
         {
@@ -99,6 +101,7 @@ namespace SCPTroubleInTerroristTown
             var newDamageHandler = tttRound.OnSpawnedCorpse(plr, damageHandler, damageHandler.ServerLogsText);
             Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, Ragdoll.NetworkInfo.Nickname, Ragdoll.NetworkInfo.CreationTime);
             NetworkServer.Spawn(Ragdoll.gameObject);
+           
         }
 
         [PluginEvent(ServerEventType.RoundRestart)]

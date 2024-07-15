@@ -16,7 +16,7 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 return;
             }
-            nextHudShow = DateTime.Now.AddSeconds(1.1);
+            nextHudShow = DateTime.Now.AddSeconds(0.6f);
 
             foreach (Player pl in Player.GetPlayers())
             {

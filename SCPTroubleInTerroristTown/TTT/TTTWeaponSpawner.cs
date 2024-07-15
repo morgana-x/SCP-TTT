@@ -1,4 +1,5 @@
 ﻿
+using InventorySystem;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Ammo;
 using MapGeneration;
@@ -105,7 +106,7 @@ namespace SCPTroubleInTerroristTown.TTT
             }
          
             var p = ItemPickup.Create(type, position, Quaternion.Euler(0, 0, 0));
-
+            
             if (type.ToString().StartsWith("Ammo"))
             {
                 

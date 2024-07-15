@@ -119,7 +119,7 @@ namespace SCPTroubleInTerroristTown.TTT
                 lastHint.Remove(player);
             }
         }
-        public void ShowHud(Player player, bool ShowSpawnMsg, float duration = 1.15f)
+        public void ShowHud(Player player, bool ShowSpawnMsg, float duration = 0.7f)
         {
            // if (player.IsNPC || !player.IsVerified) { return; } // Forgot about this!
             string hud = GetHud(player, ShowSpawnMsg);

@@ -69,7 +69,7 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public static string GetCorpseInfo(TTTConfig config, Player player, TTTRound.Team playerTeam, PlayerStatsSystem.DamageHandlerBase handler, string deathReason)
         {
-            string baseText = "Unknown cause of death.";
+            string baseText = "\n\n<color=red>???</color>\nUnknown cause of death.";
             /*if (deathReason2 != null && deathReason2.handler != null)
             {
                 baseText = (deathReason2.handler.Type.IsWeapon() ? "Killed with " : "") + deathReason2.handler.Type.ToString();
@@ -80,7 +80,7 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 baseText = type.ToString();
             }
-            if (handler.ServerLogsText.Contains("Falldown") || handler.ServerLogsText.ToLower().Contains("fell"))
+            if (handler.ServerLogsText.Contains("fall") || handler.ServerLogsText.ToLower().Contains("fell"))
             {
                 baseText = fellTranslation;
             }
