@@ -41,7 +41,7 @@ namespace SCPTroubleInTerroristTown.TTT
             }
             catch (Exception arg)
             {
-                Log.Debug($"Ignore: {arg}");
+               // Log.Debug($"Ignore: {arg}");
             }
 
 

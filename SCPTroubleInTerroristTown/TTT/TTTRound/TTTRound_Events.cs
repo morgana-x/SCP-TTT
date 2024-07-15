@@ -154,6 +154,7 @@ namespace SCPTroubleInTerroristTown.TTT
         public PlayerStatsSystem.DamageHandlerBase OnSpawnedCorpse(Player player, PlayerStatsSystem.DamageHandlerBase damageHandler, string deathReason)
         {
 
+            Log.Debug("Making new damage handler for corpse of " + player.DisplayNickname);
             PlayerStatsSystem.DamageHandlerBase baseHandler = new PlayerStatsSystem.CustomReasonDamageHandler(TTTCorpse.GetCorpseInfo(config, player, previousTeams[player], damageHandler, deathReason));
             return baseHandler;
 

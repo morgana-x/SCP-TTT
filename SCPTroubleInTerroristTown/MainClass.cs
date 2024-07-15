@@ -52,6 +52,8 @@ namespace SCPTroubleInTerroristTown
             };
             tttRound = new TTTRound(tttConfig);
 
+            RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
+
         }
         [PluginEvent(ServerEventType.PlayerDeath)]
         void OnPlayerDied(Player player, Player attacker, DamageHandlerBase damageHandler)
@@ -87,15 +89,16 @@ namespace SCPTroubleInTerroristTown
             else
                 Log.Info($"Player &6{target.Nickname}&r (&6{target.UserId}&r) received damage from &6{player.Nickname}&r (&6{player.UserId}&r), cause {damageHandler}.");
         }
-        [PluginEvent(ServerEventType.RagdollSpawn)]
-        void OnRagdollSpawn(Player plr, IRagdollRole ragdoll, DamageHandlerBase damageHandler)
+        void OnRagdollSpawn(ReferenceHub hub, BasicRagdoll Ragdoll)
         {
-            Log.Info($"Player &6{plr.Nickname}&r (&6{plr.UserId}&r) spawned ragdoll &6{ragdoll.Ragdoll}&r, reason &6{damageHandler}&r");
+            Player plr = Player.Get(hub);
+            var damageHandler = Ragdoll.Info.Handler;
+            Log.Info($"Player &6{plr.Nickname}&r (&6{plr.UserId}&r) spawned ragdoll &6{Ragdoll}&r, reason &6{damageHandler}&r");
 
-            NetworkServer.UnSpawn(ragdoll.Ragdoll.gameObject);
+            NetworkServer.UnSpawn(Ragdoll.gameObject);
             var newDamageHandler = tttRound.OnSpawnedCorpse(plr, damageHandler, damageHandler.ServerLogsText);
-            ragdoll.Ragdoll.NetworkInfo = new RagdollData(ragdoll.Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, ragdoll.Ragdoll.NetworkInfo.RoleType, ragdoll.Ragdoll.NetworkInfo.StartPosition, ragdoll.Ragdoll.NetworkInfo.StartRotation, ragdoll.Ragdoll.NetworkInfo.Nickname, ragdoll.Ragdoll.NetworkInfo.CreationTime);
-            NetworkServer.Spawn(ragdoll.Ragdoll.gameObject);
+            Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, Ragdoll.NetworkInfo.Nickname, Ragdoll.NetworkInfo.CreationTime);
+            NetworkServer.Spawn(Ragdoll.gameObject);
         }
 
         [PluginEvent(ServerEventType.RoundRestart)]
