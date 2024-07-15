@@ -14,6 +14,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 ## Todo:
 + Corpse info system (Only thing left is adding missing death translations, and detective specialised things)
 + Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code)
++ Automatically set the server to a HeavilyModded Server on plugin load
 ## Features:
 + Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
 + Hud System (Show role, time left) (Works with spectators)
