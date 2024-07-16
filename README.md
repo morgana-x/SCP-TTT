@@ -13,13 +13,15 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 ## Todo:
 + Corpse info system (Only thing left is detective specialised things)
 ## Features:
-+ Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
++ Round logic (Not faithful win conditions probably, didn't check the gmod function)
 + Hud System (Show role, time left) (Works with spectators)
-+ Basic Role Allocation ( (Mostly) Faithfully recreated the original Gmod function for this)
-+ Highly customisable configuration for team colors, names, win phrases, spawn phrases etc
-+ Config option to spawn 30 debug NPCs for testing
-+ Custom Corpse Information System
++ Faithful Role Allocation ( (Mostly) Faithfully recreated the original Gmod function for this)
 + Karma System
++ Highly customisable configuration
+  +  Team colors / names
+  +  Win phrases
+  +  Spawn phrases
+  +  Corpse death info phrases
 
 ## Screenshots:
 ![Screenshot (4786)](https://github.com/user-attachments/assets/51d2cbbc-fecb-4786-bf98-ca6c10c014b1)
