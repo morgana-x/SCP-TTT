@@ -102,7 +102,8 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public void RestartRound()
         {
-            Round.Restart(true);
+            TTTUtil.RestartServer();
+            //Round.Restart(true);
         }
         private void Cleanup_Coroutines()
         {

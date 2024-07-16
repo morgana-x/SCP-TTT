@@ -2,6 +2,7 @@
 using InventorySystem;
 using InventorySystem.Items.Firearms;
 using InventorySystem.Items.Firearms.Ammo;
+using InventorySystem.Items.Pickups;
 using MapGeneration;
 using PlayerRoles;
 using PluginAPI.Core;
@@ -109,13 +110,16 @@ namespace SCPTroubleInTerroristTown.TTT
             
             if (type.ToString().StartsWith("Ammo"))
             {
-                
+                AmmoPickup aPickup = (AmmoPickup)(p.OriginalObject);
+                aPickup.NetworkSavedAmmo = 60;
             }
             p.Spawn();
             pickups.Add(p);
          
             if (p.Type.ToString().StartsWith("Gun"))
             {
+            //    FirearmPickup fPickup =  (FirearmPickup)(p.OriginalObject);
+               // fPickup.Status = new FirearmStatus(fPickup.Status.Ammo, FirearmStatusFlags.MagazineInserted | FirearmStatusFlags.Chambered, fPickup.Status.Attachments);
                 var ammoItem = GetWeaponAmmoType(p.Type);//p.Type //p.Type.GetFirearmType().GetWeaponAmmoType().GetItemType();
                 if (ammoItem != ItemType.None)
                 {

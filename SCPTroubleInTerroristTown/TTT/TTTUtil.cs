@@ -6,6 +6,7 @@ using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Core.Doors;
 using PluginAPI.Core.Zones;
+using RoundRestarting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,21 @@ namespace SCPTroubleInTerroristTown.TTT
                 door.ServerChangeLock(Interactables.Interobjects.DoorUtils.DoorLockReason.AdminCommand, true);
                 Log.Debug("Locking door!");
             }
+        }
+
+        public static void RestartServer()
+        {
+
+            if (!ServerStatic.IsDedicated)
+            {
+                return;
+            }
+
+            //Round.Restart()
+            RoundRestart.InitiateRoundRestart();
+            //ServerStatic.StopNextRound = ServerStatic.NextRoundAction.Restart;
+            //RoundRestart.
+            //RoundRestart.ChangeLevel(noShutdownMessage: true);
         }
       
     }

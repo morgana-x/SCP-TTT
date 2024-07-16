@@ -135,15 +135,15 @@ namespace SCPTroubleInTerroristTown.TTT
                 Team attackerTeam = GetTeam(attacker);
                 if (victimTeam == GetTeam(attacker) || (victimTeam == Team.Innocent && attackerTeam == Team.Detective) || (victimTeam == Team.Detective && attackerTeam == Team.Innocent))
                 {
-                    AddKarma(attacker, -5); // Lose karma for killing same team
+                    AddKarma(attacker, -4); // Lose karma for killing same team
                 }
                 else if (victimTeam == Team.Traitor)
                 {
-                    AddKarma(attacker, 5); // Gain less karma for killing correct team as traitor as that's easy
+                    AddKarma(attacker, 2); // Gain less karma for killing correct team as traitor as that's easy
                 }
                 else
                 {
-                    AddKarma(attacker, 10); // Gain karma for killing correct team
+                    AddKarma(attacker, 4); // Gain karma for killing correct team
                 }
             }
             SetTeam(victim, Team.Spectator, false);
@@ -152,7 +152,7 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public PlayerStatsSystem.DamageHandlerBase OnSpawnedCorpse(Player player, PlayerStatsSystem.DamageHandlerBase damageHandler, string deathReason)
         {
-            PlayerStatsSystem.DamageHandlerBase baseHandler = new PlayerStatsSystem.CustomReasonDamageHandler(TTTCorpse.GetCorpseInfo(config, player, previousTeams[player], damageHandler, deathReason));
+            PlayerStatsSystem.DamageHandlerBase baseHandler = new PlayerStatsSystem.CustomReasonDamageHandler(Corpse.TTTCorpse.GetCorpseInfo(config, player, previousTeams[player], damageHandler, deathReason));
             return baseHandler;
 
             // Todo: Add "They were a traitor! etc". I forgot how to do this!

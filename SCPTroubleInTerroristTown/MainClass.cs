@@ -26,7 +26,6 @@ namespace SCPTroubleInTerroristTown
             Singleton = this;
 
             Log.Info("Loading TTT...");
-
             // I am so confused
             EventManager.RegisterEvents(this);
             //EventManager.RegisterEvents<EventHandlers>(this);
@@ -85,7 +84,6 @@ namespace SCPTroubleInTerroristTown
         {
             Player plr = Player.Get(hub);
             var damageHandler = Ragdoll.Info.Handler;
-
             NetworkServer.UnSpawn(Ragdoll.gameObject);
             var newDamageHandler = tttRound.OnSpawnedCorpse(plr, damageHandler, damageHandler.ServerLogsText);
             Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, Ragdoll.NetworkInfo.Nickname, Ragdoll.NetworkInfo.CreationTime);

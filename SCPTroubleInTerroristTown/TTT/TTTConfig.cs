@@ -2,6 +2,7 @@
 using MapGeneration;
 using PlayerRoles;
 using PluginAPI.Core.Zones;
+using SCPTroubleInTerroristTown.TTT.Corpse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -198,6 +199,7 @@ namespace SCPTroubleInTerroristTown.TTT
 
         public HUDConfig hudConfig { get; set; } = new HUDConfig();
 
+        public CorpseInfoTranslationConfig corpseConfig { get; set; } = new CorpseInfoTranslationConfig();
 
         public RoleTypeId spawnPoint { get; set; } = RoleTypeId.ClassD;
         public MapGeneration.FacilityZone spawnZone { get; set; } = MapGeneration.FacilityZone.LightContainment;
