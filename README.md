@@ -9,12 +9,9 @@ An ~~Exiled ~~9~~ 8~~ PluginAPI plugin that aims to port TTT to SCP Sl
 Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana-x/ScpSL-DesertBus), as well!
 
 ## Current issues:
-+ Spawned weapons have 0 ammo in them (Need to reload them) (And ammo spawns don't have too much ammo in them)
-+ Falling death missing corpse death translation
++ If you find any bugs, please let me know!
 ## Todo:
-+ Corpse info system (Only thing left is adding missing death translations, and detective specialised things)(Also actually make death translations a dictionary not if statements)
-+ Fix restarting round sometimes kicking players due to how long it takes (Need to look at NW code to figure out how to send player to load screen)
-+ Automatically set the server to a HeavilyModded Server on plugin load
++ Corpse info system (Only thing left is detective specialised things)
 ## Features:
 + Basic Round logic (Round Prep) (Round) (Checks for Innocent, Traitor wins and stalemate) (Round End / Win screen) (Restart)
 + Hud System (Show role, time left) (Works with spectators)
