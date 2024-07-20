@@ -16,13 +16,16 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Hud System (Show role, time left) (Works with spectators)
 + Faithful Role Allocation ( (Mostly) Faithfully recreated the original Gmod function for this)
 + Karma System
++ Traitor Tester At Scp 914
 + Highly customisable configuration
   +  Team colors / names
   +  Win phrases
   +  Spawn phrases
   +  Corpse death info phrases
+  +  Traitor Tester conditions (Detective required / min players etc)
 
 ## Screenshots:
+![Screenshot (4822)](https://github.com/user-attachments/assets/d655fbc7-4136-4270-9e1a-92401d584c71)
 ![Screenshot (4786)](https://github.com/user-attachments/assets/51d2cbbc-fecb-4786-bf98-ca6c10c014b1)
 ![Screenshot (4767)](https://github.com/user-attachments/assets/8712e3e6-2f2c-47d0-a204-0e2450f8fc21)
 ![Screenshot (4773)](https://github.com/user-attachments/assets/da3f34db-9caf-4310-99e8-3b2b963b52f5)
