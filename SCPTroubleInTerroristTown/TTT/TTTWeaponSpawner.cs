@@ -28,14 +28,14 @@ namespace SCPTroubleInTerroristTown.TTT
     {
         private static List<ItemType> randomGuns = new List<ItemType>() {
 
-            ItemType.GunA7,
+           // ItemType.GunA7, messes up death reason
             ItemType.GunAK,
             ItemType.GunCOM15,
             ItemType.GunCOM18,
             ItemType.GunCrossvec,
             ItemType.GunE11SR,
             ItemType.GunFSP9,
-            ItemType.GunFRMG0,// Maybe gun doesn't exist?
+           // ItemType.GunFRMG0, messes up death reason
             ItemType.GunLogicer,
             ItemType.GunRevolver,
             ItemType.GunShotgun,
@@ -51,6 +51,9 @@ namespace SCPTroubleInTerroristTown.TTT
             ItemType.Flashlight,
             ItemType.GrenadeFlash,
             ItemType.GrenadeHE,
+            ItemType.Jailbird,
+            ItemType.Lantern,
+            ItemType.Ammo44cal
         };
 
 
@@ -131,6 +134,7 @@ namespace SCPTroubleInTerroristTown.TTT
             }
             return pickups;
         }
+        private static System.Random rnd = new System.Random();
         public static List<ItemPickup> SpawnRandomWeapons(MapGeneration.FacilityZone zone) // Awful temporary code! Forgive me my sins
         {
             
@@ -140,14 +144,17 @@ namespace SCPTroubleInTerroristTown.TTT
                 if (room.Identifier.Shape == MapGeneration.RoomShape.XShape || room.Identifier.Shape == MapGeneration.RoomShape.TShape)
                 {
                     Vector3 center = room.Position + (Vector3.up * 2); // ::pray::
-                    for (int i = 0; i < 2; i++)
+                 
+                    for (int i = 0; i < 4; i++)
                     {
-                        var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + Vector3.up);
+                        Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
+                        var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + randomOffset + Vector3.up);
                         spawned.AddRange(pickup);
                     }
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 3; i++)
                     {
-                        var pickup = safeSpawnPickup(randomEtc.RandomItem(), center + Vector3.right + Vector3.up);
+                        Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
+                        var pickup = safeSpawnPickup(randomEtc.RandomItem(), center +  randomOffset + Vector3.right + Vector3.up);
                         spawned.AddRange(pickup);
                     }
                 }

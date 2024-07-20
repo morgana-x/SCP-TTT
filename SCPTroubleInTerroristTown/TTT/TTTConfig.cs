@@ -191,6 +191,15 @@ namespace SCPTroubleInTerroristTown.TTT
 
 
 
+    public class TraitorTesterConfig
+    {
+        public string CantUseBroadcast { get; set; } = "<color=red>You need to be a <color=blue>Detective</color> to use the Traitor tester!</color>";
+        public string NeedXPlayers { get; set; } = "<color=red>Need atleast <color=yellow>{x}</color> Players inside the <color=yellow>Left chamber</color> to activate the tester!</color>";
+
+        public int MinimumPlayers { get; set; } = 2;
+
+        public bool AllowNonDetective { get; set; } = false;
+    }
 
     public class TTTConfig
     {
@@ -200,6 +209,8 @@ namespace SCPTroubleInTerroristTown.TTT
         public HUDConfig hudConfig { get; set; } = new HUDConfig();
 
         public CorpseInfoTranslationConfig corpseConfig { get; set; } = new CorpseInfoTranslationConfig();
+
+        public TraitorTesterConfig traitorTesterConfig { get; set; } = new TraitorTesterConfig();
 
         public RoleTypeId spawnPoint { get; set; } = RoleTypeId.ClassD;
         public MapGeneration.FacilityZone spawnZone { get; set; } = MapGeneration.FacilityZone.LightContainment;

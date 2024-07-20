@@ -39,7 +39,7 @@ namespace SCPTroubleInTerroristTown.TTT
             foreach (var door in DoorVariant.AllDoors.Where((x) => x is ElevatorDoor))//.Where((x) => x.Zone == zone))
             {
                 door.ServerChangeLock(Interactables.Interobjects.DoorUtils.DoorLockReason.AdminCommand, true);
-                Log.Debug("Locking door!");
+               // Log.Debug("Locking door!");
             }
         }
 

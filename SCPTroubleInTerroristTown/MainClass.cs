@@ -8,10 +8,15 @@ namespace SCPTroubleInTerroristTown
     using PluginAPI.Core;
     using PluginAPI.Core.Attributes;
     using PluginAPI.Core.Factories;
+    using PluginAPI.Core.Zones;
+    using PluginAPI.Core.Zones.Light.Rooms;
     using PluginAPI.Enums;
     using PluginAPI.Events;
     using Respawning;
+    using Scp914;
     using SCPTroubleInTerroristTown.TTT;
+    using System.Linq;
+    using UnityEngine;
     using YamlDotNet.Core.Tokens;
     public class MainClass
     {
@@ -124,5 +129,21 @@ namespace SCPTroubleInTerroristTown
         {
             tttRound.On_NewRound();
         }
+
+        [PluginEvent(ServerEventType.Scp914ProcessPlayer)]
+        public void Scp914ProcessPlayer(Player hub, Scp914KnobSetting setting, Vector3 outPosition )
+        {
+            Log.Debug("Processing " + hub.DisplayNickname);
+            tttRound.Scp914ProcessPlayer(hub);
+        }
+
+        [PluginEvent(ServerEventType.Scp914Activate)]
+        public bool Scp914Activate(Player hub, Scp914KnobSetting setting)
+        {
+
+            Log.Debug("SCP914 activated by " + hub.DisplayNickname);
+            return tttRound.Scp914Activated(hub);
+        }
+
     }
 }

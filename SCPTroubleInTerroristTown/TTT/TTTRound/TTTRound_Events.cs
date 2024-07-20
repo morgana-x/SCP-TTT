@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using InventorySystem.Configs;
+using JetBrains.Annotations;
 using LightContainmentZoneDecontamination;
 using MEC;
 using PlayerRoles;
@@ -15,10 +17,12 @@ namespace SCPTroubleInTerroristTown.TTT
 {
     public partial class TTTRound
     {
+        TraitorTester.TraitorTester traitorTester = new TraitorTester.TraitorTester();
         public void On_Map_Loaded() // Spawning weapons logic, needs updating
         {
             Cleanup_Round();
             TTTWeaponSpawner.SpawnRandomWeapons(config.spawnZone);
+            traitorTester.Init();
         }
         public void On_Player_Leave(Player player)
         {
@@ -45,6 +49,7 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 SetTeam(player, Team.Spectator);
                 Spawn(player, spawnPoint: config.spawnPoint);
+                return;
             }
         }
 
@@ -149,6 +154,15 @@ namespace SCPTroubleInTerroristTown.TTT
             SetTeam(victim, Team.Spectator, false);
 
             //setDeathReason(victim, handler);
+        }
+        public bool Scp914Activated(Player player)
+        {
+            return traitorTester.shouldActivate(this, player);
+        }
+        public void Scp914ProcessPlayer(Player player)
+        {
+            Log.Debug("Processing " + player.DisplayNickname);
+            traitorTester.ProcessPlayer(this, player);
         }
         public PlayerStatsSystem.DamageHandlerBase OnSpawnedCorpse(Player player, PlayerStatsSystem.DamageHandlerBase damageHandler, string deathReason)
         {

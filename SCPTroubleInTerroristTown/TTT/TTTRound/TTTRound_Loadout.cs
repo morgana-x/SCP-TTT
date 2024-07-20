@@ -61,6 +61,7 @@ namespace SCPTroubleInTerroristTown.TTT
             GiveLoadoutItems(pl, GetLoadout(team));
         }
 
+    
 
     }
 }

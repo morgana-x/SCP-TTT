@@ -47,7 +47,7 @@ namespace SCPTroubleInTerroristTown.TTT
                 return;
             }
 
-            pl.ReferenceHub.roleManager.ServerSetRole(role, RoleChangeReason.RemoteAdmin, RoleSpawnFlags.None);
+            pl.ReferenceHub.roleManager.ServerSetRole(role, RoleChangeReason.Respawn, RoleSpawnFlags.None);
           
             if (spawnPointRole != RoleTypeId.None) // Teleport to spawnpoint
             {

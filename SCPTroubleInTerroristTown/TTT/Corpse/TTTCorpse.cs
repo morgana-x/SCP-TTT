@@ -31,9 +31,35 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             }
             return dmgType;
         }
+        private static ItemType getAmmoType(ItemType type)
+        {
+            switch (type)
+            {
+                case ItemType.GunCOM15:
+                case ItemType.GunCOM18:
+                case ItemType.GunCom45:
+                case ItemType.GunCrossvec:
+                case ItemType.GunFSP9:
+                    return ItemType.Ammo9x19;
+                case ItemType.GunE11SR:
+                case ItemType.GunFRMG0:
+                    return ItemType.Ammo556x45;
+                case ItemType.GunLogicer:
+                case ItemType.GunAK:
+                case ItemType.GunA7:
+                    return ItemType.Ammo762x39;
+                case ItemType.GunRevolver:
+                    return ItemType.Ammo44cal;
+                case ItemType.GunShotgun:
+                    return ItemType.Ammo12gauge;
+                default:
+                    return ItemType.None;
+            }
+        }
         private static ItemType getItemType(DamageType dmg)
         {
             var dmgType = ItemType.None;
+          
             foreach (ItemType type in Enum.GetValues(typeof(ItemType)).Cast<ItemType>())
             {
                 if ("Gun" + dmg.ToString() == type.ToString())
@@ -60,10 +86,11 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             }
             return dmgType;
         }
+        
         private static string getTeamInfo(TTTConfig config, TTTRound.Team playerTeam)
         {
             string prefix = config.teamsConfig.TeamName[playerTeam].ToLower().StartsWith("i") ? "an" : "a";
-            string corpseInfo = $"\n\nThey were {prefix} <color={config.teamsConfig.TeamColor[playerTeam]}>{config.teamsConfig.TeamName[playerTeam]}</color>!";
+            string corpseInfo = $"They were {prefix} <color={config.teamsConfig.TeamColor[playerTeam]}>{config.teamsConfig.TeamName[playerTeam]}</color>!";
             return corpseInfo;
         }
 
@@ -143,7 +170,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             DamageType accurateDamageType = getDamageType(deathReason);
             CorpseInfoTranslationConfig.deathMessage msg = getDeathReasonFromType(config, damageType);
             string desc = msg.Description;
-            desc = desc.Replace("{ammo}", getItemType(accurateDamageType).ToString());
+            desc = desc.Replace("{ammo}", getAmmoType(getItemType(accurateDamageType)).ToString().Replace("Ammo", ""));
             DeathInfoText = DeathInfoText.Replace("{title}", msg.Title);
             DeathInfoText = DeathInfoText.Replace("{description}", desc);
 
@@ -161,7 +188,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
 
             string teamInfo = getTeamInfo(config, playerTeam);
 
-            string MainText = $"\n{teamInfo}\n\n{DeathInfoText}";
+            string MainText = $"\n\n{teamInfo}\n\n{DeathInfoText}";
             return MainText;
         }
     }
