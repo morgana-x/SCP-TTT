@@ -22,7 +22,7 @@ namespace SCPTroubleInTerroristTown
     {
 
         public static MainClass Singleton { get; private set; }
-        public TTTRound tttRound { get; private set; }
+        public TTT.Round tttRound { get; private set; }
 
         [PluginPriority(LoadPriority.Highest)]
         [PluginEntryPoint("Trouble in Terrorist Town", "1.0.0", "The garry's mod gamemode, ported to SCP SL", "morgana")]
@@ -51,7 +51,7 @@ namespace SCPTroubleInTerroristTown
             // Todo: Add config!
 
 
-            tttRound = new TTTRound(config.tttConfig);
+            tttRound = new TTT.Round(config.tttConfig);
 
             RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
 
