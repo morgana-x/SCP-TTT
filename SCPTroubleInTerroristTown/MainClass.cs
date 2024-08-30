@@ -22,7 +22,7 @@ namespace SCPTroubleInTerroristTown
     {
 
         public static MainClass Singleton { get; private set; }
-        public TTTRound tttRound { get; private set; }
+        public TTT.Round tttRound { get; private set; }
 
         [PluginPriority(LoadPriority.Highest)]
         [PluginEntryPoint("Trouble in Terrorist Town", "1.0.0", "The garry's mod gamemode, ported to SCP SL", "morgana")]
@@ -31,15 +31,12 @@ namespace SCPTroubleInTerroristTown
             Singleton = this;
 
             Log.Info("Loading TTT...");
-            // I am so confused
+
             EventManager.RegisterEvents(this);
-            //EventManager.RegisterEvents<EventHandlers>(this);
 
 
             Log.Info($"Registered events, register factory...");
 
-            // Don't need factory?
-            //FactoryManager.RegisterPlayerFactory(this, new MyPlayerFactory());
 
             var handler = PluginHandler.Get(this);
 
@@ -47,11 +44,7 @@ namespace SCPTroubleInTerroristTown
             Log.Info(handler.PluginFilePath);
             Log.Info(handler.PluginDirectoryPath);
 
-
-            // Todo: Add config!
-
-
-            tttRound = new TTTRound(config.tttConfig);
+            tttRound = new TTT.Round(config.tttConfig);
 
             RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
 
@@ -73,6 +66,12 @@ namespace SCPTroubleInTerroristTown
             tttRound.On_Player_Leave(player);
             Log.Info($"Player &6{player.UserId}&r left this server");
 
+        }
+
+        [PluginEvent(ServerEventType.PlayerChangeRole)]
+        void OnPlayerChangeRole(Player player, PlayerRoleBase oldRole, RoleTypeId newRole, RoleChangeReason reason) 
+        {
+            tttRound.OnPlayerChangeRole(player, newRole, reason);
         }
         [PluginEvent(ServerEventType.PlayerJoined)]
         void OnPlayerJoin(Player player)

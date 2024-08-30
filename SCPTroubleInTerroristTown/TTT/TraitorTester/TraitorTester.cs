@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using AdminToys;
-using CommandSystem.Commands.RemoteAdmin;
-using Footprinting;
+﻿using AdminToys;
 using MapGeneration;
 using Mirror;
 using PluginAPI.Core;
 using PluginAPI.Core.Zones;
 using Scp914;
 using UnityEngine;
-using MEC;
 
 namespace SCPTroubleInTerroristTown.TTT.TraitorTester
 {
@@ -43,14 +35,8 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
         }
         public void Init()
         {
-
-
-            //lightSource.OnSpawned(playerCommandSender.ReferenceHub, arguments);
             getScp914Room();
             SpawnLight();
-        //    lightSource.e = false;
-            //NetworkServer.Spawn(
-           // lightSource.OnSpawned(ReferenceHub.HostHub, new ArraySegment<string>() { });
         }
         private void SpawnLight()
         {
@@ -58,15 +44,10 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             lightSource.NetworkLightIntensity = 20f;
             lightSource.NetworkLightRange = 15f;
             lightSource.NetworkLightShadows = true;
-            //lightSource.transform.po
             setLightPos();
             lightSource.NetworkLightColor = UnityEngine.Color.white;
             NetworkServer.Spawn(lightSource.gameObject);
-           // lightSource.OnSpawned(ReferenceHub.HostHub, new ArraySegment<string>() { });
-     
-            Log.Debug("Spawned Traitor detector light at " + lightSource.NetworkPosition.ToString());
-            
-
+            //Log.Debug("Spawned Traitor detector light at " + lightSource.NetworkPosition.ToString());
         }
         public void Reset()
         {
@@ -82,7 +63,7 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             lightSource.NetworkPosition = newPos;
             lightSource.transform.position = newPos;
             //lightSource.NetworkPosition = scp914Room.Position + (Vector3.up * 1f);
-            Log.Debug("Set light pos to " + lightSource.NetworkPosition);
+           // Log.Debug("Set light pos to " + lightSource.NetworkPosition);
         }
         private void getScp914Room()
         {
@@ -106,7 +87,7 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
 
 
             Vector3 leftChamberPos = Scp914Controller.Singleton.IntakeChamber.position;//Server.Instance.GetComponent<Scp914Controller>().IntakeChamber.position;
-            Log.Debug(leftChamberPos.ToString());
+            //Log.Debug(leftChamberPos.ToString());
             foreach(Player player in Player.GetPlayers())
             {
                 if (Vector3.Distance(player.Position, leftChamberPos) < 1.2f)
@@ -117,9 +98,9 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             return numOfPlayers;
 
         }
-        public bool shouldActivate(TTTRound round, Player player)
+        public bool shouldActivate(Round round, Player player)
         {
-            if (round.GetTeam(player) != TTTRound.Team.Detective && !round.config.traitorTesterConfig.AllowNonDetective)
+            if (round.teamManager.GetTeam(player) != Team.Team.Detective && !round.config.traitorTesterConfig.AllowNonDetective)
             {
                 player.SendBroadcast(round.config.traitorTesterConfig.CantUseBroadcast, 5);
                 return false;
@@ -133,14 +114,14 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             Reset();
             return true;
         }
-        public void ProcessPlayer(TTTRound round, Player player)
+        public void ProcessPlayer(Round round, Player player)
         {
             if (traitorDetected)
             {
                 return;
             }
 
-            if (round.GetTeam(player) == TTTRound.Team.Traitor)
+            if (round.teamManager.GetTeam(player) == Team.Team.Traitor)
             {
                 traitorDetected = true;
                 SetLightColor(UnityEngine.Color.red);
