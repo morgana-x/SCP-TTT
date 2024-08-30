@@ -8,7 +8,7 @@ PluginAPI plugin that aims to port TTT to SCP Sl
 Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana-x/ScpSL-DesertBus), as well!
 
 ## Current issues:
-+ If you find any bugs, please let me know!
++ Karma doesn't decrease on team kill
 ## Todo:
 + Corpse info system (Only thing left is detective specialised things)
 ## Features:
