@@ -125,17 +125,6 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public void OnPlayerHurt(Player victim, Player attacker, DamageHandlerBase damageType)
         {
-            if (attacker != null) // Karma checks
-            {
-                Team.Team vicTeam = teamManager.GetTeam(victim);
-                Team.Team atackTeam = teamManager.GetTeam(attacker);
-                if (vicTeam == atackTeam || 
-                    (vicTeam == Team.Team.Innocent && atackTeam == Team.Team.Detective) || 
-                    (vicTeam == Team.Team.Detective && atackTeam == Team.Team.Innocent))
-                {
-                    karmaManager.AddKarma(attacker, -1); // Lose karma for killing same team
-                }
-            }
         }
         public void OnPlayerDeath(Player victim, Player attacker)
         {

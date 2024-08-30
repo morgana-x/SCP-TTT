@@ -20,7 +20,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
         public int karma_starting_karma { get; set; } = 1000;
         public int karma_max { get; set; } = 1000;
 
-        public int karma_kill_penalty { get; set; } = 15;
+        public int karma_kill_penalty { get; set; } = -15;
 
         public int karma_round_increment { get; set; } = 5;
 

@@ -36,7 +36,6 @@ namespace SCPTroubleInTerroristTown.TTT
         {
             if (!Karma.ContainsKey(pl))
             {
-                SetKarma(pl, round.config.karmaConfig.karma_starting_karma);
                 return round.config.karmaConfig.karma_starting_karma;
             }
             return Karma[pl];
@@ -60,11 +59,6 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public void AddKarma(Player pl, int amount)
         {
-            if (!Karma.ContainsKey(pl))
-            {
-                SetKarma(pl, amount);
-                return;
-            }
             SetKarma(pl, GetKarma(pl) + amount);
         }
 
@@ -133,7 +127,10 @@ namespace SCPTroubleInTerroristTown.TTT
             }
             Team.Team victimTeam = round.teamManager.GetTeam(victim);
             Team.Team attackerTeam = round.teamManager.GetTeam(attacker);
-            if (victimTeam == attackerTeam || (victimTeam == Team.Team.Innocent && attackerTeam == Team.Team.Detective) || (victimTeam == Team.Team.Detective && attackerTeam == Team.Team.Innocent))
+            if (victimTeam == attackerTeam ||
+                (victimTeam == Team.Team.Innocent && attackerTeam == Team.Team.Detective) ||
+                (victimTeam == Team.Team.Detective && attackerTeam == Team.Team.Innocent)
+                )
             {
                 AddKarma(attacker, round.config.karmaConfig.karma_kill_penalty); // Lose karma for killing same team
                 return;
