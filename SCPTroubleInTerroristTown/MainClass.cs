@@ -31,25 +31,18 @@ namespace SCPTroubleInTerroristTown
             Singleton = this;
 
             Log.Info("Loading TTT...");
-            // I am so confused
+
             EventManager.RegisterEvents(this);
-            //EventManager.RegisterEvents<EventHandlers>(this);
 
 
             Log.Info($"Registered events, register factory...");
 
-            // Don't need factory?
-            //FactoryManager.RegisterPlayerFactory(this, new MyPlayerFactory());
 
             var handler = PluginHandler.Get(this);
 
             Log.Info(handler.PluginName);
             Log.Info(handler.PluginFilePath);
             Log.Info(handler.PluginDirectoryPath);
-
-
-            // Todo: Add config!
-
 
             tttRound = new TTT.Round(config.tttConfig);
 
@@ -73,6 +66,12 @@ namespace SCPTroubleInTerroristTown
             tttRound.On_Player_Leave(player);
             Log.Info($"Player &6{player.UserId}&r left this server");
 
+        }
+
+        [PluginEvent(ServerEventType.PlayerChangeRole)]
+        void OnPlayerChangeRole(Player player, PlayerRoleBase oldRole, RoleTypeId newRole, RoleChangeReason reason) 
+        {
+            tttRound.OnPlayerChangeRole(player, newRole, reason);
         }
         [PluginEvent(ServerEventType.PlayerJoined)]
         void OnPlayerJoin(Player player)

@@ -15,9 +15,12 @@ namespace SCPTroubleInTerroristTown.TTT.PlayerManager
     {
         Round round;
 
+
+        public BadgeManager badgeManager;
         public PlayerManager(Round round)
         {
             this.round = round;
+            badgeManager = new BadgeManager(round);
         }
         public Dictionary<Player, DateTime> spawnTimes = new Dictionary<Player, DateTime>();
         public DateTime getSpawnTime(Player pl)

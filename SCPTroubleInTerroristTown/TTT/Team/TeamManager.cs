@@ -25,7 +25,6 @@ namespace SCPTroubleInTerroristTown.TTT.Team
         private Round tttRound;
         public Dictionary<Player, Team> playerTeams = new Dictionary<Player, Team>();
         public Dictionary<Player, Team> previousTeams = new Dictionary<Player, Team>();
-
         public void SetTeam(Player pl, Team team)
         {
             SetTeam(pl, team, false);
@@ -76,19 +75,17 @@ namespace SCPTroubleInTerroristTown.TTT.Team
                 // I love Northwoods badge system (I'm glad its getting an overhaul!!!)
                 return;
             }
+     
             if (team == Team.Traitor)
             {
                 team = Team.Innocent;
             }
-            try
-            {
-                pl.ReferenceHub.serverRoles.SetText(tttRound.config.teamsConfig.TeamName[team]);
-                pl.ReferenceHub.serverRoles.SetColor(tttRound.config.teamsConfig.TeamColorSimplified[team]);
-            }
-            catch(Exception e)
-            {
-                Log.Error("Error occured while trying to set tag text for " + pl.DisplayNickname + "\n" + e.ToString());
-            }
+            pl.PlayerInfo.IsRoleHidden = true;
+            pl.PlayerInfo.IsUnitNameHidden = true;
+            pl.PlayerInfo.IsPowerStatusHidden = true;
+            tttRound.playerManager.badgeManager.SyncPlayer(pl);
+
+
         }
         private System.Random randomGenerator = new System.Random();
         public void AssignRoles() // Semi-Port of the original GMOD function
@@ -160,7 +157,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             {
                 tttRound.playerManager.setSpawnTime(pl); // Make sure their spawn text is shown!
             }
-
+            tttRound.playerManager.badgeManager.Resync();
             Log.Debug("Finished Assigned roles");
         }
 

@@ -35,6 +35,9 @@ namespace SCPTroubleInTerroristTown.TTT
             if (deathReason.ContainsKey(player))
                 deathReason.Remove(player);
 
+            if (playerManager.badgeManager.badgeOptOuted.Contains(player))
+                playerManager.badgeManager.badgeOptOuted.Remove(player);
+
             hudManager.RemovePlayer(player);
         }
         public void On_Player_Joined(Player player)
@@ -118,6 +121,7 @@ namespace SCPTroubleInTerroristTown.TTT
         public void OnPlayerSpawned(Player pl)
         {
             karmaManager.UpdateOldKarma(pl);
+            playerManager.badgeManager.SyncPlayer(pl);
         }
         public void OnPlayerHurt(Player victim, Player attacker, DamageHandlerBase damageType)
         {
@@ -135,14 +139,32 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public void OnPlayerDeath(Player victim, Player attacker)
         {
-
+            teamManager.SetTeam(victim, Team.Team.Spectator, false);
+            playerManager.badgeManager.SyncPlayer(victim);
             if (attacker != null) // Karma checks
             {
                 karmaManager.KarmaPunishCheck(victim, attacker);
             }
-            teamManager.SetTeam(victim, Team.Team.Spectator, false);
-
-            //setDeathReason(victim, handler);
+        }
+        public void OnPlayerChangeRole(Player victim, RoleTypeId newrole, RoleChangeReason reason)
+        {
+            playerManager.badgeManager.SyncPlayer(victim);
+            if (reason == RoleChangeReason.Respawn || reason == RoleChangeReason.RoundStart)
+            {
+                return;
+            }
+            if ( (newrole == RoleTypeId.Spectator || newrole == RoleTypeId.Tutorial) && reason == RoleChangeReason.RemoteAdmin)
+            {
+                teamManager.SetTeam(victim, Team.Team.Spectator, false);
+                return;
+            }
+            /*
+            if (reason == RoleChangeReason.RemoteAdmin && config.teamsConfig.TeamRole[Team.Team.Innocent] == newrole)
+            {
+                teamManager.SetTeam(victim, Team.Team.Innocent, true);
+                playerManager.badgeManager.SyncPlayer(victim);
+                return;
+            }*/
         }
         public bool Scp914Activated(Player player)
         {
@@ -150,17 +172,12 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public void Scp914ProcessPlayer(Player player)
         {
-            Log.Debug("Processing " + player.DisplayNickname);
             traitorTester.ProcessPlayer(this, player);
         }
         public PlayerStatsSystem.DamageHandlerBase OnSpawnedCorpse(Player player, PlayerStatsSystem.DamageHandlerBase damageHandler, string deathReason)
         {
             PlayerStatsSystem.DamageHandlerBase baseHandler = new PlayerStatsSystem.CustomReasonDamageHandler(Corpse.Corpse.GetCorpseInfo(config, player, teamManager.previousTeams[player], damageHandler, deathReason));
             return baseHandler;
-
-            // Todo: Add "They were a traitor! etc". I forgot how to do this!
-            // Also need to probably fakesendvar it for detectives having extra info etc... Yay...
-            //ragdoll.DamageHandler. += TTTCorpse.GetCorpseInfo(config, player, previousTeams[player]);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
     {
         public int ShowCustomSpawnMessageDuration { get; set; } = 5;
 
-        public string CustomInfoTemplate { get; set; } = "<color={TeamColor}>{TeamName}</color>\n<color={KarmaColor}>{KarmaStatus}</color>\n<color={HealthColor}>{HealthStatus}</color>";
+        public string CustomInfoTemplate { get; set; } = "<color={KarmaColor}>{KarmaStatus}</color>\n<color={HealthColor}>{HealthStatus}</color>\n<color={TeamColor}>{TeamName}</color>";
 
         public Dictionary<HealthStatus, string[]> HudHealthStatus { get; set; } = new Dictionary<HealthStatus, string[]>()
         {
@@ -50,8 +50,10 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
 
 
 
-
 <align=""center"">{winner}\n{spawn}\n{lookingAtInfo}
+
+
+
 
 
 

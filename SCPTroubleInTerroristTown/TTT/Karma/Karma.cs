@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Decals;
+﻿using System.Collections.Generic;
 using PluginAPI.Core;
 using SCPTroubleInTerroristTown.TTT.Karma;
-using SCPTroubleInTerroristTown.TTT.Team;
 
 namespace SCPTroubleInTerroristTown.TTT
 {
@@ -28,6 +21,7 @@ namespace SCPTroubleInTerroristTown.TTT
                 return;
             }
             SetKarma(pl, round.config.karmaConfig.karma_starting_karma);
+            UpdateOldKarma(pl);
         }
         public void SetKarma(Player pl, int karma)
         {

@@ -151,7 +151,7 @@ namespace SCPTroubleInTerroristTown.TTT
                         var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + randomOffset + Vector3.up);
                         spawned.AddRange(pickup);
                     }
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
                         var pickup = safeSpawnPickup(randomEtc.RandomItem(), center +  randomOffset + Vector3.right + Vector3.up);

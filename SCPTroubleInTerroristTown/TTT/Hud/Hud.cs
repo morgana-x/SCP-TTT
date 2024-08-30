@@ -89,10 +89,13 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             Team.Team playerTeam = getPlayerTeam(player, spectating);/*round.teamManager.GetTeam(player);*/
             string hud = round.config.hudConfig.Hud;
             hud = hud.Replace("{role}",
-                round.config.hudConfig.RoleWidget.Replace("{TeamColor}",
-                round.config.teamsConfig.TeamColor[playerTeam]).Replace("{TeamName}",
-                round.config.teamsConfig.TeamName[playerTeam])
-            );
+               round.config.hudConfig.RoleWidget.Replace("{TeamColor}",
+               round.config.teamsConfig.TeamColor[playerTeam]).Replace("{TeamName}",
+               round.config.teamsConfig.TeamName[playerTeam])
+               );
+           
+            
+          
             if (ShowSpawnMsg)
             {
                 hud = hud.Replace("{spawn}", round.config.teamsConfig.TeamSpawnText[playerTeam].Replace("{TeamColor}", round.config.teamsConfig.TeamColor[playerTeam]));
@@ -121,7 +124,7 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
                 lookingAtInfo = GetInfoOfTarget(player, lookingAt);
             }
 
-            hud = hud.Replace("{lookingAtInfo}", $"{lookingAtInfo}");
+            hud = hud.Replace("{lookingAtInfo}", $"<size=25>{lookingAtInfo}</size>");
 
 
             TimeSpan timeLeft = round.NextRoundState.Subtract(DateTime.Now);
@@ -200,10 +203,21 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
         private string GetCustomInfo(Player player, Team.Team playerTeam)
         {
             string tem = round.config.hudConfig.CustomInfoTemplate;
-            tem = tem.Replace("{TeamColor}",
-                round.config.teamsConfig.TeamColor[playerTeam]);
-            tem = tem.Replace("{TeamName}",
-                round.config.teamsConfig.TeamName[playerTeam]);
+
+            if (round.playerManager.badgeManager.badgeOptOuted.Contains(player))
+            {
+                tem = tem.Replace("{TeamColor}",
+                    round.config.teamsConfig.TeamColor[playerTeam]);
+                tem = tem.Replace("{TeamName}",
+                    round.config.teamsConfig.TeamName[playerTeam]);
+            }
+            else
+            {
+                tem = tem.Replace("<color={TeamColor}>{TeamName}</color>",
+                    "");
+                tem = tem.Replace("{TeamName}",
+                    "");
+            }
 
             //{HealthColor}>{HealthStatus}
             string[] status = GetHealthStatus(player);
@@ -224,7 +238,7 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
         {
 
             Ray ray = new Ray(pl.Camera.position + (pl.Camera.forward * 0.16f), pl.Camera.forward);
-            if (!Physics.Raycast(ray, out RaycastHit hit, 45))
+            if (!Physics.Raycast(ray, out RaycastHit hit, 10))
             {
                 return null;
             }
