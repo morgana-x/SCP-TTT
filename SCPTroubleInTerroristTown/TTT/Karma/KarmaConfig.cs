@@ -22,11 +22,11 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
 
         public int karma_kill_penalty { get; set; } = -15;
 
-        public int karma_round_increment { get; set; } = 5;
+        public int karma_round_increment { get; set; } = 15;
 
-        public int karma_clean_bonus { get; set; } = 30;
+        public int karma_clean_bonus { get; set; } = 10;
 
-        public int karma_traitorkill_bonus { get; set; } = 40;
+        public int karma_traitorkill_bonus { get; set; } = 10;
 
         public bool karma_low_round_suspension { get; set; }  = true;
         public int karma_low_round_suspension_amount { get; set; } = 450;

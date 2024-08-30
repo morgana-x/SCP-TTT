@@ -45,6 +45,12 @@ namespace SCPTroubleInTerroristTown.TTT
             karmaManager.SetupKarma(player);
             if (currentRoundState == RoundState.Preperation)
             {
+                if (!karmaManager.AllowedSpawnKarmaCheck(player))
+                {
+                    teamManager.SetTeam(player, Team.Team.Spectator);
+                    playerManager.Spawn(player, spawnPoint: config.spawnPoint);
+                    return;
+                }
                 teamManager.SetTeam(player, Team.Team.Undecided);
                 playerManager.Spawn(player, spawnPoint: config.spawnPoint);
                 return;
@@ -82,6 +88,12 @@ namespace SCPTroubleInTerroristTown.TTT
 
             foreach (Player pl in Player.GetPlayers())
             {
+                if (!karmaManager.AllowedSpawnKarmaCheck(pl))
+                {
+                    teamManager.SetTeam(pl, Team.Team.Spectator);
+                    playerManager.Spawn(pl);
+                    continue;
+                }
                 teamManager.SetTeam(pl, Team.Team.Undecided);
                 playerManager.Spawn(pl, spawnPoint: config.spawnPoint);
             }

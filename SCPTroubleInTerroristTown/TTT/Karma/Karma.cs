@@ -11,12 +11,12 @@ namespace SCPTroubleInTerroristTown.TTT
         { 
             round = tttround;
         }
-        public Dictionary<Player, int> Karma = new Dictionary<Player, int>();
-        public Dictionary<Player, int> OldKarma = new Dictionary<Player, int>();
+        public Dictionary<string, int> Karma = new Dictionary<string, int>();
+        public Dictionary<string, int> OldKarma = new Dictionary<string, int>();
 
         public void SetupKarma(Player pl)
         {
-            if (Karma.ContainsKey(pl))
+            if (Karma.ContainsKey(pl.UserId))
             {
                 return;
             }
@@ -29,33 +29,33 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 karma = round.config.karmaConfig.karma_max;
             }
-            if (!Karma.ContainsKey(pl)) { Karma.Add(pl, karma); return; }
-            Karma[pl] = karma;
+            if (!Karma.ContainsKey(pl.UserId)) { Karma.Add(pl.UserId, karma); return; }
+            Karma[pl.UserId] = karma;
         }
         public int GetKarma(Player pl)
         {
-            if (!Karma.ContainsKey(pl))
+            if (!Karma.ContainsKey(pl.UserId))
             {
                 return round.config.karmaConfig.karma_starting_karma;
             }
-            return Karma[pl];
+            return Karma[pl.UserId];
         }
         public int GetOldKarma(Player pl)
         {
-            if (!OldKarma.ContainsKey(pl))
+            if (!OldKarma.ContainsKey(pl.UserId))
             {
-                OldKarma.Add(pl, GetKarma(pl));
+                OldKarma.Add(pl.UserId, GetKarma(pl));
             }
-            return OldKarma[pl];
+            return OldKarma[pl.UserId];
         }
         public void UpdateOldKarma(Player pl)
         {
-            if (!OldKarma.ContainsKey(pl))
+            if (!OldKarma.ContainsKey(pl.UserId))
             {
-                OldKarma.Add(pl, GetKarma(pl));
+                OldKarma.Add(pl.UserId, GetKarma(pl));
                 return;
             }
-            OldKarma[pl] = GetKarma(pl);
+            OldKarma[pl.UserId] = GetKarma(pl);
         }
         public void AddKarma(Player pl, int amount)
         {
@@ -96,7 +96,7 @@ namespace SCPTroubleInTerroristTown.TTT
             if (GetKarma(pl) < round.config.karmaConfig.karma_low_round_suspension_amount )
             {
                 // ({karma}<{minkarma})
-                pl.SendBroadcast(round.config.karmaConfig.karma_low_round_suspension_message.Replace("{karma}", GetKarma(pl).ToString()).Replace("{minkarma}", round.config.karmaConfig.karma_low_round_suspension_amount.ToString()), 10);
+                pl.SendBroadcast(round.config.karmaConfig.karma_low_round_suspension_message.Replace("{karma}", GetKarma(pl).ToString()).Replace("{minkarma}", round.config.karmaConfig.karma_low_round_suspension_amount.ToString()), 20);
                 return false;
             }
             return true;
@@ -125,14 +125,13 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 return;
             }
-            Team.Team victimTeam = round.teamManager.GetTeam(victim);
+            Team.Team victimTeam = round.teamManager.previousTeams.ContainsKey(victim) ? round.teamManager.previousTeams[victim] : round.teamManager.GetTeam(victim);
             Team.Team attackerTeam = round.teamManager.GetTeam(attacker);
-            if (victimTeam == attackerTeam ||
-                (victimTeam == Team.Team.Innocent && attackerTeam == Team.Team.Detective) ||
-                (victimTeam == Team.Team.Detective && attackerTeam == Team.Team.Innocent)
-                )
+            //Log.Debug(victimTeam.ToString() + "==" + attackerTeam.ToString() + "?");
+            if (victimTeam == attackerTeam || (victimTeam == Team.Team.Innocent && attackerTeam == Team.Team.Detective) || (attackerTeam == Team.Team.Innocent && victimTeam == Team.Team.Detective))
             {
                 AddKarma(attacker, round.config.karmaConfig.karma_kill_penalty); // Lose karma for killing same team
+                //Log.Debug("Giving attacker karma penalty! " + round.config.karmaConfig.karma_kill_penalty + " karma!");
                 return;
             }
             if (victimTeam == Team.Team.Traitor)

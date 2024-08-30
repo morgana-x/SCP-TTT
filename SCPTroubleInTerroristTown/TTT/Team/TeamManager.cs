@@ -91,16 +91,15 @@ namespace SCPTroubleInTerroristTown.TTT.Team
         public void AssignRoles() // Semi-Port of the original GMOD function
         {
             Log.Debug("Assigning roles!");
-            List<Player> remainingPlayers = Player.GetPlayers().Where((x) => x.Role != RoleTypeId.Spectator).ToList();
-
-            foreach (Player pl in remainingPlayers)
+            List<Player> filterPlayers = Player.GetPlayers().Where((x) => x.Role != RoleTypeId.Spectator).ToList();
+            List<Player> remainingPlayers = new List<Player>();
+            foreach (Player pl in filterPlayers)
             {
-                if (!tttRound.karmaManager.AllowedSpawnKarmaCheck(pl))
+                if (tttRound.karmaManager.AllowedSpawnKarmaCheck(pl))
                 {
-                    SetTeam(pl, Team.Spectator, true);
+                    remainingPlayers.Add(pl);
                 }
             }
-            remainingPlayers = Player.GetPlayers().Where((x) => x.Role != RoleTypeId.Spectator).ToList();
 
             if (remainingPlayers.Count == 0)
             {
