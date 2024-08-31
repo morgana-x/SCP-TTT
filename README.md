@@ -1,5 +1,5 @@
 # SCP-TTT
-Not finished! (Proudly written entirely within 5 nights between 12am and 3am, obviously bad code)
+Not finished! (Proudly written entirely within 7 nights between 12am and 3am, obviously bad code)
 
 If you want to contribute, please do because I do not have the time to finish this plugin!
 
@@ -25,6 +25,7 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
   +  Traitor Tester conditions (Detective required / min players etc)
 
 ## Screenshots:
+![Screenshot (5016)](https://github.com/user-attachments/assets/cd62868c-27a2-45bb-a3ce-f65dd93c282b)
 ![Screenshot (5014)](https://github.com/user-attachments/assets/06578581-17d8-4be5-a0d0-62a67585ccd4)
 ![Screenshot (5007)](https://github.com/user-attachments/assets/af213641-ccc4-4d00-98e5-df6326f4ca20)
 ![Screenshot (4822)](https://github.com/user-attachments/assets/d655fbc7-4136-4270-9e1a-92401d584c71)
