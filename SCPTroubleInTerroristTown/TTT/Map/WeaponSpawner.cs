@@ -1,22 +1,13 @@
-﻿
-using InventorySystem;
-using InventorySystem.Items.Firearms;
-using InventorySystem.Items.Firearms.Ammo;
-using InventorySystem.Items.Pickups;
+﻿using InventorySystem.Items.Firearms.Ammo;
 using MapGeneration;
-using PlayerRoles;
 using PluginAPI.Core;
 using PluginAPI.Core.Items;
 using PluginAPI.Core.Zones;
-using PluginAPI.Roles;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
-namespace SCPTroubleInTerroristTown.TTT
+namespace SCPTroubleInTerroristTown.TTT.Map
 {
     public class WeaponSpawnPoint
     {
@@ -61,7 +52,7 @@ namespace SCPTroubleInTerroristTown.TTT
         public static List<ItemPickup> SpawnWeapons(List<WeaponSpawnPoint> weapons)
         {
             List<ItemPickup> spawned = new List<ItemPickup>();
-            foreach( var w in weapons) 
+            foreach (var w in weapons)
             {
 
                 var i = ItemPickup.Create(w.Item, w.Location, Quaternion.Euler(0, 0, 0));
@@ -101,28 +92,27 @@ namespace SCPTroubleInTerroristTown.TTT
             List<ItemPickup> pickups = new List<ItemPickup>();
             if (position == null)
             {
-                Log.Debug("Warning position is null!");
                 return pickups;
             }
             if (type == ItemType.None)
             {
                 return pickups;
             }
-         
+
             var p = ItemPickup.Create(type, position, Quaternion.Euler(0, 0, 0));
-            
+
             if (type.ToString().StartsWith("Ammo"))
             {
-                AmmoPickup aPickup = (AmmoPickup)(p.OriginalObject);
+                AmmoPickup aPickup = (AmmoPickup)p.OriginalObject;
                 aPickup.NetworkSavedAmmo = 60;
             }
             p.Spawn();
             pickups.Add(p);
-         
+
             if (p.Type.ToString().StartsWith("Gun"))
             {
-            //    FirearmPickup fPickup =  (FirearmPickup)(p.OriginalObject);
-               // fPickup.Status = new FirearmStatus(fPickup.Status.Ammo, FirearmStatusFlags.MagazineInserted | FirearmStatusFlags.Chambered, fPickup.Status.Attachments);
+                //    FirearmPickup fPickup =  (FirearmPickup)(p.OriginalObject);
+                // fPickup.Status = new FirearmStatus(fPickup.Status.Ammo, FirearmStatusFlags.MagazineInserted | FirearmStatusFlags.Chambered, fPickup.Status.Attachments);
                 var ammoItem = GetWeaponAmmoType(p.Type);//p.Type //p.Type.GetFirearmType().GetWeaponAmmoType().GetItemType();
                 if (ammoItem != ItemType.None)
                 {
@@ -137,14 +127,14 @@ namespace SCPTroubleInTerroristTown.TTT
         private static System.Random rnd = new System.Random();
         public static List<ItemPickup> SpawnRandomWeapons(MapGeneration.FacilityZone zone) // Awful temporary code! Forgive me my sins
         {
-            
+
             List<ItemPickup> spawned = new List<ItemPickup>();
-            foreach (FacilityRoom room in Facility.Rooms.Where((x) => x.Zone.ZoneType == zone ))
+            foreach (FacilityRoom room in Facility.Rooms.Where((x) => x.Zone.ZoneType == zone))
             {
-                if (room.Identifier.Shape == MapGeneration.RoomShape.XShape || room.Identifier.Shape == MapGeneration.RoomShape.TShape)
+                if (room.Identifier.Shape == RoomShape.XShape || room.Identifier.Shape == RoomShape.TShape)
                 {
-                    Vector3 center = room.Position + (Vector3.up * 2); // ::pray::
-                 
+                    Vector3 center = room.Position + Vector3.up * 2; // ::pray::
+
                     for (int i = 0; i < 4; i++)
                     {
                         Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
@@ -154,11 +144,11 @@ namespace SCPTroubleInTerroristTown.TTT
                     for (int i = 0; i < 2; i++)
                     {
                         Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
-                        var pickup = safeSpawnPickup(randomEtc.RandomItem(), center +  randomOffset + Vector3.right + Vector3.up);
+                        var pickup = safeSpawnPickup(randomEtc.RandomItem(), center + randomOffset + Vector3.right + Vector3.up);
                         spawned.AddRange(pickup);
                     }
                 }
-              
+
             }
             Log.Debug("Spawned " + spawned.Count + " weapons!");
             return spawned;

@@ -3,8 +3,6 @@ using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SCPTroubleInTerroristTown.TTT.Team
 {
@@ -21,10 +19,14 @@ namespace SCPTroubleInTerroristTown.TTT.Team
         public TeamManager(Round round)
         {
             tttRound = round;
+            loadoutManager = new LoadoutManager(round);
         }
         private Round tttRound;
+
         public Dictionary<Player, Team> playerTeams = new Dictionary<Player, Team>();
         public Dictionary<Player, Team> previousTeams = new Dictionary<Player, Team>();
+
+        public LoadoutManager loadoutManager;
         public void SetTeam(Player pl, Team team)
         {
             SetTeam(pl, team, false);
@@ -75,17 +77,10 @@ namespace SCPTroubleInTerroristTown.TTT.Team
                 // I love Northwoods badge system (I'm glad its getting an overhaul!!!)
                 return;
             }
-     
-            if (team == Team.Traitor)
-            {
-                team = Team.Innocent;
-            }
             pl.PlayerInfo.IsRoleHidden = true;
             pl.PlayerInfo.IsUnitNameHidden = true;
             pl.PlayerInfo.IsPowerStatusHidden = true;
             tttRound.playerManager.badgeManager.SyncPlayer(pl);
-
-
         }
         private System.Random randomGenerator = new System.Random();
         public void AssignRoles() // Semi-Port of the original GMOD function
@@ -160,6 +155,11 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             Log.Debug("Finished Assigned roles");
         }
 
+        public void Cleanup()
+        {
+            previousTeams.Clear();
+            playerTeams.Clear();
+        }
         private int GetTraitorCount(int numberOfPlayers) // From gmod function
         {
             int traitorCount = (int)Math.Floor(numberOfPlayers * tttRound.config.teamsConfig.TraitorPercentage);

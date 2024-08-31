@@ -68,5 +68,10 @@ namespace SCPTroubleInTerroristTown.TTT.PlayerManager
                 SyncPlayer(pl);
             }
         }
+
+        public void Cleanup()
+        {
+            badgeOptOuted.Clear();
+        }
     }
 }

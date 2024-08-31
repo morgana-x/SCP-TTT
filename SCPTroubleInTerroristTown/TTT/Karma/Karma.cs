@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using PluginAPI.Core;
-using SCPTroubleInTerroristTown.TTT.Karma;
 
-namespace SCPTroubleInTerroristTown.TTT
+namespace SCPTroubleInTerroristTown.TTT.Karma
 {
     public class KarmaManager
     {
@@ -95,7 +94,6 @@ namespace SCPTroubleInTerroristTown.TTT
             }
             if (GetKarma(pl) < round.config.karmaConfig.karma_low_round_suspension_amount )
             {
-                // ({karma}<{minkarma})
                 pl.SendBroadcast(round.config.karmaConfig.karma_low_round_suspension_message.Replace("{karma}", GetKarma(pl).ToString()).Replace("{minkarma}", round.config.karmaConfig.karma_low_round_suspension_amount.ToString()), 20);
                 return false;
             }
@@ -112,7 +110,8 @@ namespace SCPTroubleInTerroristTown.TTT
                 return false;
             }
             SetKarma(player, round.config.karmaConfig.karma_low_round_kick_amount + 1);
-            player.Kick(round.config.karmaConfig.karma_low_kick_message);
+            player.Kick(round.config.karmaConfig.karma_low_kick_message.Replace("{karma}", GetKarma(player).ToString()).Replace("{minkarma}", round.config.karmaConfig.karma_low_round_kick_amount.ToString()));
+            Log.Info($"Kicked {player.Nickname}({player.UserId}) for having too low karma when team killing!");
             return true;
         }
         public void KarmaPunishCheck(Player victim, Player attacker)
@@ -121,17 +120,20 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 return;
             }
+
+            Log.Info($"{attacker.Nickname}({attacker.UserId}) team killed {victim.Nickname}({victim.UserId})!");
+
             if (KarmaKick(attacker))
             {
                 return;
             }
+
             Team.Team victimTeam = round.teamManager.previousTeams.ContainsKey(victim) ? round.teamManager.previousTeams[victim] : round.teamManager.GetTeam(victim);
             Team.Team attackerTeam = round.teamManager.GetTeam(attacker);
-            //Log.Debug(victimTeam.ToString() + "==" + attackerTeam.ToString() + "?");
+
             if (victimTeam == attackerTeam || (victimTeam == Team.Team.Innocent && attackerTeam == Team.Team.Detective) || (attackerTeam == Team.Team.Innocent && victimTeam == Team.Team.Detective))
             {
                 AddKarma(attacker, round.config.karmaConfig.karma_kill_penalty); // Lose karma for killing same team
-                //Log.Debug("Giving attacker karma penalty! " + round.config.karmaConfig.karma_kill_penalty + " karma!");
                 return;
             }
             if (victimTeam == Team.Team.Traitor)

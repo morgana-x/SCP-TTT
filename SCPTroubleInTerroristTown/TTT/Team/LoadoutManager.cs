@@ -1,23 +1,27 @@
-﻿
+﻿using PluginAPI.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using InventorySystem.Items.Firearms.Ammo;
-using PluginAPI.Core;
 
-namespace SCPTroubleInTerroristTown.TTT
+namespace SCPTroubleInTerroristTown.TTT.Team
 {
-    public partial class Round
+    public class LoadoutManager
     {
-        private List<ItemType> GetLoadout(Team.Team team)
+        public Round round;
+
+        public LoadoutManager(Round round)
         {
-            if (!config.teamsConfig.TeamLoadout.ContainsKey(team))
+            this.round = round;
+        }
+        private List<ItemType> GetLoadout(Team team)
+        {
+            if (!round.config.teamsConfig.TeamLoadout.ContainsKey(team))
             {
                 return new List<ItemType> { };
             }
-            return config.teamsConfig.TeamLoadout[team];
+            return round.config.teamsConfig.TeamLoadout[team];
         }
         private void GiveLoadoutItems(Player pl, List<ItemType> items)
         {
@@ -53,15 +57,12 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 pl.ClearInventory(true);
             }
-            Team.Team team = teamManager.GetTeam(pl);
-            if (team == Team.Team.Spectator)
+            Team team = round.teamManager.GetTeam(pl);
+            if (team == Team.Spectator)
             {
                 return;
             }
             GiveLoadoutItems(pl, GetLoadout(team));
         }
-
-    
-
     }
 }

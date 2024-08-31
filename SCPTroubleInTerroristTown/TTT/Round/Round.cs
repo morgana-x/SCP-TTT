@@ -1,17 +1,9 @@
-﻿using CommandSystem.Commands.RemoteAdmin;
-
-using LightContainmentZoneDecontamination;
-using PlayerRoles;
-using PlayerRoles.Ragdolls;
-using PlayerStatsSystem;
-
+﻿using PlayerStatsSystem;
 using System;
 using System.Collections.Generic;
 using PluginAPI.Core;
 using MEC;
-using SCPTroubleInTerroristTown.TTT.Hud;
-using SCPTroubleInTerroristTown.TTT.Team;
-using static PluginAPI.Core.Statistics;
+using SCPTroubleInTerroristTown.TTT.TraitorTester;
 
 namespace SCPTroubleInTerroristTown.TTT
 {
@@ -23,7 +15,7 @@ namespace SCPTroubleInTerroristTown.TTT
 
     public partial class Round
     {
-        public Dictionary<Player, DeathReason> deathReason = new Dictionary<Player, DeathReason>();
+        private Dictionary<Player, DeathReason> deathReason = new Dictionary<Player, DeathReason>();
 
         private MEC.CoroutineHandle think_task;
 
@@ -31,17 +23,20 @@ namespace SCPTroubleInTerroristTown.TTT
 
         public Hud.Hud hudManager;
 
-        public KarmaManager karmaManager;
+        public Karma.KarmaManager karmaManager;
 
         public PlayerManager.PlayerManager playerManager;
 
+        public Map.MapManager mapManager;
+
         public Team.TeamManager teamManager;
 
-        private System.Random randomGenerator = new System.Random();
+        public TraitorTester.TraitorTester traitorTester;
 
         public DateTime NextRoundState;
 
         public RoundState currentRoundState;
+
         public Team.Team winner;
         public enum RoundState
         {
@@ -55,19 +50,21 @@ namespace SCPTroubleInTerroristTown.TTT
         {
             this.config = config;
 
-            hudManager = new Hud.Hud(this); // TTTHUD is just a utility for hud stuff really
+            hudManager = new Hud.Hud(this);
             teamManager = new Team.TeamManager(this);
-            playerManager= new PlayerManager.PlayerManager(this);
-            karmaManager = new KarmaManager(this);
+            playerManager = new PlayerManager.PlayerManager(this);
+            karmaManager = new Karma.KarmaManager(this);
+            mapManager = new Map.MapManager(this);
+            traitorTester = new TraitorTester.TraitorTester();
+
             SetRoundState(RoundState.WaitingForPlayers);
-           
         }
-  
+
         private void SetRoundState(RoundState state)
         {
             currentRoundState = state;
 
-            switch (state) 
+            switch (state)
             {
                 case RoundState.WaitingForPlayers:
                     break;
@@ -81,7 +78,7 @@ namespace SCPTroubleInTerroristTown.TTT
                     NextRoundState = DateTime.Now.AddSeconds(config.roundConfig.PostRoundDuration);
                     break;
             }
-      
+
         }
         private void SpawnPlayers()
         {
@@ -89,7 +86,6 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 if (pl == null)
                 {
-                    Log.Debug("Attempted to spawn null player!");
                     continue;
                 }
                 if (!pl.IsAlive)
@@ -108,21 +104,14 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public void Start()
         {
-            Log.Debug("Starting game!");
+            Log.Debug("Setting up the round!");
 
-            Log.Debug("Replenishing karma!");
             karmaManager.ReplenishKarma();
-
-            Log.Debug("Assigning roles!");
             teamManager.AssignRoles();
 
-            Log.Debug("Spawning players");
             SpawnPlayers();
 
-            Log.Debug("Enabling friendlyfire!");
             PluginAPI.Core.Server.FriendlyFire = true;
-
-            Log.Debug("Set roundstate to running!");
             SetRoundState(RoundState.Running);
 
             Log.Info("Started the round!");
@@ -137,7 +126,12 @@ namespace SCPTroubleInTerroristTown.TTT
         public void RestartRound()
         {
             TTTUtil.RestartServer();
-            //Round.Restart(true);
+        }
+        private void CleanupPlayerCache()
+        {
+            teamManager.Cleanup();
+            playerManager.Cleanup();
+            deathReason.Clear();
         }
         private void Cleanup_Coroutines()
         {
@@ -150,6 +144,7 @@ namespace SCPTroubleInTerroristTown.TTT
         {
             Log.Debug("Cleaning up round!");
             SetRoundState(RoundState.Reset);
+            CleanupPlayerCache();
             Cleanup_Coroutines();
         }
         private void CheckWinConditions()

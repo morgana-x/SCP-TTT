@@ -47,29 +47,24 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             setLightPos();
             lightSource.NetworkLightColor = UnityEngine.Color.white;
             NetworkServer.Spawn(lightSource.gameObject);
-            //Log.Debug("Spawned Traitor detector light at " + lightSource.NetworkPosition.ToString());
         }
         public void Reset()
         {
             traitorDetected = false;
             SetLightColor(UnityEngine.Color.white);
-            //lightSource.enabled = false;
         }
         private void setLightPos()
         {
-           // lightSource.NetworkIsStatic = false;
             Vector3 newPos = scp914Room.Position + (Vector3.up * 1f);
             lightSource.Position = newPos;
             lightSource.NetworkPosition = newPos;
             lightSource.transform.position = newPos;
-            //lightSource.NetworkPosition = scp914Room.Position + (Vector3.up * 1f);
-           // Log.Debug("Set light pos to " + lightSource.NetworkPosition);
         }
         private void getScp914Room()
         {
             RoomIdentifier ident = null;
 
-            bool success = RoomIdUtils.TryFindRoom(RoomName.Lcz914, MapGeneration.FacilityZone.LightContainment, RoomShape.Endroom, out ident);//Facility.Rooms.Where((x) => x.GetType() == Room).First();
+            bool success = RoomIdUtils.TryFindRoom(RoomName.Lcz914, MapGeneration.FacilityZone.LightContainment, RoomShape.Endroom, out ident);
             if (!success)
             {
                 return;
@@ -86,7 +81,7 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             int numOfPlayers = 0;
 
 
-            Vector3 leftChamberPos = Scp914Controller.Singleton.IntakeChamber.position;//Server.Instance.GetComponent<Scp914Controller>().IntakeChamber.position;
+            Vector3 leftChamberPos = Scp914Controller.Singleton.IntakeChamber.position;
             //Log.Debug(leftChamberPos.ToString());
             foreach(Player player in Player.GetPlayers())
             {
@@ -110,7 +105,6 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
                 player.SendBroadcast(round.config.traitorTesterConfig.NeedXPlayers.Replace("{x}", round.config.traitorTesterConfig.MinimumPlayers.ToString()), 5);
                 return false;
             }
-            Log.Debug("Traitor detector activated");
             Reset();
             return true;
         }

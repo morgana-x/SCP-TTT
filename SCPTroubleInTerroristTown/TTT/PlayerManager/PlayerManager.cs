@@ -1,12 +1,8 @@
 ﻿using PlayerRoles.FirstPersonControl.Spawnpoints;
 using PlayerRoles;
 using PluginAPI.Core;
-using SCPTroubleInTerroristTown.TTT.Team;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace SCPTroubleInTerroristTown.TTT.PlayerManager
@@ -14,7 +10,6 @@ namespace SCPTroubleInTerroristTown.TTT.PlayerManager
     public class PlayerManager
     {
         Round round;
-
 
         public BadgeManager badgeManager;
         public PlayerManager(Round round)
@@ -43,11 +38,6 @@ namespace SCPTroubleInTerroristTown.TTT.PlayerManager
         public void teamSetRole(Player pl, RoleTypeId spawnPointRole = RoleTypeId.None)
         {
             var plTeam = round.teamManager.GetTeam(pl);
-
-            /*if (plTeam == Team.Detective && pl.IsNPC) // Testing cause of crash
-            {
-                return;
-            }*/
 
             RoleTypeId role = round.config.teamsConfig.TeamRole[plTeam];
 
@@ -79,17 +69,15 @@ namespace SCPTroubleInTerroristTown.TTT.PlayerManager
         }
         public void Spawn(Player pl, RoleTypeId spawnPoint = RoleTypeId.None)
         {
-
-
-
             teamSetRole(pl, spawnPoint);
-            round.GiveLoadout(pl);
+            round.teamManager.loadoutManager.GiveLoadout(pl);
             setSpawnTime(pl);
-
-
-
         }
-
+        public void Cleanup()
+        {
+            spawnTimes.Clear();
+            badgeManager.Cleanup();
+        }
        
     }
 }

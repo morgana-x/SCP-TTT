@@ -1,15 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using CentralAuth;
-
 using Mirror;
-
 using PlayerRoles;
-
 using UnityEngine;
 using PluginAPI.Core;
 
@@ -43,15 +34,7 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                // Log.Debug($"Ignore: {arg}");
             }
-
-
             int freeId = 0;
-            /*
-            if (!RecyclablePlayerId.FreeIds.Contains(id) && RecyclablePlayerId._autoIncrement >= id)
-            {
-                Log.Warn(Assembly.GetCallingAssembly().GetName().Name + " tried to spawn an NPC with a duplicate PlayerID. Using auto-incremented ID instead to avoid issues.");
-                id = new RecyclablePlayerId(useMinQueue: false).Value;
-            }*/
             for (int i = 16; i < 100; i++)
             {
                 try
@@ -82,13 +65,6 @@ namespace SCPTroubleInTerroristTown.TTT
             }
 
             npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
-
-            /*Timing.CallDelayed(0.5f, delegate
-            {
-                npc.Role.Set(role, SpawnReason.RoundStart, RoleSpawnFlags.All);
-            });*/
-
-
             return npc;
         }
     }

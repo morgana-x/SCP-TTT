@@ -2,16 +2,7 @@
 using PlayerRoles;
 using PluginAPI.Core;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using SCPTroubleInTerroristTown.TTT.Team;
-using static UnityEngine.GraphicsBuffer;
-using YamlDotNet.Core.Tokens;
-using SCPTroubleInTerroristTown.TTT.Karma;
-using static PlayerArms;
 
 namespace SCPTroubleInTerroristTown.TTT.Hud
 {
@@ -144,32 +135,13 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             }
             return hud;
         }
-        private Dictionary<Player, string> lastHint = new Dictionary<Player, string>();
-
-        private string getlastHint(Player pl)
-        {
-            if (!lastHint.ContainsKey(pl))
-            {
-                lastHint.Add(pl, "");
-            }
-            return lastHint[pl];
-        }
         public void RemovePlayer(Player player)
         {
-            if (lastHint.ContainsKey(player))
-            {
-                lastHint.Remove(player);
-            }
         }
         public void ShowHud(Player player, bool ShowSpawnMsg, float duration = 0.7f)
         {
             // if (player.IsNPC || !player.IsVerified) { return; } // Forgot about this!
             string hud = GetHud(player, ShowSpawnMsg);
-            /*if (getlastHint(player) == hud)
-            {
-                return;
-            }
-            lastHint[player] = hud;*/
             player.ReceiveHint(hud, duration);
         }
 

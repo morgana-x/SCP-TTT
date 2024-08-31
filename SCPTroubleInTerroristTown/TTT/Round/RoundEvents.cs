@@ -1,27 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using InventorySystem.Configs;
-using JetBrains.Annotations;
-using LightContainmentZoneDecontamination;
+﻿using InventorySystem.Configs;
 using MEC;
 using PlayerRoles;
 using PlayerStatsSystem;
 using PluginAPI.Core;
-using PluginAPI.Enums;
+using System;
 
 namespace SCPTroubleInTerroristTown.TTT
 {
     public partial class Round
     {
-        TraitorTester.TraitorTester traitorTester = new TraitorTester.TraitorTester();
         public void On_Map_Loaded() // Spawning weapons logic, needs updating
         {
             Cleanup_Round();
-            TTTWeaponSpawner.SpawnRandomWeapons(config.spawnZone);
+            mapManager.onMapLoaded();
             traitorTester.Init();
         }
         public void On_Player_Leave(Player player)
@@ -32,6 +23,7 @@ namespace SCPTroubleInTerroristTown.TTT
             //    previousTeams.Remove(player);
             if (playerManager.spawnTimes.ContainsKey(player))
                 playerManager.spawnTimes.Remove(player);
+
             if (deathReason.ContainsKey(player))
                 deathReason.Remove(player);
 
@@ -48,41 +40,31 @@ namespace SCPTroubleInTerroristTown.TTT
                 if (!karmaManager.AllowedSpawnKarmaCheck(player))
                 {
                     teamManager.SetTeam(player, Team.Team.Spectator);
-                    playerManager.Spawn(player, spawnPoint: config.spawnPoint);
+                    playerManager.Spawn(player, spawnPoint: config.mapConfig.spawnPoint);
                     return;
                 }
                 teamManager.SetTeam(player, Team.Team.Undecided);
-                playerManager.Spawn(player, spawnPoint: config.spawnPoint);
+                playerManager.Spawn(player, spawnPoint: config.mapConfig.spawnPoint);
                 return;
             }
             if (currentRoundState != RoundState.WaitingForPlayers)
             {
                 teamManager.SetTeam(player, Team.Team.Spectator);
-                playerManager.Spawn(player, spawnPoint: config.spawnPoint);
+                playerManager.Spawn(player, spawnPoint: config.mapConfig.spawnPoint);
                 return;
             }
         }
 
         public void On_NewRound()
         {
-
             // Make sure old round checking logic is gone 
             PluginAPI.Core.Round.IsLocked = true;
             // Disable friendly fire (Until the round actually starts, nice easy way to stop people killing before round starts)
             Server.FriendlyFire = false;
-            // Disable CASSIE
-            //Cassie.Announcer.enabled = false;
-            // Disable Decontamination
-            DecontaminationController.Singleton.DecontaminationOverride = DecontaminationController.DecontaminationStatus.Disabled;
+
+            mapManager.InitMap();
 
             winner = Team.Team.Undecided;
-            Log.Debug("Setting up round!");
-
-            if (config.lockDownSpawnZone) // Lock down elevators to decrease play area, game gets boring if map is too large (probably) 
-            {
-                TTTUtil.LockdownZones();
-            }
-
 
             SetRoundState(RoundState.Preperation);
 
@@ -95,7 +77,7 @@ namespace SCPTroubleInTerroristTown.TTT
                     continue;
                 }
                 teamManager.SetTeam(pl, Team.Team.Undecided);
-                playerManager.Spawn(pl, spawnPoint: config.spawnPoint);
+                playerManager.Spawn(pl, spawnPoint: config.mapConfig.spawnPoint);
             }
 
             Cleanup_Coroutines();
@@ -103,23 +85,19 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public void On_Round_Restarting()
         {
-            Log.Debug("Restarting round!");
-
-
             SetRoundState(RoundState.Reset);
             Cleanup_Round();
-
         }
         public void On_Waiting_For_Players()
         {
-            Cleanup_Round();
-            teamManager.playerTeams.Clear();
-            playerManager.spawnTimes.Clear();
-            deathReason.Clear();
+            CleanupPlayerCache();
+
             SetRoundState(RoundState.WaitingForPlayers);
+
             PluginAPI.Core.Round.IsLocked = true;
             Server.FriendlyFire = false; // Disable friendly fire to avoid killing before round start
             InventoryLimits.StandardCategoryLimits[ItemCategory.Firearm] = 2;
+
             if (config.spawnDebugNPCS)
             {
                 int numOfNpcs = 12;
@@ -132,8 +110,17 @@ namespace SCPTroubleInTerroristTown.TTT
         }
         public void OnPlayerSpawned(Player pl)
         {
-            karmaManager.UpdateOldKarma(pl);
-            playerManager.badgeManager.SyncPlayer(pl);
+            if (pl == null)
+                return;
+            try
+            {
+                karmaManager.UpdateOldKarma(pl);
+                playerManager.badgeManager.SyncPlayer(pl);
+            }
+            catch(Exception e)
+            {
+                Log.Debug(e.ToString());    
+            }
         }
         public void OnPlayerHurt(Player victim, Player attacker, DamageHandlerBase damageType)
         {

@@ -17,7 +17,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
         public int DetectiveMax { get; set; } = 32; // Max num of detectives
         public int DetectiveMin { get; set; } = 8; // Min number of players for Detective to exist
 
-        public int DetectiveMinKarma { get; set; } = 0; // Min Karma needed for player to become detective
+        public int DetectiveMinKarma { get; set; } = 800; // Min Karma needed for player to become detective
 
         public Dictionary<Team, string> TeamColor { get; set; } = new Dictionary<Team, string>()
         {
