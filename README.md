@@ -31,5 +31,4 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 ![Screenshot (5014)](https://github.com/user-attachments/assets/06578581-17d8-4be5-a0d0-62a67585ccd4)
 ![Screenshot (5007)](https://github.com/user-attachments/assets/af213641-ccc4-4d00-98e5-df6326f4ca20)
 ![Screenshot (4822)](https://github.com/user-attachments/assets/d655fbc7-4136-4270-9e1a-92401d584c71)
-![Screenshot (4767)](https://github.com/user-attachments/assets/8712e3e6-2f2c-47d0-a204-0e2450f8fc21)
 ![Screenshot (4773)](https://github.com/user-attachments/assets/da3f34db-9caf-4310-99e8-3b2b963b52f5)
