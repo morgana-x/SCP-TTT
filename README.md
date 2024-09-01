@@ -1,4 +1,4 @@
-# SCP-TTT
+# SCP-TTT ![downloads](https://img.shields.io/github/downloads/morgana-x/SCP-TTT/total)
 Not finished! (Proudly written entirely within 7 nights between 12am and 3am, obviously bad code)
 
 PluginAPI plugin that aims to port TTT to SCP Sl
