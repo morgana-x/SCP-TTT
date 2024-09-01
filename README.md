@@ -10,7 +10,9 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 ## Current issues:
 ## Todo:
 + Corpse info system (Only thing left is detective specialised things)
++ Corpse discovery system
 + Update screenshots to reflect major changes
++ End Round statistics
 ## Features:
 + Round logic (Not faithful win conditions probably, didn't check the gmod function)
 + Hud System (Show role, time left) (Works with spectators)
