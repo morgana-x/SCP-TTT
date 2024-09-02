@@ -21,11 +21,11 @@ namespace SCPTroubleInTerroristTown.TTT
     }
     internal class TTTNPC
     {
-        public static Player Spawn(string name, RoleTypeId role, int id = 0, string userId = "")
+        public static PluginAPI.Core.Player Spawn(string name, RoleTypeId role, int id = 0, string userId = "")
         {
             GameObject gameObject = UnityEngine.Object.Instantiate(NetworkManager.singleton.playerPrefab);
-   
-            Player npc = new Player(ReferenceHub.GetHub(gameObject));
+
+            PluginAPI.Core.Player npc = new PluginAPI.Core.Player(ReferenceHub.GetHub(gameObject));
             try
             {
                 npc.ReferenceHub.roleManager.InitializeNewRole(RoleTypeId.None, RoleChangeReason.None);
@@ -39,7 +39,7 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 try
                 {
-                    if (Player.Get(i) != null)
+                    if (PluginAPI.Core.Player.Get(i) != null)
                     {
                         continue;
                     }
@@ -66,6 +66,15 @@ namespace SCPTroubleInTerroristTown.TTT
 
             npc.ReferenceHub.nicknameSync.Network_myNickSync = name;
             return npc;
+        }
+
+        public static void SpawnNpcs(int numOfNpcs)
+        {
+            for (int i = 0; i < numOfNpcs; i++)
+            {
+                var n = TTTNPC.Spawn("Bob", RoleTypeId.Spectator);
+            }
+            Log.Info($"Spawned {numOfNpcs} npcs!");
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using InventorySystem.Configs;
-using MEC;
-using PlayerRoles;
+﻿using PlayerRoles;
 using PlayerStatsSystem;
 using PluginAPI.Core;
 using System;
@@ -15,7 +13,7 @@ namespace SCPTroubleInTerroristTown.TTT
             mapManager.onMapLoaded();
             traitorTester.Init();
         }
-        public void On_Player_Leave(Player player)
+        public void On_Player_Leave(PluginAPI.Core.Player player)
         {
             if (teamManager.playerTeams.ContainsKey(player))
                 teamManager.playerTeams.Remove(player);
@@ -32,7 +30,7 @@ namespace SCPTroubleInTerroristTown.TTT
 
             hudManager.RemovePlayer(player);
         }
-        public void On_Player_Joined(Player player)
+        public void On_Player_Joined(PluginAPI.Core.Player player)
         {
             karmaManager.SetupKarma(player);
             if (currentRoundState == RoundState.Preperation)
@@ -57,58 +55,20 @@ namespace SCPTroubleInTerroristTown.TTT
 
         public void On_NewRound()
         {
-            // Make sure old round checking logic is gone 
-            PluginAPI.Core.Round.IsLocked = true;
-            // Disable friendly fire (Until the round actually starts, nice easy way to stop people killing before round starts)
-            Server.FriendlyFire = false;
-
-            mapManager.InitMap();
-
-            winner = Team.Team.Undecided;
-
             SetRoundState(RoundState.Preperation);
-
-            foreach (Player pl in Player.GetPlayers())
-            {
-                if (!karmaManager.AllowedSpawnKarmaCheck(pl))
-                {
-                    teamManager.SetTeam(pl, Team.Team.Spectator);
-                    playerManager.Spawn(pl);
-                    continue;
-                }
-                teamManager.SetTeam(pl, Team.Team.Undecided);
-                playerManager.Spawn(pl, spawnPoint: config.mapConfig.spawnPoint);
-            }
-
-            Cleanup_Coroutines();
-            think_task = Timing.RunCoroutine(Think());
         }
         public void On_Round_Restarting()
         {
             SetRoundState(RoundState.Reset);
-            Cleanup_Round();
         }
         public void On_Waiting_For_Players()
-        {
-            CleanupPlayerCache();
-
+        { 
             SetRoundState(RoundState.WaitingForPlayers);
 
-            PluginAPI.Core.Round.IsLocked = true;
-            Server.FriendlyFire = false; // Disable friendly fire to avoid killing before round start
-            InventoryLimits.StandardCategoryLimits[ItemCategory.Firearm] = 2;
-
             if (config.spawnDebugNPCS)
-            {
-                int numOfNpcs = 12;
-                for (int i = 0; i < numOfNpcs; i++)
-                {
-                    var n = TTTNPC.Spawn("Bob", RoleTypeId.Spectator);
-                }
-                Log.Info($"Spawned {numOfNpcs} npcs!");
-            }
+                TTTNPC.SpawnNpcs(12);
         }
-        public void OnPlayerSpawned(Player pl)
+        public void OnPlayerSpawned(PluginAPI.Core.Player pl)
         {
             if (pl == null)
                 return;
@@ -122,19 +82,24 @@ namespace SCPTroubleInTerroristTown.TTT
                 Log.Debug(e.ToString());    
             }
         }
-        public void OnPlayerHurt(Player victim, Player attacker, DamageHandlerBase damageType)
+        public void OnPlayerHurt(PluginAPI.Core.Player victim, PluginAPI.Core.Player attacker, DamageHandlerBase damageType)
         {
         }
-        public void OnPlayerDeath(Player victim, Player attacker)
+        public void OnPlayerDeath(PluginAPI.Core.Player victim, PluginAPI.Core.Player attacker)
         {
             teamManager.SetTeam(victim, Team.Team.Spectator, false);
             playerManager.badgeManager.SyncPlayer(victim);
-            if (attacker != null) // Karma checks
+            if (attacker != null)
             {
                 karmaManager.KarmaPunishCheck(victim, attacker);
+                awardManager.OnPlayerKill(victim.DisplayNickname, teamManager.GetTeam(victim), attacker.DisplayNickname, teamManager.GetTeam(attacker));
+            }
+            else
+            {
+                awardManager.OnPlayerKill(victim.DisplayNickname, teamManager.GetTeam(victim), victim.DisplayNickname, teamManager.GetTeam(victim));
             }
         }
-        public void OnPlayerChangeRole(Player victim, RoleTypeId newrole, RoleChangeReason reason)
+        public void OnPlayerChangeRole(PluginAPI.Core.Player victim, RoleTypeId newrole, RoleChangeReason reason)
         {
             playerManager.badgeManager.SyncPlayer(victim);
             if (reason == RoleChangeReason.Respawn || reason == RoleChangeReason.RoundStart)
@@ -154,15 +119,15 @@ namespace SCPTroubleInTerroristTown.TTT
                 return;
             }*/
         }
-        public bool Scp914Activated(Player player)
+        public bool Scp914Activated(PluginAPI.Core.Player player)
         {
             return traitorTester.shouldActivate(this, player);
         }
-        public void Scp914ProcessPlayer(Player player)
+        public void Scp914ProcessPlayer(PluginAPI.Core.Player player)
         {
             traitorTester.ProcessPlayer(this, player);
         }
-        public PlayerStatsSystem.DamageHandlerBase OnSpawnedCorpse(Player player, PlayerStatsSystem.DamageHandlerBase damageHandler, string deathReason)
+        public PlayerStatsSystem.DamageHandlerBase OnSpawnedCorpse(PluginAPI.Core.Player player, PlayerStatsSystem.DamageHandlerBase damageHandler, string deathReason)
         {
             PlayerStatsSystem.DamageHandlerBase baseHandler = new PlayerStatsSystem.CustomReasonDamageHandler(Corpse.Corpse.GetCorpseInfo(config, player, teamManager.previousTeams[player], damageHandler, deathReason));
             return baseHandler;

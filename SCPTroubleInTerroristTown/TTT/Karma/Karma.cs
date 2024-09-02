@@ -13,7 +13,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
         public Dictionary<string, int> Karma = new Dictionary<string, int>();
         public Dictionary<string, int> OldKarma = new Dictionary<string, int>();
 
-        public void SetupKarma(Player pl)
+        public void SetupKarma(PluginAPI.Core.Player pl)
         {
             if (Karma.ContainsKey(pl.UserId))
             {
@@ -22,7 +22,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             SetKarma(pl, round.config.karmaConfig.karma_starting_karma);
             UpdateOldKarma(pl);
         }
-        public void SetKarma(Player pl, int karma)
+        public void SetKarma(PluginAPI.Core.Player pl, int karma)
         {
             if (karma > round.config.karmaConfig.karma_max)
             {
@@ -31,7 +31,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             if (!Karma.ContainsKey(pl.UserId)) { Karma.Add(pl.UserId, karma); return; }
             Karma[pl.UserId] = karma;
         }
-        public int GetKarma(Player pl)
+        public int GetKarma(PluginAPI.Core.Player pl)
         {
             if (!Karma.ContainsKey(pl.UserId))
             {
@@ -39,7 +39,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             }
             return Karma[pl.UserId];
         }
-        public int GetOldKarma(Player pl)
+        public int GetOldKarma(PluginAPI.Core.Player pl)
         {
             if (!OldKarma.ContainsKey(pl.UserId))
             {
@@ -47,7 +47,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             }
             return OldKarma[pl.UserId];
         }
-        public void UpdateOldKarma(Player pl)
+        public void UpdateOldKarma(PluginAPI.Core.Player pl)
         {
             if (!OldKarma.ContainsKey(pl.UserId))
             {
@@ -56,7 +56,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             }
             OldKarma[pl.UserId] = GetKarma(pl);
         }
-        public void AddKarma(Player pl, int amount)
+        public void AddKarma(PluginAPI.Core.Player pl, int amount)
         {
             SetKarma(pl, GetKarma(pl) + amount);
         }
@@ -82,11 +82,11 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
 
         public void ReplenishKarma()
         {
-            foreach(Player player in Player.GetPlayers()) {
+            foreach(PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers()) {
                 AddKarma(player, round.config.karmaConfig.karma_round_increment);
             };
         }
-        public bool AllowedSpawnKarmaCheck(Player pl)
+        public bool AllowedSpawnKarmaCheck(PluginAPI.Core.Player pl)
         {
             if (!round.config.karmaConfig.karma_low_round_suspension)
             {
@@ -99,7 +99,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             }
             return true;
         }
-        public bool KarmaKick(Player player)
+        public bool KarmaKick(PluginAPI.Core.Player player)
         {
             if (!round.config.karmaConfig.karma_low_round_kick)
             {
@@ -114,7 +114,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             Log.Info($"Kicked {player.Nickname}({player.UserId}) for having too low karma when team killing!");
             return true;
         }
-        public void KarmaPunishCheck(Player victim, Player attacker)
+        public void KarmaPunishCheck(PluginAPI.Core.Player victim, PluginAPI.Core.Player attacker)
         {
             if (round.currentRoundState != Round.RoundState.Running)
             {

@@ -14,12 +14,12 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
 
             this.round = round;
         }
-        private Player getSpectatingPlayer(Player player)
+        private PluginAPI.Core.Player getSpectatingPlayer(PluginAPI.Core.Player player)
         {
 
             uint spectatedId = (player.ReferenceHub.roleManager.CurrentRole as SpectatorRole).SyncedSpectatedNetId;
 
-            foreach (Player spectated in Player.GetPlayers())
+            foreach (PluginAPI.Core.Player spectated in PluginAPI.Core.Player.GetPlayers())
             {
                 if (spectated == player)
                 {
@@ -43,7 +43,7 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             }
             nextHudShow = DateTime.Now.AddSeconds(0.6f);
 
-            foreach (Player pl in Player.GetPlayers())
+            foreach (PluginAPI.Core.Player pl in PluginAPI.Core.Player.GetPlayers())
             {
                 if (pl == null)
                 {
@@ -55,10 +55,10 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
                 }
                 //float ping = (pl.Ping) + 0.1f;
                 //Math.Min(ping, 1.9f); // 1.8 is the max I get on satelitte on AU servers, so I sure hope noone gets worse than this!
-               ShowHud(pl, DateTime.Now.Subtract(round.playerManager.getSpawnTime(pl)).TotalSeconds < round.config.hudConfig.ShowCustomSpawnMessageDuration, 1.3f);
+                ShowHud(pl, DateTime.Now.Subtract(round.playerManager.getSpawnTime(pl)).TotalSeconds < round.config.hudConfig.ShowCustomSpawnMessageDuration, 1.3f);
             }
         }
-        private Team.Team getPlayerTeam(Player target,bool isSpectating)
+        private Team.Team getPlayerTeam(PluginAPI.Core.Player target,bool isSpectating)
         {
             if (isSpectating)
             {
@@ -66,7 +66,25 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             }
             return round.teamManager.GetTeam(target);
         }
-        private string GetHud(Player player, bool ShowSpawnMsg, bool spectating=false)
+
+        private string getRoundEndWidget(string hud)
+        {
+            string winText = round.config.teamsConfig.TeamWinText[round.winner].Replace("{TeamColor}", round.config.teamsConfig.TeamColor[round.winner]);
+            hud = hud.Replace("{winner}", winText);
+            hud = hud.Replace("{awardsTitle}", round.config.awardConfig.AwardTitle);
+            
+            for (int i=0; i < 3; i++)
+            {
+                if (round.awardManager.finalAwards.Count <= i)
+                {
+                    hud = hud.Replace("{award" + (i + 1).ToString() + "}", "\n");
+                    continue;
+                }
+                hud = hud.Replace("{award" + (i + 1).ToString() + "}", round.awardManager.finalAwards[i]);
+            }
+            return hud;
+        }
+        private string GetHud(PluginAPI.Core.Player player, bool ShowSpawnMsg, bool spectating=false)
         {
             if (player.Role == PlayerRoles.RoleTypeId.Spectator) // Such simple spectating logic, yay :tear:
             {
@@ -90,7 +108,6 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             if (ShowSpawnMsg)
             {
                 hud = hud.Replace("{spawn}", round.config.teamsConfig.TeamSpawnText[playerTeam].Replace("{TeamColor}", round.config.teamsConfig.TeamColor[playerTeam]));
-
             }
             else
             {
@@ -98,17 +115,21 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             }
             if (round.currentRoundState == Round.RoundState.Finished)
             {
-                string winText = round.config.teamsConfig.TeamWinText[round.winner].Replace("{TeamColor}", round.config.teamsConfig.TeamColor[round.winner]);
-                hud = hud.Replace("{winner}", winText);
+                hud = getRoundEndWidget(hud);
             }
             else
             {
                 hud = hud.Replace("{winner}", "");
+                hud = hud.Replace("{awardsTitle}", "");
+                hud = hud.Replace("{award1}", "\n");
+                hud = hud.Replace("{award2}", "\n");
+                hud = hud.Replace("{award3}", "\n");
+               // hud = hud.Replace("{award4}", "\n");
             }
 
             string lookingAtInfo = "\n\n";
 
-            Player lookingAt = getLookingAtPlayer(player);
+            PluginAPI.Core.Player lookingAt = getLookingAtPlayer(player);
 
             if (lookingAt != null && lookingAt.IsAlive)
             {
@@ -135,17 +156,18 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             }
             return hud;
         }
-        public void RemovePlayer(Player player)
+        public void RemovePlayer(PluginAPI.Core.Player player)
         {
         }
-        public void ShowHud(Player player, bool ShowSpawnMsg, float duration = 0.7f)
+        public void ShowHud(PluginAPI.Core.Player player, bool ShowSpawnMsg, float duration = 0.7f)
         {
             // if (player.IsNPC || !player.IsVerified) { return; } // Forgot about this!
             string hud = GetHud(player, ShowSpawnMsg);
+           // Log.Debug("Showing " + hud + " to " + player.DisplayNickname);
             player.ReceiveHint(hud, duration);
         }
 
-        private string[] GetHealthStatus(Player player)
+        private string[] GetHealthStatus(PluginAPI.Core.Player player)
         {
             float maxhealth = player.MaxHealth;
             float health = player.Health;
@@ -163,16 +185,16 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
 
             return round.config.hudConfig.HudHealthStatus[HealthStatus.health_min];
         }
-        private string[] GetOldKarmaStatus(Player player) // Todo: reference old karma
+        private string[] GetOldKarmaStatus(PluginAPI.Core.Player player)
         {
             return round.karmaManager.KarmaToString(round.karmaManager.GetOldKarma(player)) ;
         }
-        private string[] GetKarmaStatus(Player player)
+        private string[] GetKarmaStatus(PluginAPI.Core.Player player)
         {
 
             return round.karmaManager.KarmaToString(round.karmaManager.GetKarma(player));
         }
-        private string GetCustomInfo(Player player, Team.Team playerTeam)
+        private string GetCustomInfo(PluginAPI.Core.Player player, Team.Team playerTeam)
         {
             string tem = round.config.hudConfig.CustomInfoTemplate;
 
@@ -201,12 +223,12 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             return tem;
         }
 
-        private string GetInfoOfTarget(Player player, Player target)
+        private string GetInfoOfTarget(PluginAPI.Core.Player player, PluginAPI.Core.Player target)
         {
             return GetCustomInfo(target, (round.teamManager.GetTeam(target) == Team.Team.Traitor && round.teamManager.GetTeam(player) != Team.Team.Traitor) ? Team.Team.Innocent : round.teamManager.GetTeam(target));
         }
 
-        private Player getLookingAtPlayer(Player pl)
+        private PluginAPI.Core.Player getLookingAtPlayer(PluginAPI.Core.Player pl)
         {
 
             Ray ray = new Ray(pl.Camera.position + (pl.Camera.forward * 0.16f), pl.Camera.forward);
@@ -220,7 +242,7 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
                         return Get(collider.transform.root.gameObject);
                     }
              */
-            var found = Player.Get(hit.collider.transform.root.gameObject);
+            var found = PluginAPI.Core.Player.Get(hit.collider.transform.root.gameObject);
             if (found == pl)
             {
                 return null;

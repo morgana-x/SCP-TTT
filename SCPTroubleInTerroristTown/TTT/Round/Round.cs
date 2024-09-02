@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using PluginAPI.Core;
 using MEC;
-using SCPTroubleInTerroristTown.TTT.TraitorTester;
+using InventorySystem.Configs;
 
 namespace SCPTroubleInTerroristTown.TTT
 {
@@ -15,7 +15,7 @@ namespace SCPTroubleInTerroristTown.TTT
 
     public partial class Round
     {
-        private Dictionary<Player, DeathReason> deathReason = new Dictionary<Player, DeathReason>();
+        private Dictionary<PluginAPI.Core.Player, DeathReason> deathReason = new Dictionary<PluginAPI.Core.Player, DeathReason>();
 
         private MEC.CoroutineHandle think_task;
 
@@ -25,13 +25,15 @@ namespace SCPTroubleInTerroristTown.TTT
 
         public Karma.KarmaManager karmaManager;
 
-        public PlayerManager.PlayerManager playerManager;
+        public Players.PlayerManager playerManager;
 
         public Map.MapManager mapManager;
 
         public Team.TeamManager teamManager;
 
         public TraitorTester.TraitorTester traitorTester;
+
+        public Award.AwardManager awardManager;
 
         public DateTime NextRoundState;
 
@@ -52,10 +54,11 @@ namespace SCPTroubleInTerroristTown.TTT
 
             hudManager = new Hud.Hud(this);
             teamManager = new Team.TeamManager(this);
-            playerManager = new PlayerManager.PlayerManager(this);
+            playerManager = new Players.PlayerManager(this);
             karmaManager = new Karma.KarmaManager(this);
             mapManager = new Map.MapManager(this);
             traitorTester = new TraitorTester.TraitorTester();
+            awardManager = new Award.AwardManager(this);
 
             SetRoundState(RoundState.WaitingForPlayers);
         }
@@ -67,22 +70,28 @@ namespace SCPTroubleInTerroristTown.TTT
             switch (state)
             {
                 case RoundState.WaitingForPlayers:
+                    initround();
                     break;
                 case RoundState.Preperation:
+                    prepare();
                     NextRoundState = DateTime.Now.AddSeconds(config.roundConfig.PreRoundDuration);
                     break;
                 case RoundState.Running:
                     NextRoundState = DateTime.Now.AddSeconds(config.roundConfig.RoundDuration);
                     break;
                 case RoundState.Finished:
+                    awardManager.getFinalisedAwards();
                     NextRoundState = DateTime.Now.AddSeconds(config.roundConfig.PostRoundDuration);
+                    break;
+                case RoundState.Reset:
+                    Cleanup_Round();
                     break;
             }
 
         }
         private void SpawnPlayers()
         {
-            foreach (Player pl in Player.GetPlayers()) // Set player models, using Roles
+            foreach (PluginAPI.Core.Player pl in PluginAPI.Core.Player.GetPlayers()) // Set player models, using Roles
             {
                 if (pl == null)
                 {
@@ -132,6 +141,7 @@ namespace SCPTroubleInTerroristTown.TTT
             teamManager.Cleanup();
             playerManager.Cleanup();
             deathReason.Clear();
+            awardManager.Cleanup();
         }
         private void Cleanup_Coroutines()
         {
@@ -143,15 +153,14 @@ namespace SCPTroubleInTerroristTown.TTT
         private void Cleanup_Round()
         {
             Log.Debug("Cleaning up round!");
-            SetRoundState(RoundState.Reset);
             CleanupPlayerCache();
             Cleanup_Coroutines();
         }
         private void CheckWinConditions()
         {
-            List<Player> Innocents = teamManager.GetTeamPlayers(Team.Team.Innocent);
-            List<Player> Detectives = teamManager.GetTeamPlayers(Team.Team.Detective);
-            List<Player> Traitors = teamManager.GetTeamPlayers(Team.Team.Traitor);
+            List<PluginAPI.Core.Player> Innocents = teamManager.GetTeamPlayers(Team.Team.Innocent);
+            List<PluginAPI.Core.Player> Detectives = teamManager.GetTeamPlayers(Team.Team.Detective);
+            List<PluginAPI.Core.Player> Traitors = teamManager.GetTeamPlayers(Team.Team.Traitor);
 
             if (DateTime.Now > NextRoundState) // Stalemate
             {
@@ -217,6 +226,41 @@ namespace SCPTroubleInTerroristTown.TTT
                     continue;
                 }
             }
+        }
+
+
+        private void prepare()
+        {
+            // Make sure old round checking logic is gone 
+            PluginAPI.Core.Round.IsLocked = true;
+            // Disable friendly fire (Until the round actually starts, nice easy way to stop people killing before round starts)
+            Server.FriendlyFire = false;
+            winner = Team.Team.Undecided;
+            mapManager.InitMap();
+
+            foreach (PluginAPI.Core.Player pl in PluginAPI.Core.Player.GetPlayers())
+            {
+                if (!karmaManager.AllowedSpawnKarmaCheck(pl))
+                {
+                    teamManager.SetTeam(pl, Team.Team.Spectator);
+                    playerManager.Spawn(pl);
+                    continue;
+                }
+                teamManager.SetTeam(pl, Team.Team.Undecided);
+                playerManager.Spawn(pl, spawnPoint: config.mapConfig.spawnPoint);
+            }
+
+
+            Cleanup_Coroutines();
+            think_task = Timing.RunCoroutine(Think());
+        }
+        private void initround()
+        {
+            // Make double sure old round checking logic is gone 
+            PluginAPI.Core.Round.IsLocked = true;
+            // Make sure players can hold 2 firearms by default
+            InventoryLimits.StandardCategoryLimits[ItemCategory.Firearm] = 2;
+            CleanupPlayerCache();
         }
 
     }

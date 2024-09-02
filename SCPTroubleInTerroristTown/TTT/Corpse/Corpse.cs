@@ -180,7 +180,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             }
             return DeathInfoText;
         }
-        public static string GetCorpseInfo(TTTConfig config, Player player, Team.Team playerTeam, DamageHandlerBase handler, string deathReason)
+        public static string GetCorpseInfo(TTTConfig config, PluginAPI.Core.Player player, Team.Team playerTeam, DamageHandlerBase handler, string deathReason)
         {
 
             string DeathInfoText = GetDeathInfo(config, handler, deathReason);

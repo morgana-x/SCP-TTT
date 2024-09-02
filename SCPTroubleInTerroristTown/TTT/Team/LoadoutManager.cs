@@ -23,7 +23,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             }
             return round.config.teamsConfig.TeamLoadout[team];
         }
-        private void GiveLoadoutItems(Player pl, List<ItemType> items)
+        private void GiveLoadoutItems(PluginAPI.Core.Player pl, List<ItemType> items)
         {
             foreach (var i in items)
             {
@@ -43,13 +43,13 @@ namespace SCPTroubleInTerroristTown.TTT.Team
                 pl.AddItem(i);
             }
         }
-        public void GiveLoadout(Player pl, bool clearInventory = false)
+        public void GiveLoadout(PluginAPI.Core.Player pl, bool clearInventory = false)
         {
             if (pl == null)
             {
                 return;
             }
-            if (!Player.GetPlayers().Contains(pl))
+            if (!PluginAPI.Core.Player.GetPlayers().Contains(pl))
             {
                 return;
             }

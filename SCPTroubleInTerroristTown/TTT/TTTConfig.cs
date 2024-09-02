@@ -4,6 +4,7 @@ using SCPTroubleInTerroristTown.TTT.Map;
 using SCPTroubleInTerroristTown.TTT.Team;
 using SCPTroubleInTerroristTown.TTT.Hud;
 using SCPTroubleInTerroristTown.TTT.TraitorTester;
+using SCPTroubleInTerroristTown.TTT.Award;
 
 namespace SCPTroubleInTerroristTown.TTT
 {
@@ -31,5 +32,7 @@ namespace SCPTroubleInTerroristTown.TTT
         public MapConfig mapConfig { get; set; } = new MapConfig();
 
         public TraitorTesterConfig traitorTesterConfig { get; set; } = new TraitorTesterConfig();
+
+        public AwardConfig awardConfig { get; set; } = new AwardConfig();
     }
 }

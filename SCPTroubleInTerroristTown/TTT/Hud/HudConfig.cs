@@ -44,23 +44,7 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
                 "Near Death"
             },
         };
-        public string Hud { get; set; } = @"
-        
-
-
-
-
-<align=""center"">{winner}\n{spawn}\n{lookingAtInfo}
-
-
-
-
-
-
-
-        <align=""left"">{karma}
-        <align=""left"">{role} {time}
-        ";
+        public string Hud { get; set; } = "\n\n\n\n\n<align=\"center\">{winner}\n{spawn}\n{lookingAtInfo}\n{awardsTitle}\n{award1}\n{award2}\n{award3}\n<align=\"left\">      {role} {time} {karma}";
         public string RoleWidget { get; set; } = "<color={TeamColor}>{TeamName}</color>";
         public string TimeWidget { get; set; } = "<color=#616161>{TimeLeft}</color>";
 
