@@ -41,6 +41,7 @@ namespace SCPTroubleInTerroristTown
             tttRound = new TTT.Round(config.tttConfig);
 
             RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
+            
         }
         [PluginConfig]
         public Config config;
@@ -48,7 +49,7 @@ namespace SCPTroubleInTerroristTown
         [PluginEvent(ServerEventType.PlayerDeath)]
         void OnPlayerDied(Player player, Player attacker, DamageHandlerBase damageHandler)
         {
-            tttRound.OnPlayerDeath(player, attacker);
+            tttRound.OnPlayerDeath(player, attacker, damageHandler);
         }
         [PluginEvent(ServerEventType.PlayerLeft)]
         void OnPlayerLeave(Player player)
@@ -112,14 +113,18 @@ namespace SCPTroubleInTerroristTown
         {
             return tttRound.Scp914Activated(hub);
         }
+
+        [PluginEvent(ServerEventType.PlayerUseHotkey)]
+        void PlayerUseHotKey(Player player, ActionName actionName )
+        {
+            Log.Debug("Player use hotkey!");
+            Log.Debug(player.DisplayNickname + " " + actionName.ToString());
+            if (actionName == ActionName.Noclip)
+                tttRound.corpseManager.OnCorpseDiscoverHotKey(player);
+        }
         void OnRagdollSpawn(ReferenceHub hub, BasicRagdoll Ragdoll)
         {
-            Player plr = Player.Get(hub);
-            var damageHandler = Ragdoll.Info.Handler;
-            NetworkServer.UnSpawn(Ragdoll.gameObject);
-            var newDamageHandler = tttRound.OnSpawnedCorpse(plr, damageHandler, damageHandler.ServerLogsText);
-            Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, Ragdoll.NetworkInfo.Nickname, Ragdoll.NetworkInfo.CreationTime);
-            NetworkServer.Spawn(Ragdoll.gameObject);
+            tttRound.corpseManager.OnCorpseSpawn(hub, Ragdoll);
         }
     }
 }
