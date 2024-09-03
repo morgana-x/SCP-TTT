@@ -25,7 +25,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
 
             }
         }
-        public string UndiscoveredNick { get; set; } = "Unidentified Corpse";
+        public string UndiscoveredNick { get; set; } = "Unidentified";
         public string UndiscoveredText { get; set; } = "Press <color=yellow>Alt</color> to investigate the body.";
 
         public string DiscoverMessage { get; set; } = "{player} discovered {victim}'s corpse!";

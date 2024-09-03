@@ -15,6 +15,10 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
 
         public void SetupKarma(PluginAPI.Core.Player pl)
         {
+            if (pl.UserId == null)
+            {
+                return;
+            }
             if (Karma.ContainsKey(pl.UserId))
             {
                 return;
@@ -24,6 +28,10 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
         }
         public void SetKarma(PluginAPI.Core.Player pl, int karma)
         {
+            if (pl == null || pl.UserId == null)
+            {
+                return;
+            }
             if (karma > round.config.karmaConfig.karma_max)
             {
                 karma = round.config.karmaConfig.karma_max;

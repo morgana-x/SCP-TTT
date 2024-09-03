@@ -1,6 +1,7 @@
 ﻿
 namespace SCPTroubleInTerroristTown
 {
+    using CommandSystem;
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.Ragdolls;
@@ -41,6 +42,8 @@ namespace SCPTroubleInTerroristTown
             tttRound = new TTT.Round(config.tttConfig);
 
             RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
+
+          
             
         }
         [PluginConfig]
@@ -114,14 +117,21 @@ namespace SCPTroubleInTerroristTown
             return tttRound.Scp914Activated(hub);
         }
 
-        [PluginEvent(ServerEventType.PlayerUseHotkey)]
-        void PlayerUseHotKey(Player player, ActionName actionName )
+        [PluginEvent(ServerEventType.PlayerGameConsoleCommand)]
+        void PlayerGameConsoleCommand(Player hub, string command, string[] args)
+        {
+            Log.Debug(command);
+            if (command == "tttcustominteract")
+                tttRound.corpseManager.OnCorpseDiscoverHotKey(hub);
+        }
+        /*[PluginEvent]
+        void PlayerUseHotKey(PlayerUseHotkeyEvent ev)
         {
             Log.Debug("Player use hotkey!");
-            Log.Debug(player.DisplayNickname + " " + actionName.ToString());
-            if (actionName == ActionName.Noclip)
-                tttRound.corpseManager.OnCorpseDiscoverHotKey(player);
-        }
+            Log.Debug(ev.Player.DisplayNickname + " " + ev.Action.ToString());
+            if (ev.Action == ActionName.Noclip)
+                tttRound.corpseManager.OnCorpseDiscoverHotKey(ev.Player);
+        }*/
         void OnRagdollSpawn(ReferenceHub hub, BasicRagdoll Ragdoll)
         {
             tttRound.corpseManager.OnCorpseSpawn(hub, Ragdoll);
