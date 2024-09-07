@@ -13,15 +13,17 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
     public class Corpse
     {
         public BasicRagdoll Ragdoll;
-        public ReferenceHub referenceHub;
+        public string victimName;
+        public Team.Team victimTeam;
         public DamageHandlerBase newDamageHandler;
 
         public bool Discovered = false;
-        public Corpse(BasicRagdoll ragdoll, ReferenceHub referenceHub, string undiscoveredNick, string undiscoveredDeathText, DamageHandlerBase newDamageHandler)
+        public Corpse(BasicRagdoll ragdoll, string victimName, Team.Team victimTeam, string undiscoveredNick, string undiscoveredDeathText, DamageHandlerBase newDamageHandler)
         {
             Ragdoll = ragdoll;
-            
-            this.referenceHub = referenceHub;
+
+            this.victimTeam = victimTeam;
+            this.victimName = victimName;
             this.newDamageHandler = newDamageHandler;
 
             var damageHandlerTemp = new CustomReasonDamageHandler(undiscoveredDeathText);
@@ -35,8 +37,14 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
                 return;
             }
             Discovered = true;
-            Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, Ragdoll.NetworkInfo.Nickname, Ragdoll.NetworkInfo.CreationTime);
-            Cassie.Message(round.config.corpseConfig.DiscoverMessage.Replace("{player}", discoverer.Nickname).Replace("{victim}", Player.Get(referenceHub).Nickname), isNoisy:false, isSubtitles:true);
+
+            Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, victimName, Ragdoll.NetworkInfo.CreationTime);
+
+            string discovererName = discoverer != null ? discoverer.Nickname : "Unknown";
+            Team.Team discovererTeam = discoverer != null ? round.teamManager.GetVisibleTeam(discoverer) : Team.Team.Undecided;
+
+            string message = round.config.corpseConfig.DiscoverMessage.Replace("{player}", $"<color={round.config.teamsConfig.TeamColor[discovererTeam]}>{discovererName}</color>").Replace("{victim}", victimName).Replace("{team}", $"<color={round.config.teamsConfig.TeamColor[victimTeam]}>{round.config.teamsConfig.TeamName[victimTeam]}</color>");
+            round.playerManager.notificationManager.NotifyAll(message);
         }
     }
 
@@ -106,34 +114,50 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
         }
         public void OnCorpseSpawn(ReferenceHub hub, BasicRagdoll ragdoll)
         {
-            Corpse corpse = new Corpse(ragdoll, hub, round.config.corpseConfig.UndiscoveredNick, round.config.corpseConfig.UndiscoveredText, new CustomReasonDamageHandler(GetCorpseInfo(Player.Get(hub), round.teamManager.GetTeam(Player.Get(hub)), ragdoll.NetworkInfo.Handler)));
+            Team.Team victimTeam = round.teamManager.GetPreviousTeam(Player.Get(hub));
+            string victimName = Player.Get(hub).Nickname;
+            Corpse corpse = new Corpse(ragdoll, victimName, victimTeam, round.config.corpseConfig.UndiscoveredNick, round.config.corpseConfig.UndiscoveredText, new CustomReasonDamageHandler(GetCorpseInfo(Player.Get(hub), round.teamManager.GetTeam(Player.Get(hub)), ragdoll.NetworkInfo.Handler)));
             corpseList.Add(corpse);
         }
         public void OnCorpseDiscoverHotKey(Player player)
         {
-            Log.Debug($"{player.Nickname} is trying to discover corpse!");
             Corpse ragdoll = getPlayerLookedatCorpse(player);
             if (ragdoll == null) return;
             ragdoll.Discover(player, round);
+            corpseList.Remove(ragdoll);
         }
         private Corpse getPlayerLookedatCorpse(PluginAPI.Core.Player pl)
         {
+            Ray ray = new Ray(pl.Camera.position + (pl.Camera.forward * 0.16f), pl.Camera.forward);
+            Physics.Raycast(ray, out RaycastHit hit, 3f);
+            float minDist = 1.2f;
 
             foreach (var r in corpseList)
             {
-                if (Vector3.Distance(r.Ragdoll.CenterPoint.position, pl.Position) < 4)
+                try
                 {
-                    return r;
+                    if (Vector3.Distance(hit.transform.position, r.Ragdoll.CenterPoint.position) < minDist)
+                    {
+                        return r;
+                    }
+                    if (Vector3.Distance(hit.transform.position, r.Ragdoll.transform.position) < minDist)
+                    {
+                        return r;
+                    }
+                }
+                catch
+                {
+
                 }
             }
             return null;
-            /*Ray ray = new Ray(pl.Camera.position + (pl.Camera.forward * 0.16f), pl.Camera.forward);
-            if (!Physics.Raycast(ray, out RaycastHit hit, 10))
-            {
-                return null;
-            }
-            var found = GetRagdoll(hit.collider.transform.root.gameObject);
-            return found;*/
+/*Ray ray = new Ray(pl.Camera.position + (pl.Camera.forward * 0.16f), pl.Camera.forward);
+if (!Physics.Raycast(ray, out RaycastHit hit, 10))
+{
+    return null;
+}
+var found = GetRagdoll(hit.collider.transform.root.gameObject);
+return found;*/
         }
         private Corpse GetRagdoll(GameObject obj)
         {

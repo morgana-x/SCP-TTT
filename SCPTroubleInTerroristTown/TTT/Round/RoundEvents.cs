@@ -138,5 +138,10 @@ namespace SCPTroubleInTerroristTown.TTT
         {
             corpseManager.OnCorpseSpawn(hub, ragdoll);
         }
+
+        public void OnPlayerToggleNoclip(ReferenceHub hub)
+        {
+            corpseManager.OnCorpseDiscoverHotKey(Player.Get(hub));
+        }
     }
 }

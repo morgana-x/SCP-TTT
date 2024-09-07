@@ -154,6 +154,8 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             {
                 hud = hud.Replace("{karma}", "");
             }
+
+            hud = round.playerManager.notificationManager.getNotificationWidget(hud, player);
             return hud;
         }
         public void RemovePlayer(PluginAPI.Core.Player player)

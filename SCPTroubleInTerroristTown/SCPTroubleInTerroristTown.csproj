@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="2.3.3" />
     <PackageReference Include="Northwood.PluginAPI" Version="13.1.2" />
   </ItemGroup>
 

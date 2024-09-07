@@ -26,9 +26,9 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             }
         }
         public string UndiscoveredNick { get; set; } = "Unidentified";
-        public string UndiscoveredText { get; set; } = "Press <color=yellow>Alt</color> to investigate the body.";
+        public string UndiscoveredText { get; set; } = "\nPress <color=yellow>Alt</color> to investigate the body.";
 
-        public string DiscoverMessage { get; set; } = "{player} discovered {victim}'s corpse!";
+        public string DiscoverMessage { get; set; } = "{player} discovered {victim}'s body! They were a {team}!";
         public Dictionary<DamageType, deathMessage> deathTranslations { get; set; } = new Dictionary<DamageType, deathMessage>()
         {
             [DamageType.Firearm] = new deathMessage()

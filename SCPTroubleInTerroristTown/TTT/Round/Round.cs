@@ -40,6 +40,7 @@ namespace SCPTroubleInTerroristTown.TTT
 
         public Corpse.CorpseManager corpseManager;
 
+
         public DateTime NextRoundState;
 
         public RoundState currentRoundState;

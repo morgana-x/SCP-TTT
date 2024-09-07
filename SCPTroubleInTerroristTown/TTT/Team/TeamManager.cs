@@ -47,6 +47,18 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             }
             return previousTeams[pl];
         }
+        public Team GetVisibleTeam(PluginAPI.Core.Player pl)
+        {
+            if (!playerTeams.ContainsKey(pl))
+            {
+                SetTeam(pl, Team.Spectator);
+            }
+            if (playerTeams[pl] == Team.Traitor)
+            {
+                return Team.Innocent;
+            }
+            return playerTeams[pl];
+        }
         public void SetTeam(PluginAPI.Core.Player pl, Team team, bool SetPreviousTeam = true)
         {
             if (!playerTeams.ContainsKey(pl))

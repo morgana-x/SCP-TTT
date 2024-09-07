@@ -11,10 +11,12 @@ namespace SCPTroubleInTerroristTown.TTT.Players
         Round round;
 
         public BadgeManager badgeManager;
+        public NotificationManager notificationManager;
         public PlayerManager(Round round)
         {
             this.round = round;
             badgeManager = new BadgeManager(round);
+            notificationManager = new NotificationManager(round);
         }
         public Dictionary<PluginAPI.Core.Player, DateTime> spawnTimes = new Dictionary<PluginAPI.Core.Player, DateTime>();
         public DateTime getSpawnTime(PluginAPI.Core.Player pl)
@@ -76,6 +78,7 @@ namespace SCPTroubleInTerroristTown.TTT.Players
         {
             spawnTimes.Clear();
             badgeManager.Cleanup();
+            notificationManager.Cleanup();
         }
        
     }

@@ -2,6 +2,7 @@
 namespace SCPTroubleInTerroristTown
 {
     using CommandSystem;
+    using HarmonyLib;
     using Mirror;
     using PlayerRoles;
     using PlayerRoles.Ragdolls;
@@ -21,6 +22,7 @@ namespace SCPTroubleInTerroristTown
     public class MainClass
     {
         public static MainClass Singleton { get; private set; }
+        private static readonly Harmony HarmonyPatcher = new("scpttt.github.com/morgana-x");
         public TTT.Round tttRound { get; private set; }
 
         [PluginPriority(LoadPriority.Highest)]
@@ -33,6 +35,7 @@ namespace SCPTroubleInTerroristTown
 
             EventManager.RegisterEvents(this);
 
+            HarmonyPatcher.PatchAll();
             var handler = PluginHandler.Get(this);
 
             Log.Info(handler.PluginName);
@@ -42,7 +45,7 @@ namespace SCPTroubleInTerroristTown
             tttRound = new TTT.Round(config.tttConfig);
 
             RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
-
+            PatchEvents.onPlayerTogglingNoclip += OnPlayerNoclip;
           
             
         }
@@ -135,6 +138,11 @@ namespace SCPTroubleInTerroristTown
         void OnRagdollSpawn(ReferenceHub hub, BasicRagdoll Ragdoll)
         {
             tttRound.corpseManager.OnCorpseSpawn(hub, Ragdoll);
+        }
+
+        void OnPlayerNoclip(object sender, PatchEvents.ToggleNoclipArgs ev)
+        {
+            tttRound.OnPlayerToggleNoclip(ev.referenceHub);
         }
     }
 }
