@@ -9,10 +9,8 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
 + Please make an Issue or contact me if you find any issues!
 ## Todo: (If anyones feeling generous... Feel free to contribute!) (I have limited free time 😔)
 + Corpse info system (Only thing left is detective specialised things)
-+ Corpse discovery system
 + Update screenshots to reflect major changes
-+ End Round statistics
-+ Small notification system to announce discovered corpses etc (Could use CASSIE or Hints, either works)
++ Finish implementing all the end round statistic award items
 ## Features:
 + Round logic (Not faithful win conditions probably, didn't check the gmod function)
 + Hud System (Show role, time left) (Works with spectators)
