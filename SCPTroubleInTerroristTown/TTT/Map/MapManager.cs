@@ -1,18 +1,12 @@
 ﻿using LightContainmentZoneDecontamination;
-using SCPTroubleInTerroristTown.TTT.Util;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SCPTroubleInTerroristTown.TTT.Map
 {
     public class MapManager
     {
-        private Round tttRound;
+        private Round.Round tttRound;
 
-        public MapManager(Round round) 
+        public MapManager(Round.Round round) 
         {
             this.tttRound = round;
         }

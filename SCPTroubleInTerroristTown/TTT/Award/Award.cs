@@ -27,7 +27,7 @@ namespace SCPTroubleInTerroristTown.TTT.Award
 
     public class AwardManager
     {
-        private Round round;
+        private Round.Round round;
         private Dictionary<AwardType, AwardEntry> awards = new Dictionary<AwardType, AwardEntry>();
         private int suicideCount = 0;
         private Dictionary<string, int> teamKills= new Dictionary<string, int>();
@@ -35,7 +35,7 @@ namespace SCPTroubleInTerroristTown.TTT.Award
         private int killCount = 0;
 
         public List<string> finalAwards = new List<string>();
-        public AwardManager(Round round)
+        public AwardManager(Round.Round round)
         {
             this.round = round;
         }

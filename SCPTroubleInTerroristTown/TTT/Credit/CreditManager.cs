@@ -8,10 +8,10 @@ namespace SCPTroubleInTerroristTown.TTT.Credit
 {
     public class CreditManager
     {
-        Round round;
+        Round.Round round;
         public Dictionary<PluginAPI.Core.Player, int> PlayerCredits = new Dictionary<PluginAPI.Core.Player, int>();
 
-        public CreditManager(Round round)
+        public CreditManager(Round.Round round)
         {
             this.round = round;
         }

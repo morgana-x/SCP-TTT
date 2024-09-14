@@ -30,7 +30,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, damageHandlerTemp, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, undiscoveredNick, Ragdoll.NetworkInfo.CreationTime);
         }
 
-        public void Discover(Player discoverer, Round round)
+        public void Discover(Player discoverer, Round.Round round)
         {
             if (Discovered)
             {
@@ -50,8 +50,8 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
 
     public class CorpseManager
     {
-        Round round;
-        public CorpseManager(Round round)
+        Round.Round round;
+        public CorpseManager(Round.Round round)
         {
             this.round = round;
         }
@@ -130,7 +130,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
         {
             Ray ray = new Ray(pl.Camera.position + (pl.Camera.forward * 0.16f), pl.Camera.forward);
             Physics.Raycast(ray, out RaycastHit hit, 3f);
-            float minDist = 1.2f;
+            float minDist = 3f;
 
             foreach (var r in corpseList)
             {

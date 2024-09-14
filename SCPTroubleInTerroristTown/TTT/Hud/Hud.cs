@@ -8,8 +8,8 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
 {
     public class Hud
     {
-        public Round round;
-        public Hud(Round round)
+        public Round.Round round;
+        public Hud(Round.Round round)
         {
 
             this.round = round;
@@ -113,7 +113,7 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
             {
                 hud = hud.Replace("{spawn}", "\n");
             }
-            if (round.currentRoundState == Round.RoundState.Finished)
+            if (round.currentRoundState == Round.Round.RoundState.Finished)
             {
                 hud = getRoundEndWidget(hud);
             }

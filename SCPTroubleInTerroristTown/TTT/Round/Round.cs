@@ -6,7 +6,7 @@ using MEC;
 using InventorySystem.Configs;
 using SCPTroubleInTerroristTown.TTT.Util;
 
-namespace SCPTroubleInTerroristTown.TTT
+namespace SCPTroubleInTerroristTown.TTT.Round
 {
     public class DeathReason
     {
@@ -197,12 +197,12 @@ namespace SCPTroubleInTerroristTown.TTT
                 End(Team.Team.Innocent);
                 return;
             }
-            
+
         }
-      
+
         private IEnumerator<float> Think()
         {
-            while (this.currentRoundState != RoundState.Reset) 
+            while (this.currentRoundState != RoundState.Reset)
             {
                 //System.Threading.Thread.Sleep(10);
                 yield return MEC.Timing.WaitForSeconds(0.01f);

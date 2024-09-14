@@ -5,8 +5,9 @@ using PluginAPI.Core;
 using SCPTroubleInTerroristTown.TTT.Util;
 using System;
 
-namespace SCPTroubleInTerroristTown.TTT
+namespace SCPTroubleInTerroristTown.TTT.Round
 {
+
     public partial class Round
     {
         public void On_Map_Loaded() // Spawning weapons logic, needs updating
@@ -64,7 +65,7 @@ namespace SCPTroubleInTerroristTown.TTT
             SetRoundState(RoundState.Reset);
         }
         public void On_Waiting_For_Players()
-        { 
+        {
             SetRoundState(RoundState.WaitingForPlayers);
 
             if (config.spawnDebugNPCS)
@@ -79,9 +80,9 @@ namespace SCPTroubleInTerroristTown.TTT
                 karmaManager.UpdateOldKarma(pl);
                 playerManager.badgeManager.SyncPlayer(pl);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                Log.Debug(e.ToString());    
+                Log.Debug(e.ToString());
             }
         }
         public void OnPlayerHurt(PluginAPI.Core.Player victim, PluginAPI.Core.Player attacker, DamageHandlerBase damageType)
@@ -113,7 +114,7 @@ namespace SCPTroubleInTerroristTown.TTT
             {
                 return;
             }
-            if ( (newrole == RoleTypeId.Spectator || newrole == RoleTypeId.Tutorial) && reason == RoleChangeReason.RemoteAdmin)
+            if ((newrole == RoleTypeId.Spectator || newrole == RoleTypeId.Tutorial) && reason == RoleChangeReason.RemoteAdmin)
             {
                 teamManager.SetTeam(victim, Team.Team.Spectator, false);
                 return;

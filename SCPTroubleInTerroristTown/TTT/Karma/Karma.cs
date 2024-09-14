@@ -5,8 +5,8 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
 {
     public class KarmaManager
     {
-        Round round;
-        public KarmaManager(Round tttround) 
+        Round.Round round;
+        public KarmaManager(Round.Round tttround) 
         { 
             round = tttround;
         }
@@ -126,7 +126,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
         }
         public void KarmaPunishCheck(PluginAPI.Core.Player victim, PluginAPI.Core.Player attacker)
         {
-            if (round.currentRoundState != Round.RoundState.Running)
+            if (round.currentRoundState != Round.Round.RoundState.Running)
             {
                 return;
             }

@@ -8,11 +8,11 @@ namespace SCPTroubleInTerroristTown.TTT.Players
 {
     public class PlayerManager
     {
-        Round round;
+        Round.Round round;
 
         public BadgeManager badgeManager;
         public NotificationManager notificationManager;
-        public PlayerManager(Round round)
+        public PlayerManager(Round.Round round)
         {
             this.round = round;
             badgeManager = new BadgeManager(round);

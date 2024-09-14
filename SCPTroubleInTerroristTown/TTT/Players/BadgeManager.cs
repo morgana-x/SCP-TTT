@@ -7,8 +7,8 @@ namespace SCPTroubleInTerroristTown.TTT.Players
 {
     public class BadgeManager
     {
-        Round round;
-        public BadgeManager(Round playermanager) 
+        Round.Round round;
+        public BadgeManager(Round.Round playermanager) 
         {
             round = playermanager;
         }

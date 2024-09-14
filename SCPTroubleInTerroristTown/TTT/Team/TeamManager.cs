@@ -16,12 +16,12 @@ namespace SCPTroubleInTerroristTown.TTT.Team
     }
     public class TeamManager
     {
-        public TeamManager(Round round)
+        public TeamManager(Round.Round round)
         {
             tttRound = round;
             loadoutManager = new LoadoutManager(round);
         }
-        private Round tttRound;
+        private Round.Round tttRound;
 
         public Dictionary<PluginAPI.Core.Player, Team> playerTeams = new Dictionary<PluginAPI.Core.Player, Team>();
         public Dictionary<PluginAPI.Core.Player, Team> previousTeams = new Dictionary<PluginAPI.Core.Player, Team>();
@@ -83,20 +83,15 @@ namespace SCPTroubleInTerroristTown.TTT.Team
                 }
             }
             playerTeams[pl] = team;
-            UpdatePlayerTag(pl, team);
+            UpdatePlayerTag(pl);
         }
         public List<PluginAPI.Core.Player> GetTeamPlayers(Team team)
         {
             return playerTeams.Keys.Where((x) => (GetTeam(x) == team)).ToList();
         }
 
-        private void UpdatePlayerTag(PluginAPI.Core.Player pl, Team team)
+        private void UpdatePlayerTag(Player pl)
         {
-            if (pl.ReferenceHub.serverRoles.HasGlobalBadge)
-            {
-                // I love Northwoods badge system (I'm glad its getting an overhaul!!!)
-                return;
-            }
             pl.PlayerInfo.IsRoleHidden = true;
             pl.PlayerInfo.IsUnitNameHidden = true;
             pl.PlayerInfo.IsPowerStatusHidden = true;

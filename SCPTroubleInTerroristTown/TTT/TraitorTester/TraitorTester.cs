@@ -93,7 +93,7 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             return numOfPlayers;
 
         }
-        public bool shouldActivate(Round round, PluginAPI.Core.Player player)
+        public bool shouldActivate(Round.Round round, PluginAPI.Core.Player player)
         {
             if (round.teamManager.GetTeam(player) != Team.Team.Detective && !round.config.traitorTesterConfig.AllowNonDetective)
             {
@@ -108,7 +108,7 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             Reset();
             return true;
         }
-        public void ProcessPlayer(Round round, PluginAPI.Core.Player player)
+        public void ProcessPlayer(Round.Round round, PluginAPI.Core.Player player)
         {
             if (traitorDetected)
             {

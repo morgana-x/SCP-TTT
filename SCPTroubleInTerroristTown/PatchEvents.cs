@@ -22,16 +22,10 @@ namespace SCPTroubleInTerroristTown
         }
         public static bool OnPlayerTogglingNoClip(ReferenceHub player)
         {
-            onPlayerTogglingNoClip(new ToggleNoclipArgs(player));
+            onPlayerTogglingNoclip.Invoke(null, new ToggleNoclipArgs(player));
             if (FpcNoclip.IsPermitted(player))
                 return true;
             return false;
         }
-        static void onPlayerTogglingNoClip(ToggleNoclipArgs ev)
-        {
-            onPlayerTogglingNoclip.Invoke(null,ev);
-        }
-
-
     }
 }

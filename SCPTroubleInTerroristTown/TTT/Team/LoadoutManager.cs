@@ -9,9 +9,9 @@ namespace SCPTroubleInTerroristTown.TTT.Team
 {
     public class LoadoutManager
     {
-        public Round round;
+        public Round.Round round;
 
-        public LoadoutManager(Round round)
+        public LoadoutManager(Round.Round round)
         {
             this.round = round;
         }

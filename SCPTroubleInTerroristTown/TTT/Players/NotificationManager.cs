@@ -22,11 +22,11 @@ namespace SCPTroubleInTerroristTown.TTT.Players
     
     public class NotificationManager
     {
-        Round round;
+        Round.Round round;
 
         public Dictionary<Player, List<Notification>> playerNotificationList = new Dictionary<Player, List<Notification>>();
 
-        public NotificationManager(Round round)
+        public NotificationManager(Round.Round round)
         { 
             this.round = round;
         }

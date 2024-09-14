@@ -23,7 +23,7 @@ namespace SCPTroubleInTerroristTown
     {
         public static MainClass Singleton { get; private set; }
         private static readonly Harmony HarmonyPatcher = new("scpttt.github.com/morgana-x");
-        public TTT.Round tttRound { get; private set; }
+        public TTT.Round.Round tttRound { get; private set; }
 
         [PluginPriority(LoadPriority.Highest)]
         [PluginEntryPoint("Trouble in Terrorist Town", "1.0.0", "The garry's mod gamemode, ported to SCP SL", "morgana")]
@@ -42,7 +42,7 @@ namespace SCPTroubleInTerroristTown
             Log.Info(handler.PluginFilePath);
             Log.Info(handler.PluginDirectoryPath);
 
-            tttRound = new TTT.Round(config.tttConfig);
+            tttRound = new TTT.Round.Round(config.tttConfig);
 
             RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
             PatchEvents.onPlayerTogglingNoclip += OnPlayerNoclip;
