@@ -72,6 +72,7 @@ namespace SCPTroubleInTerroristTown.TTT.Players
         {
             teamSetRole(pl, spawnPoint);
             round.teamManager.loadoutManager.GiveLoadout(pl);
+            round.creditManager.GiveStartingCredits(pl);
             setSpawnTime(pl);
         }
         public void Cleanup()

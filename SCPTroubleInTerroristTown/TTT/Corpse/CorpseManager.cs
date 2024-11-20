@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using PluginAPI.Core;
+﻿using PluginAPI.Core;
 using PluginAPI.Enums;
 using PlayerStatsSystem;
 using PlayerRoles.Ragdolls;
@@ -33,18 +31,20 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
         public void Discover(Player discoverer, Round.Round round)
         {
             if (Discovered)
-            {
                 return;
-            }
             Discovered = true;
 
             Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, victimName, Ragdoll.NetworkInfo.CreationTime);
+            
+            if (round == null)
+                return;
 
             string discovererName = discoverer != null ? discoverer.Nickname : "Unknown";
             Team.Team discovererTeam = discoverer != null ? round.teamManager.GetVisibleTeam(discoverer) : Team.Team.Undecided;
 
             string message = round.config.corpseConfig.DiscoverMessage.Replace("{player}", $"<color={round.config.teamsConfig.TeamColor[discovererTeam]}>{discovererName}</color>").Replace("{victim}", victimName).Replace("{team}", $"<color={round.config.teamsConfig.TeamColor[victimTeam]}>{round.config.teamsConfig.TeamName[victimTeam]}</color>");
             round.playerManager.notificationManager.NotifyAll(message);
+            round.creditManager.OnCorpseDiscovery(discoverer);
         }
     }
 

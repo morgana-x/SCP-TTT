@@ -97,7 +97,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
 
                 if (attacker != victim)
                 {
-                    creditManager.AddCredits(attacker, config.creditConfig.KillAwardCredit);
+                   // creditManager.AddCredits(attacker, config.creditConfig.KillAwardCredit);
                     karmaManager.KarmaPunishCheck(victim, attacker);
                 }
                 awardManager.OnPlayerKill(victim.DisplayNickname, teamManager.GetPreviousTeam(victim), attacker.DisplayNickname, teamManager.GetPreviousTeam(attacker), Util.Util.getDamageTypeFromHandler(damageBase));

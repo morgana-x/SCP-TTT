@@ -35,16 +35,13 @@ namespace SCPTroubleInTerroristTown.TTT.Map
 
         private static List<ItemType> randomEtc = new List<ItemType>()
         {
-            ItemType.ArmorCombat,
-            ItemType.ArmorHeavy,
             ItemType.ArmorLight,
             ItemType.Coin,
             ItemType.Flashlight,
             ItemType.GrenadeFlash,
             ItemType.GrenadeHE,
-            ItemType.Jailbird,
+           // ItemType.Jailbird,
             ItemType.Lantern,
-            ItemType.Ammo44cal
         };
 
 
@@ -135,13 +132,13 @@ namespace SCPTroubleInTerroristTown.TTT.Map
                 {
                     Vector3 center = room.Position + Vector3.up * 2; // ::pray::
 
-                    for (int i = 0; i < 4; i++)
+                    for (int i = 0; i < 2; i++)
                     {
                         Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
                         var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + randomOffset + Vector3.up);
                         spawned.AddRange(pickup);
                     }
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 1; i++)
                     {
                         Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
                         var pickup = safeSpawnPickup(randomEtc.RandomItem(), center + randomOffset + Vector3.right + Vector3.up);
