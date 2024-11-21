@@ -1,28 +1,21 @@
 ﻿
 namespace SCPTroubleInTerroristTown
 {
-    using CommandSystem;
     using HarmonyLib;
-    using Mirror;
     using PlayerRoles;
     using PlayerRoles.Ragdolls;
     using PlayerStatsSystem;
     using PluginAPI.Core;
     using PluginAPI.Core.Attributes;
-    using PluginAPI.Core.Factories;
-    using PluginAPI.Core.Zones;
-    using PluginAPI.Core.Zones.Light.Rooms;
     using PluginAPI.Enums;
     using PluginAPI.Events;
     using Respawning;
     using Scp914;
-    using SCPTroubleInTerroristTown.TTT;
-    using System.Linq;
     using UnityEngine;
     public class MainClass
     {
         public static MainClass Singleton { get; private set; }
-        private static readonly Harmony HarmonyPatcher = new("scpttt.github.com/morgana-x");
+        private static readonly Harmony HarmonyPatcher = new("github.com/morgana-x/SCP-TTT");
         public TTT.Round.Round tttRound { get; private set; }
 
         [PluginPriority(LoadPriority.Highest)]
@@ -46,8 +39,6 @@ namespace SCPTroubleInTerroristTown
 
             RagdollManager.ServerOnRagdollCreated += OnRagdollSpawn;
             PatchEvents.onPlayerTogglingNoclip += OnPlayerNoclip;
-          
-            
         }
         [PluginConfig]
         public Config config;
@@ -119,22 +110,6 @@ namespace SCPTroubleInTerroristTown
         {
             return tttRound.Scp914Activated(hub);
         }
-
-        [PluginEvent(ServerEventType.PlayerGameConsoleCommand)]
-        void PlayerGameConsoleCommand(Player hub, string command, string[] args)
-        {
-            Log.Debug(command);
-            if (command == "tttcustominteract")
-                tttRound.corpseManager.OnCorpseDiscoverHotKey(hub);
-        }
-        /*[PluginEvent]
-        void PlayerUseHotKey(PlayerUseHotkeyEvent ev)
-        {
-            Log.Debug("Player use hotkey!");
-            Log.Debug(ev.Player.DisplayNickname + " " + ev.Action.ToString());
-            if (ev.Action == ActionName.Noclip)
-                tttRound.corpseManager.OnCorpseDiscoverHotKey(ev.Player);
-        }*/
         void OnRagdollSpawn(ReferenceHub hub, BasicRagdoll Ragdoll)
         {
             tttRound.corpseManager.OnCorpseSpawn(hub, Ragdoll);

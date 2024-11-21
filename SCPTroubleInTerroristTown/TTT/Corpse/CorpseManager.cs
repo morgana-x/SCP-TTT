@@ -121,6 +121,8 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
         }
         public void OnCorpseDiscoverHotKey(Player player)
         {
+            if (!player.IsAlive)
+                return;
             Corpse ragdoll = getPlayerLookedatCorpse(player);
             if (ragdoll == null) return;
             ragdoll.Discover(player, round);
