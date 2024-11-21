@@ -5,10 +5,12 @@ PluginAPI plugin that aims to port TTT to SCP Sl
 
 Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana-x/ScpSL-DesertBus), as well!
 
+Type .ttt_help in player console for help with ttt related commands for players
+
 ## Current issues:
 + Please make an Issue or contact me if you find any issues!
 ## Todo: (If anyones feeling generous... Feel free to contribute!) (I have limited free time 😔)
-+ Corpse info system (Only thing left is detective specialised things)
++ Detective Abilities
 + Update screenshots to reflect major changes
 + Finish implementing all the end round statistic award items
 ## Features:
@@ -23,6 +25,8 @@ Feel free to check out another gamemode, [Desert Bus](https://github.com/morgana
   +  Spawn phrases
   +  Corpse death info phrases
   +  Traitor Tester conditions (Detective required / min players etc)
++  Credit Store for Detectives / Traitors
++  Corpse Discovery
 
 ## Screenshots:
 ![Screenshot (5016)](https://github.com/user-attachments/assets/cd62868c-27a2-45bb-a3ce-f65dd93c282b)
