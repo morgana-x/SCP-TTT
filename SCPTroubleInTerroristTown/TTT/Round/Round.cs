@@ -63,7 +63,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
             playerManager = new Players.PlayerManager(this);
             karmaManager = new Karma.KarmaManager(this);
             mapManager = new Map.MapManager(this);
-            traitorTester = new TraitorTester.TraitorTester();
+            traitorTester = new TraitorTester.TraitorTester(this);
             awardManager = new Award.AwardManager(this);
             creditManager = new Credit.CreditManager(this);
             corpseManager = new Corpse.CorpseManager(this);

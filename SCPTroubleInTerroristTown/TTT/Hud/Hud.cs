@@ -229,26 +229,36 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
         {
             return GetCustomInfo(target, (round.teamManager.GetTeam(target) == Team.Team.Traitor && round.teamManager.GetTeam(player) != Team.Team.Traitor) ? Team.Team.Innocent : round.teamManager.GetTeam(target));
         }
-
+        private PluginAPI.Core.Player getLookingAtPlayerCheapWorkaround(PluginAPI.Core.Player pl)
+        {
+            Vector3 startPos = pl.Camera.position + (pl.Camera.forward * 0.16f);
+            for (int i = 0; i < 10; i++)
+            {
+                foreach (Player v in Player.GetPlayers())
+                {
+                    if (!v.IsAlive) continue;
+                    if (v == pl) continue;
+                    if (Vector3.Distance(v.Position + Vector3.up, startPos) > 1f) continue;
+                    return v;
+                }
+                startPos += pl.Camera.forward;
+            }
+            return null;
+        }
         private PluginAPI.Core.Player getLookingAtPlayer(PluginAPI.Core.Player pl)
         {
-
+            return getLookingAtPlayerCheapWorkaround(pl); // Temp while I figure out how to raycasting for players in 14.0
             Ray ray = new Ray(pl.Camera.position + (pl.Camera.forward * 0.16f), pl.Camera.forward);
             if (!Physics.Raycast(ray, out RaycastHit hit, 10))
             {
                 return null;
             }
-            /* Exiled
-                    public static Player Get(Collider collider)
-                    {
-                        return Get(collider.transform.root.gameObject);
-                    }
-             */
-            var found = PluginAPI.Core.Player.Get(hit.collider.transform.root.gameObject);
+            var found = Player.Get(hit.collider.gameObject.transform.root.gameObject);
             if (found == pl)
             {
                 return null;
             }
+           
             return found;
         }
 

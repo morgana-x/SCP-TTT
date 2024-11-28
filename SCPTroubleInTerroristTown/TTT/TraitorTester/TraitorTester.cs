@@ -19,6 +19,8 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
         /// </summary>
         public LightSourceToy Base;
 
+        public Round.Round round;
+
         private LightSourceToy ToyPrefab
         {
             get
@@ -37,6 +39,11 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
         {
             getScp914Room();
             SpawnLight();
+        }
+
+        public TraitorTester(Round.Round round)
+        {
+            this.round = round;
         }
         private void SpawnLight()
         {
@@ -76,6 +83,21 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             }
             scp914Room = ident.ApiRoom;
         }
+        private void broadcastToPlayersInRoom(string msg)
+        {
+            foreach (PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers())
+            {
+                if (player == null)
+                    continue;
+                if (!player.IsAlive)
+                    continue;
+                if (player.Room == null)
+                    continue;   
+                if (player.Room.Name != RoomName.Lcz914)
+                    continue;
+                round.playerManager.notificationManager.PlayerNotify(player, msg);
+            }
+        }
         private void SetLightColor(UnityEngine.Color color)
         {
             if (lightSource != null)
@@ -85,6 +107,7 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             }
             if (scp914Room == null)
                 return;
+            scp914Room.Lights.IsEnabled = true;
             scp914Room.Lights.LightColor = color;
         }
 
@@ -131,6 +154,7 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
             {
                 traitorDetected = true;
                 SetLightColor(UnityEngine.Color.red);
+                broadcastToPlayersInRoom("<color=red>Traitor Detected!</color>");
                 return;
             }
             SetLightColor(UnityEngine.Color.green);
