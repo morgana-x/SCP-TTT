@@ -12,6 +12,9 @@ Type .ttt_help in player console for help with ttt related commands for players
 + Detective Abilities
 + Update screenshots to reflect major changes
 + Finish implementing all the end round statistic award items
+## Todo: 14.0 Beta Issues:
++ Fix up extra weapon spawns around map
++ Fix light indicator at SCP 914
 ## Features:
 + Round logic (Not faithful win conditions probably, didn't check the gmod function)
 + Hud System (Show role, time left) (Works with spectators)
@@ -28,6 +31,8 @@ Type .ttt_help in player console for help with ttt related commands for players
 +  Corpse Discovery
 
 ## Screenshots:
+![Screenshot (5720)](https://github.com/user-attachments/assets/f9d181d0-a5cb-486e-8f4e-78f354255680)
+![Screenshot (5724)](https://github.com/user-attachments/assets/8c17f314-f456-4bdf-a3b3-96aca868c996)
 ![Screenshot (5016)](https://github.com/user-attachments/assets/cd62868c-27a2-45bb-a3ce-f65dd93c282b)
 ![Screenshot (5014)](https://github.com/user-attachments/assets/06578581-17d8-4be5-a0d0-62a67585ccd4)
 ![Screenshot (5007)](https://github.com/user-attachments/assets/af213641-ccc4-4d00-98e5-df6326f4ca20)
