@@ -1,10 +1,14 @@
 ﻿using Interactables.Interobjects;
 using Interactables.Interobjects.DoorUtils;
+using PlayerRoles.FirstPersonControl.Spawnpoints;
+using PlayerRoles;
 using PlayerStatsSystem;
 using PluginAPI.Enums;
 using RoundRestarting;
 using System;
 using System.Linq;
+using UnityEngine;
+using MapGeneration;
 
 namespace SCPTroubleInTerroristTown.TTT.Util
 {
@@ -14,6 +18,15 @@ namespace SCPTroubleInTerroristTown.TTT.Util
         {
             foreach (var door in DoorVariant.AllDoors.Where((x) => x is ElevatorDoor))
             {
+                door.ServerChangeLock(DoorLockReason.AdminCommand, true);
+            }
+        }
+        public static void LockdownEntrance()
+        {
+            foreach (var door in DoorVariant.AllDoors)
+            {
+                if (!door.IsInZone(FacilityZone.Entrance))
+                    continue;
                 door.ServerChangeLock(DoorLockReason.AdminCommand, true);
             }
         }
@@ -154,6 +167,43 @@ namespace SCPTroubleInTerroristTown.TTT.Util
             }
             return dmgType;
         }
+        public static void gotoRoleSpawn(PluginAPI.Core.Player pl, RoleTypeId spawnPointRole = RoleTypeId.None)
+        {
+            if (spawnPointRole != RoleTypeId.None) // Teleport to spawnpoint
+            {
+                ISpawnpointHandler spawnpoint = null;
+                Vector3 spawnpointPos = Vector3.zero;
+                float rot = 0f;
+                RoleSpawnpointManager.TryGetSpawnpointForRole(spawnPointRole, out spawnpoint);
+                if (!RoleSpawnpointManager.TryGetSpawnpointForRole(spawnPointRole, out spawnpoint))
+                {
+                    return;
+                }
+                if (!spawnpoint.TryGetSpawnpoint(out spawnpointPos, out rot))
+                {
+                    return;
+                }
+                pl.Position = spawnpointPos;
+            }
+        }
+        static System.Random rnd = new System.Random(); 
+        public static void gotoRoom(PluginAPI.Core.Player pl, RoomName roomName)
+        {
+            if (roomName == RoomName.Unnamed)
+                return;
+            RoomIdentifier ident = null;
 
+            bool success = RoomIdUtils.TryFindRoom(roomName, MapGeneration.FacilityZone.HeavyContainment, RoomShape.Undefined, out ident);
+            if (!success)
+            {
+              
+                return;
+            }
+            float negativeX = rnd.Next(10) > 5 ? 1f : -1f;
+            float negativeY = rnd.Next(10) > 5 ? 1f : -1f;
+            float magnitude = 1.5f;
+            Vector3 randomOffset = new Vector3((float)rnd.NextDouble() * magnitude * negativeX, (float)0, (float)rnd.NextDouble() * magnitude * negativeY);
+            pl.Position = ident.ApiRoom.Position + (Vector3.up * 1.5f) + randomOffset;
+        }
     }
 }

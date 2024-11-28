@@ -90,8 +90,8 @@ namespace SCPTroubleInTerroristTown.TTT.Round
         }
         public void OnPlayerDeath(PluginAPI.Core.Player victim, PluginAPI.Core.Player attacker, DamageHandlerBase damageBase)
         {
-            teamManager.SetTeam(victim, Team.Team.Spectator, false);
-            playerManager.badgeManager.SyncPlayer(victim);
+            teamManager.SetTeam(victim, Team.Team.Spectator, false, true);
+            //playerManager.badgeManager.SyncPlayer(victim);
             if (attacker != null)
             {
 

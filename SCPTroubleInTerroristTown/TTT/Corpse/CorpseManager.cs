@@ -4,6 +4,7 @@ using PlayerStatsSystem;
 using PlayerRoles.Ragdolls;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace SCPTroubleInTerroristTown.TTT.Corpse
 {
@@ -26,6 +27,8 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
 
             var damageHandlerTemp = new CustomReasonDamageHandler(undiscoveredDeathText);
             Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, damageHandlerTemp, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, undiscoveredNick, Ragdoll.NetworkInfo.CreationTime);
+
+    
         }
 
         public void Discover(Player discoverer, Round.Round round)
@@ -45,6 +48,18 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             string message = round.config.corpseConfig.DiscoverMessage.Replace("{player}", $"<color={round.config.teamsConfig.TeamColor[discovererTeam]}>{discovererName}</color>").Replace("{victim}", victimName).Replace("{team}", $"<color={round.config.teamsConfig.TeamColor[victimTeam]}>{round.config.teamsConfig.TeamName[victimTeam]}</color>");
             round.playerManager.notificationManager.NotifyAll(message);
             round.creditManager.OnCorpseDiscovery(discoverer);
+
+            try
+            {
+                Player playerInstance = Player.Get(Ragdoll.NetworkInfo.OwnerHub);
+                if (playerInstance == null)
+                    return;
+                round.playerManager.badgeManager.SyncPlayer(playerInstance); // Sync badge now that they've been found to be dead
+            }
+            catch(Exception e)
+            {
+                Log.Error(e.ToString());    
+            }
         }
     }
 

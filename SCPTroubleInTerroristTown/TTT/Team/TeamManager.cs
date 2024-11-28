@@ -59,7 +59,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             }
             return playerTeams[pl];
         }
-        public void SetTeam(PluginAPI.Core.Player pl, Team team, bool SetPreviousTeam = true)
+        public void SetTeam(PluginAPI.Core.Player pl, Team team, bool SetPreviousTeam = true, bool dontSyncTag = false)
         {
             if (!playerTeams.ContainsKey(pl))
             {
@@ -83,6 +83,8 @@ namespace SCPTroubleInTerroristTown.TTT.Team
                 }
             }
             playerTeams[pl] = team;
+            if (dontSyncTag)
+                return;
             UpdatePlayerTag(pl);
         }
         public List<PluginAPI.Core.Player> GetTeamPlayers(Team team)

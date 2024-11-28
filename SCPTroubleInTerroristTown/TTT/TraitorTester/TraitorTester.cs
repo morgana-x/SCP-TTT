@@ -40,10 +40,15 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
         }
         private void SpawnLight()
         {
+            if (ToyPrefab == null)
+            {
+                Log.Error("[TRAITOR TESTOR] Couldn't instantiate light prefab, Was NULL!\nWill try to use room light color instead.");
+                return;
+            }
             lightSource = UnityEngine.Object.Instantiate(ToyPrefab);
             lightSource.NetworkLightIntensity = 20f;
             lightSource.NetworkLightRange = 15f;
-            lightSource.NetworkLightShadows = true;
+           // lightSource.NetworkLightShadows = true;
             setLightPos();
             lightSource.NetworkLightColor = UnityEngine.Color.white;
             NetworkServer.Spawn(lightSource.gameObject);
@@ -73,7 +78,14 @@ namespace SCPTroubleInTerroristTown.TTT.TraitorTester
         }
         private void SetLightColor(UnityEngine.Color color)
         {
-            lightSource.NetworkLightColor = color;
+            if (lightSource != null)
+            {
+                lightSource.NetworkLightColor = color;
+                return;
+            }
+            if (scp914Room == null)
+                return;
+            scp914Room.Lights.LightColor = color;
         }
 
         private int getPlayersInChamber()

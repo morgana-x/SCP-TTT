@@ -3,6 +3,7 @@ using PlayerRoles;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using MapGeneration;
 
 namespace SCPTroubleInTerroristTown.TTT.Players
 {
@@ -36,6 +37,8 @@ namespace SCPTroubleInTerroristTown.TTT.Players
             }
             spawnTimes[pl] = DateTime.Now;
         }
+
+       
         public void teamSetRole(PluginAPI.Core.Player pl, RoleTypeId spawnPointRole = RoleTypeId.None)
         {
             var plTeam = round.teamManager.GetTeam(pl);
@@ -49,28 +52,12 @@ namespace SCPTroubleInTerroristTown.TTT.Players
 
             pl.ReferenceHub.roleManager.ServerSetRole(role, RoleChangeReason.Respawn, RoleSpawnFlags.None);
 
-            if (spawnPointRole != RoleTypeId.None) // Teleport to spawnpoint
-            {
-                ISpawnpointHandler spawnpoint = null;
-                Vector3 spawnpointPos = Vector3.zero;
-                float rot = 0f;
-                RoleSpawnpointManager.TryGetSpawnpointForRole(spawnPointRole, out spawnpoint);
-                if (!RoleSpawnpointManager.TryGetSpawnpointForRole(spawnPointRole, out spawnpoint))
-                {
-                    return;
-                }
-                if (!spawnpoint.TryGetSpawnpoint(out spawnpointPos, out rot))
-                {
-                    return;
-                }
-                pl.Position = spawnpointPos;
-
-
-            }
+            Util.Util.gotoRoleSpawn(pl, spawnPointRole);
         }
-        public void Spawn(PluginAPI.Core.Player pl, RoleTypeId spawnPoint = RoleTypeId.None)
+        public void Spawn(PluginAPI.Core.Player pl, RoomName spawnPoint = RoomName.Unnamed)
         {
-            teamSetRole(pl, spawnPoint);
+            teamSetRole(pl);
+            Util.Util.gotoRoom(pl, spawnPoint);
             round.teamManager.loadoutManager.GiveLoadout(pl);
             round.creditManager.GiveStartingCredits(pl);
             setSpawnTime(pl);

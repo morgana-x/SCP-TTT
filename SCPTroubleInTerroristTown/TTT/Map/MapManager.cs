@@ -18,13 +18,14 @@ namespace SCPTroubleInTerroristTown.TTT.Map
             {
                 Util.Util.LockdownZones();
             }
+            Util.Util.LockdownEntrance();
             // Disable CASSIE
             //Cassie.Announcer.enabled = false;
             // Disable Decontamination
         }
         public void onMapLoaded()
         {
-            TTTWeaponSpawner.SpawnRandomWeapons(tttRound.config.mapConfig.spawnZone);
+            //TTTWeaponSpawner.SpawnRandomWeapons(tttRound.config.mapConfig.spawnZone);
         }
 
     }
