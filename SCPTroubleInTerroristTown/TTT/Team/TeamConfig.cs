@@ -45,11 +45,11 @@ namespace SCPTroubleInTerroristTown.TTT.Team
         };
         public Dictionary<Team, RoleTypeId> TeamRole { get; set; } = new Dictionary<Team, RoleTypeId>()
         {
-            [Team.Innocent] = RoleTypeId.ChaosMarauder,
-            [Team.Traitor] = RoleTypeId.ChaosMarauder,
-            [Team.Detective] = RoleTypeId.NtfSergeant,
+            [Team.Innocent] = RoleTypeId.ClassD,
+            [Team.Traitor] = RoleTypeId.ClassD,
+            [Team.Detective] = RoleTypeId.FacilityGuard,
             [Team.Spectator] = RoleTypeId.Spectator,
-            [Team.Undecided] = RoleTypeId.ChaosMarauder
+            [Team.Undecided] = RoleTypeId.ClassD
         };
         public Dictionary<Team, string> TeamWinText { get; set; } = new Dictionary<Team, string>()
         {
@@ -75,6 +75,8 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             {
                 ItemType.KeycardMTFPrivate,
                 ItemType.Radio,
+                ItemType.GunCOM15,
+                ItemType.Ammo9x19
             },
             [Team.Traitor] = new List<ItemType>()
             {

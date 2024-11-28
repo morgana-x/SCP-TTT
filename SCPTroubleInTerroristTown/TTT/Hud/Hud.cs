@@ -232,13 +232,13 @@ namespace SCPTroubleInTerroristTown.TTT.Hud
         private PluginAPI.Core.Player getLookingAtPlayerCheapWorkaround(PluginAPI.Core.Player pl)
         {
             Vector3 startPos = pl.Camera.position + (pl.Camera.forward * 0.16f);
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 7; i++)
             {
                 foreach (Player v in Player.GetPlayers())
                 {
                     if (!v.IsAlive) continue;
                     if (v == pl) continue;
-                    if (Vector3.Distance(v.Position + Vector3.up, startPos) > 1f) continue;
+                    if (Vector3.Distance(v.Position + Vector3.up, startPos) > 0.8f) continue;
                     return v;
                 }
                 startPos += pl.Camera.forward;
