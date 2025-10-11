@@ -1,4 +1,4 @@
-﻿using PluginAPI.Core;
+﻿using LabApi.Features.Wrappers;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -68,7 +68,7 @@ namespace SCPTroubleInTerroristTown.TTT.Players
         }
         public void NotifyAll(string message, int duration=5)
         {
-            foreach(Player pl in Player.GetPlayers())
+            foreach(Player pl in Player.GetAll())
             {
                 PlayerNotify(pl, message, duration);
             }

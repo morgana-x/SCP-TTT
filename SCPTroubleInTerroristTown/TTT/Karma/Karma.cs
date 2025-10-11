@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
-using PluginAPI.Core;
+using LabApi.Features.Console;
+using LabApi.Features.Wrappers;
 
 namespace SCPTroubleInTerroristTown.TTT.Karma
 {
@@ -92,7 +93,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
 
         public void ReplenishKarma()
         {
-            foreach(PluginAPI.Core.Player player in PluginAPI.Core.Player.GetPlayers()) {
+            foreach(Player player in Player.GetAll()) {
                 AddKarma(player, round.config.karmaConfig.karma_round_increment);
             };
         }
@@ -121,7 +122,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             }
             SetKarma(player, round.config.karmaConfig.karma_low_round_kick_amount + 1);
             player.Kick(round.config.karmaConfig.karma_low_kick_message.Replace("{karma}", GetKarma(player).ToString()).Replace("{minkarma}", round.config.karmaConfig.karma_low_round_kick_amount.ToString()));
-            Log.Info($"Kicked {player.Nickname}({player.UserId}) for having too low karma when team killing!");
+            Logger.Info($"Kicked {player.Nickname}({player.UserId}) for having too low karma when team killing!");
             return true;
         }
         public void KarmaPunishCheck(Player victim, Player attacker)
@@ -134,12 +135,12 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
             {
                 return;
             }
-            Log.Info($"{attacker.Nickname}({attacker.UserId}) team killed {victim.Nickname}({victim.UserId})!");
+            Logger.Info($"{attacker.Nickname}({attacker.UserId}) team killed {victim.Nickname}({victim.UserId})!");
             if (KarmaKick(attacker))
                 return;
             if (!AllowedSpawnKarmaCheck(attacker))
             {
-                attacker.Kill(round.config.corpseConfig.deathTranslations[PluginAPI.Enums.DamageType.ForcedDeath].Title + "\n" + round.config.corpseConfig.deathTranslations[PluginAPI.Enums.DamageType.ForcedDeath].Description);
+                attacker.Kill(round.config.corpseConfig.deathTranslations[DamageType.ForcedDeath].Title + "\n" + round.config.corpseConfig.deathTranslations[DamageType.ForcedDeath].Description);
                 return;
             }
             Team.Team victimTeam = round.teamManager.previousTeams.ContainsKey(victim) ? round.teamManager.previousTeams[victim] : round.teamManager.GetTeam(victim);
@@ -152,7 +153,7 @@ namespace SCPTroubleInTerroristTown.TTT.Karma
                     return;
                 if (!AllowedSpawnKarmaCheck(attacker))
                 {
-                    attacker.Kill(round.config.corpseConfig.deathTranslations[PluginAPI.Enums.DamageType.ForcedDeath].Title + "\n" + round.config.corpseConfig.deathTranslations[PluginAPI.Enums.DamageType.ForcedDeath].Description);
+                    attacker.Kill(round.config.corpseConfig.deathTranslations[DamageType.ForcedDeath].Title + "\n" + round.config.corpseConfig.deathTranslations[DamageType.ForcedDeath].Description);
                     return;
                 }
                 return;

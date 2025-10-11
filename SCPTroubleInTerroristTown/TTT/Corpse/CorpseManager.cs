@@ -1,10 +1,11 @@
-﻿using PluginAPI.Core;
-using PluginAPI.Enums;
+﻿using LabApi.Features.Wrappers;
+using LabApi.Features.Enums;
 using PlayerStatsSystem;
 using PlayerRoles.Ragdolls;
 using System.Collections.Generic;
-using UnityEngine;
 using System;
+using LabApi.Features.Console;
+using UnityEngine;
 
 namespace SCPTroubleInTerroristTown.TTT.Corpse
 {
@@ -26,7 +27,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             this.newDamageHandler = newDamageHandler;
 
             var damageHandlerTemp = new CustomReasonDamageHandler(undiscoveredDeathText);
-            Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, damageHandlerTemp, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, undiscoveredNick, Ragdoll.NetworkInfo.CreationTime);
+            Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, damageHandlerTemp, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartRelativePosition, Ragdoll.NetworkInfo.StartRelativeRotation, undiscoveredNick, Ragdoll.NetworkInfo.CreationTime);
 
     
         }
@@ -37,7 +38,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
                 return;
             Discovered = true;
 
-            Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartPosition, Ragdoll.NetworkInfo.StartRotation, victimName, Ragdoll.NetworkInfo.CreationTime);
+            Ragdoll.NetworkInfo = new RagdollData(Ragdoll.NetworkInfo.OwnerHub, newDamageHandler, Ragdoll.NetworkInfo.RoleType, Ragdoll.NetworkInfo.StartRelativePosition, Ragdoll.NetworkInfo.StartRelativeRotation, victimName, Ragdoll.NetworkInfo.CreationTime);
             
             if (round == null)
                 return;
@@ -58,7 +59,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             }
             catch(Exception e)
             {
-                Log.Error(e.ToString());    
+                LabApi.Features.Console.Logger.Error(e.ToString());    
             }
         }
     }
@@ -106,7 +107,9 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             DamageType accurateDamageType = Util.Util.getDamageType(deathReason);
             CorpseConfig.deathMessage msg = getDeathReasonFromType(config, damageType);
             string desc = msg.Description;
-            desc = desc.Replace("{ammo}", Util.Util.getAmmoType(Util.Util.getItemType(accurateDamageType)).ToString().Replace("Ammo", ""));
+            LabApi.Features.Console.Logger.Debug($"Original message {deathReason}");
+            LabApi.Features.Console.Logger.Debug($"Death reason from type {handler.RagdollInspectText}");
+            desc = desc.Replace("{ammo}", Util.Util.GetAmmoType(deathReason).ToString().Replace("Ammo", ""));
             DeathInfoText = DeathInfoText.Replace("{title}", msg.Title);
             DeathInfoText = DeathInfoText.Replace("{description}", desc);
 
@@ -116,7 +119,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             }
             return DeathInfoText;
         }
-        public string GetCorpseInfo( PluginAPI.Core.Player player, Team.Team playerTeam, DamageHandlerBase handler)
+        public string GetCorpseInfo(Player player, Team.Team playerTeam, DamageHandlerBase handler)
         {
             string deathReason = handler.ServerLogsText;
             string DeathInfoText = GetDeathInfo(round.config, handler, deathReason);
@@ -127,11 +130,11 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             string MainText = $"\n\n{teamInfo}\n\n{DeathInfoText}";
             return MainText;
         }
-        public void OnCorpseSpawn(ReferenceHub hub, BasicRagdoll ragdoll)
+        public void OnCorpseSpawn(Player hub, Ragdoll ragdoll)
         {
-            Team.Team victimTeam = round.teamManager.GetPreviousTeam(Player.Get(hub));
-            string victimName = Player.Get(hub).Nickname;
-            Corpse corpse = new Corpse(ragdoll, victimName, victimTeam, round.config.corpseConfig.UndiscoveredNick, round.config.corpseConfig.UndiscoveredText, new CustomReasonDamageHandler(GetCorpseInfo(Player.Get(hub), round.teamManager.GetTeam(Player.Get(hub)), ragdoll.NetworkInfo.Handler)));
+            Team.Team victimTeam = round.teamManager.GetPreviousTeam(hub);
+            string victimName = hub.Nickname;
+            Corpse corpse = new Corpse(ragdoll.Base, victimName, victimTeam, round.config.corpseConfig.UndiscoveredNick, round.config.corpseConfig.UndiscoveredText, new CustomReasonDamageHandler(GetCorpseInfo(hub, round.teamManager.GetTeam(hub), ragdoll.Base.NetworkInfo.Handler)));
             corpseList.Add(corpse);
         }
         public void OnCorpseDiscoverHotKey(Player player)
@@ -143,7 +146,7 @@ namespace SCPTroubleInTerroristTown.TTT.Corpse
             ragdoll.Discover(player, round);
             corpseList.Remove(ragdoll);
         }
-        private Corpse getPlayerLookedatCorpse(PluginAPI.Core.Player pl)
+        private Corpse getPlayerLookedatCorpse(Player pl)
         {
             Ray ray = new Ray(pl.Camera.position + (pl.Camera.forward * 0.16f), pl.Camera.forward);
             Physics.Raycast(ray, out RaycastHit hit, 3f);

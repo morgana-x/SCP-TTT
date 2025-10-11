@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CommandSystem;
-using PluginAPI.Core;
+using LabApi.Features.Wrappers;
 namespace SCPTroubleInTerroristTown.Commands
 {
     [CommandHandler(typeof(ClientCommandHandler))]

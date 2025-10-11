@@ -1,12 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CommandSystem;
-using PlayerRoles;
-using PluginAPI.Commands;
-using PluginAPI.Core;
+using LabApi.Features.Wrappers;
 namespace SCPTroubleInTerroristTown.Commands
 {
     [CommandHandler(typeof(ClientCommandHandler))]
@@ -37,7 +32,7 @@ namespace SCPTroubleInTerroristTown.Commands
             {
                 Cooldowns[caller.UserId] = DateTime.Now.AddMilliseconds(250);
             }
-            MainClass.Singleton.tttRound.corpseManager.OnCorpseDiscoverHotKey(caller);
+            TroubleInTerroristTown.Singleton.tttRound.corpseManager.OnCorpseDiscoverHotKey(caller);
             response = "";
             return true;
         }

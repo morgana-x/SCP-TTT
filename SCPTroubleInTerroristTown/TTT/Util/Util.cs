@@ -1,14 +1,14 @@
-﻿using Interactables.Interobjects;
-using Interactables.Interobjects.DoorUtils;
+﻿using Interactables.Interobjects.DoorUtils;
 using PlayerRoles.FirstPersonControl.Spawnpoints;
 using PlayerRoles;
 using PlayerStatsSystem;
-using PluginAPI.Enums;
+using LabApi.Features.Wrappers;
 using RoundRestarting;
 using System;
 using System.Linq;
 using UnityEngine;
 using MapGeneration;
+using InventorySystem.Items;
 
 namespace SCPTroubleInTerroristTown.TTT.Util
 {
@@ -16,7 +16,7 @@ namespace SCPTroubleInTerroristTown.TTT.Util
     {
         public static void LockdownZones()
         {
-            foreach (var door in DoorVariant.AllDoors.Where((x) => x is ElevatorDoor))
+            foreach (var door in DoorVariant.AllDoors.Where((x) => x is Interactables.Interobjects.ElevatorDoor))
             {
                 door.ServerChangeLock(DoorLockReason.AdminCommand, true);
             }
@@ -38,6 +38,7 @@ namespace SCPTroubleInTerroristTown.TTT.Util
             }
             RoundRestart.InitiateRoundRestart();
         }
+
         public static DamageType getDamageTypeFromHandler(DamageHandlerBase dmgbase)
         {
             string logs = dmgbase.ServerLogsText;
@@ -118,6 +119,19 @@ namespace SCPTroubleInTerroristTown.TTT.Util
                     return ItemType.None;
             }
         }
+        public static ItemType GetAmmoType(string message)
+        {
+            return getAmmoType(GetItemType(message));
+        }
+        public static ItemType GetItemType(string message)
+        {
+            foreach(ItemType v in Enum.GetValues(typeof(ItemType)))
+            {
+                if (message.ToLower().Contains(v.ToString().ToLower()))
+                    return v;
+            }
+            return ItemType.None;
+        }
         public static bool isHeadshot(string serverLogsText)
         {
             return serverLogsText.Contains("Headshot");
@@ -167,7 +181,7 @@ namespace SCPTroubleInTerroristTown.TTT.Util
             }
             return dmgType;
         }
-        public static void gotoRoleSpawn(PluginAPI.Core.Player pl, RoleTypeId spawnPointRole = RoleTypeId.None)
+        public static void gotoRoleSpawn(Player pl, RoleTypeId spawnPointRole = RoleTypeId.None)
         {
             if (spawnPointRole != RoleTypeId.None) // Teleport to spawnpoint
             {
@@ -187,23 +201,19 @@ namespace SCPTroubleInTerroristTown.TTT.Util
             }
         }
         static System.Random rnd = new System.Random(); 
-        public static void gotoRoom(PluginAPI.Core.Player pl, RoomName roomName)
+        public static void gotoRoom(Player pl, RoomName roomName)
         {
             if (roomName == RoomName.Unnamed)
                 return;
-            RoomIdentifier ident = null;
+            var rooms = Room.Get(roomName);
+            if (rooms.Count() == 0) return;
+            var room = rooms.First();
 
-            bool success = RoomIdUtils.TryFindRoom(roomName, MapGeneration.FacilityZone.HeavyContainment, RoomShape.Undefined, out ident);
-            if (!success)
-            {
-              
-                return;
-            }
             float negativeX = rnd.Next(10) > 5 ? 1f : -1f;
             float negativeY = rnd.Next(10) > 5 ? 1f : -1f;
             float magnitude = 1.5f;
             Vector3 randomOffset = new Vector3((float)rnd.NextDouble() * magnitude * negativeX, (float)0, (float)rnd.NextDouble() * magnitude * negativeY);
-            pl.Position = ident.ApiRoom.Position + (Vector3.up * 1.5f) + randomOffset;
+            pl.Position = room.Position + (Vector3.up * 1.5f) + randomOffset;
         }
     }
 }

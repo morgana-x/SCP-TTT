@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CommandSystem;
-using PluginAPI.Core;
+using LabApi.Features.Wrappers;
 namespace SCPTroubleInTerroristTown.Commands
 {
     [CommandHandler(typeof(ClientCommandHandler))]
@@ -29,7 +29,7 @@ namespace SCPTroubleInTerroristTown.Commands
             {
                 Cooldowns[caller.UserId] = DateTime.Now.AddSeconds(5);
             }
-            response = MainClass.Singleton.tttRound.creditManager.GetCreditStoreItemsForPlayer(caller);
+            response = TroubleInTerroristTown.Singleton.tttRound.creditManager.GetCreditStoreItemsForPlayer(caller);
             return true;
         }
     }

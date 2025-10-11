@@ -1,4 +1,6 @@
-﻿using LightContainmentZoneDecontamination;
+﻿using LabApi.Features.Wrappers;
+using LightContainmentZoneDecontamination;
+using System.Linq;
 
 namespace SCPTroubleInTerroristTown.TTT.Map
 {
@@ -25,7 +27,7 @@ namespace SCPTroubleInTerroristTown.TTT.Map
         }
         public void onMapLoaded()
         {
-            //TTTWeaponSpawner.SpawnRandomWeapons(tttRound.config.mapConfig.spawnZone);
+            TTTWeaponSpawner.SpawnRandomWeapons(Room.Get(tttRound.config.mapConfig.spawnPoint).First().Zone);
         }
 
     }

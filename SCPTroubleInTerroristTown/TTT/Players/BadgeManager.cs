@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Exiled.API.Extensions;
-using PluginAPI.Core;
+using LabApi.Features.Console;
+using LabApi.Features.Wrappers;
 
 namespace SCPTroubleInTerroristTown.TTT.Players
 {
@@ -12,9 +13,9 @@ namespace SCPTroubleInTerroristTown.TTT.Players
         {
             round = playermanager;
         }
-        public List<PluginAPI.Core.Player> badgeOptOuted = new List<PluginAPI.Core.Player>();
+        public List<Player> badgeOptOuted = new List<Player>();
 
-        public void SendFakeBadge(PluginAPI.Core.Player player, PluginAPI.Core.Player targetToTrick, string text, string color)
+        public void SendFakeBadge(Player player, Player targetToTrick, string text, string color)
         {
             if (!targetToTrick.IsReady)
             {
@@ -33,11 +34,11 @@ namespace SCPTroubleInTerroristTown.TTT.Players
             }
             catch(Exception e) 
             {
-                Log.Debug(e.ToString());
+                Logger.Debug(e.ToString());
             }
         }
 
-        public void SyncPlayer(PluginAPI.Core.Player targetToTrick, PluginAPI.Core.Player pl)
+        public void SyncPlayer(Player targetToTrick, Player pl)
         {
             if (pl.ReferenceHub.serverRoles.HasGlobalBadge)
             {
@@ -55,9 +56,9 @@ namespace SCPTroubleInTerroristTown.TTT.Players
             }
             SendFakeBadge(pl, targetToTrick, round.config.teamsConfig.TeamName[team], round.config.teamsConfig.TeamColorSimplified[team]);
         }
-        public void SyncPlayer(PluginAPI.Core.Player pl)
+        public void SyncPlayer(Player pl)
         {
-            foreach(PluginAPI.Core.Player other in PluginAPI.Core.Player.GetPlayers())
+            foreach(var other in Player.GetAll())
             {
                 SyncPlayer(pl, other);
                 SyncPlayer(other, pl);
@@ -65,7 +66,7 @@ namespace SCPTroubleInTerroristTown.TTT.Players
         }
         public void Resync()
         {
-            foreach(PluginAPI.Core.Player pl in PluginAPI.Core.Player.GetPlayers())
+            foreach(var pl in Player.GetAll())
             {
                 SyncPlayer(pl);
             }

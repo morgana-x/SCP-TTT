@@ -1,8 +1,9 @@
 ﻿using PlayerRoles;
-using PluginAPI.Core;
+using LabApi.Features.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using LabApi.Features.Console;
 
 namespace SCPTroubleInTerroristTown.TTT.Team
 {
@@ -23,15 +24,15 @@ namespace SCPTroubleInTerroristTown.TTT.Team
         }
         private Round.Round tttRound;
 
-        public Dictionary<PluginAPI.Core.Player, Team> playerTeams = new Dictionary<PluginAPI.Core.Player, Team>();
-        public Dictionary<PluginAPI.Core.Player, Team> previousTeams = new Dictionary<PluginAPI.Core.Player, Team>();
+        public Dictionary<Player, Team> playerTeams = new Dictionary<Player, Team>();
+        public Dictionary<Player, Team> previousTeams = new Dictionary<Player, Team>();
 
         public LoadoutManager loadoutManager;
-        public void SetTeam(PluginAPI.Core.Player pl, Team team)
+        public void SetTeam(Player pl, Team team)
         {
             SetTeam(pl, team, false);
         }
-        public Team GetTeam(PluginAPI.Core.Player pl)
+        public Team GetTeam(Player pl)
         {
             if (!playerTeams.ContainsKey(pl))
             {
@@ -39,7 +40,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             }
             return playerTeams[pl];
         }
-        public Team GetPreviousTeam(PluginAPI.Core.Player pl)
+        public Team GetPreviousTeam(Player pl)
         {
             if (!previousTeams.ContainsKey(pl))
             {
@@ -47,7 +48,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             }
             return previousTeams[pl];
         }
-        public Team GetVisibleTeam(PluginAPI.Core.Player pl)
+        public Team GetVisibleTeam(Player pl)
         {
             if (!playerTeams.ContainsKey(pl))
             {
@@ -59,7 +60,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             }
             return playerTeams[pl];
         }
-        public void SetTeam(PluginAPI.Core.Player pl, Team team, bool SetPreviousTeam = true, bool dontSyncTag = false)
+        public void SetTeam(Player pl, Team team, bool SetPreviousTeam = true, bool dontSyncTag = false)
         {
             if (!playerTeams.ContainsKey(pl))
             {
@@ -87,25 +88,25 @@ namespace SCPTroubleInTerroristTown.TTT.Team
                 return;
             UpdatePlayerTag(pl);
         }
-        public List<PluginAPI.Core.Player> GetTeamPlayers(Team team)
+        public List<Player> GetTeamPlayers(Team team)
         {
             return playerTeams.Keys.Where((x) => (GetTeam(x) == team)).ToList();
         }
 
         private void UpdatePlayerTag(Player pl)
         {
-            pl.PlayerInfo.IsRoleHidden = true;
-            pl.PlayerInfo.IsUnitNameHidden = true;
-            pl.PlayerInfo.IsPowerStatusHidden = true;
+            pl.InfoArea &= ~PlayerInfoArea.PowerStatus;
+            pl.InfoArea &= ~PlayerInfoArea.UnitName;
+            pl.InfoArea &= ~PlayerInfoArea.Role;
             tttRound.playerManager.badgeManager.SyncPlayer(pl);
         }
         private System.Random randomGenerator = new System.Random();
         public void AssignRoles() // Semi-Port of the original GMOD function
         {
-            Log.Debug("Assigning roles!");
-            List<Player> filterPlayers = Player.GetPlayers().Where((x) => x.Role != RoleTypeId.Spectator).ToList();
-            List<PluginAPI.Core.Player> remainingPlayers = new List<PluginAPI.Core.Player>();
-            foreach (PluginAPI.Core.Player pl in filterPlayers)
+            Logger.Debug("Assigning roles!");
+            List<Player> filterPlayers = Player.GetAll().Where((x) => x.Role != RoleTypeId.Spectator).ToList();
+            List<Player> remainingPlayers = new List<Player>();
+            foreach (Player pl in filterPlayers)
             {
                 if (tttRound.karmaManager.AllowedSpawnKarmaCheck(pl))
                 {
@@ -117,7 +118,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             {
                 return;
             }
-            foreach (PluginAPI.Core.Player pl in remainingPlayers)
+            foreach (Player pl in remainingPlayers)
             {
                 SetTeam(pl, Team.Innocent, true);
             }
@@ -134,7 +135,7 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             // Assign Traitors
             while (numTerrorists < targetNumOfTraitors)
             {
-                PluginAPI.Core.Player pick = remainingPlayers.RandomItem(); // No need to shuffle when you can do this!
+                Player pick = remainingPlayers.RandomItem(); // No need to shuffle when you can do this!
                 if ((!(previousTeams.ContainsKey(pick) && previousTeams[pick] == Team.Traitor) || (randomGenerator.Next(3) == 2)))
                 {
                     remainingPlayers.Remove(pick);
@@ -148,13 +149,13 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             {
                 if (remainingPlayers.Count <= targetNumofDetectives - numDetectives)
                 {
-                    foreach (PluginAPI.Core.Player pl in remainingPlayers)
+                    foreach (Player pl in remainingPlayers)
                     {
                         SetTeam(pl, Team.Detective, true);
                     }
                     break;
                 }
-                PluginAPI.Core.Player pick = remainingPlayers.RandomItem();
+                Player pick = remainingPlayers.RandomItem();
                 if (tttRound.karmaManager.GetKarma(pick) > tttRound.config.teamsConfig.DetectiveMinKarma) // Karma and player choices later
                 {
                     SetTeam(pick, Team.Detective, true);
@@ -164,12 +165,12 @@ namespace SCPTroubleInTerroristTown.TTT.Team
             }
 
 
-            foreach (PluginAPI.Core.Player pl in PluginAPI.Core.Player.GetPlayers())
+            foreach (Player pl in Player.GetAll())
             {
                 tttRound.playerManager.setSpawnTime(pl); // Make sure their spawn text is shown!
             }
             tttRound.playerManager.badgeManager.Resync();
-            Log.Debug("Finished Assigned roles");
+            Logger.Debug("Finished Assigned roles");
         }
 
         public void Cleanup()

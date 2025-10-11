@@ -1,11 +1,18 @@
 ﻿using InventorySystem.Items.Firearms.Ammo;
 using MapGeneration;
-using PluginAPI.Core;
-using PluginAPI.Core.Items;
-using PluginAPI.Core.Zones;
+using LabApi.Features.Wrappers;
 using System.Collections.Generic;
 using System.Linq;
+using LabApi.Features.Console;
+using LabApi.Features;
 using UnityEngine;
+using InventorySystem.Items.Pickups;
+using CommandSystem.Commands.RemoteAdmin;
+using Discord;
+using Interactables.Interobjects.DoorUtils;
+using UnityEngine.Pool;
+using Utils.NonAllocLINQ;
+using Interactables.Interobjects;
 
 namespace SCPTroubleInTerroristTown.TTT.Map
 {
@@ -46,19 +53,7 @@ namespace SCPTroubleInTerroristTown.TTT.Map
 
 
 
-        public static List<ItemPickup> SpawnWeapons(List<WeaponSpawnPoint> weapons)
-        {
-            List<ItemPickup> spawned = new List<ItemPickup>();
-            foreach (var w in weapons)
-            {
-
-                var i = ItemPickup.Create(w.Item, w.Location, Quaternion.Euler(0, 0, 0));
-                i.Spawn();
-                spawned.Add(i);
-            }
-            Log.Debug("Spawned " + spawned.Count + " weapons!");
-            return spawned;
-        }
+    
         private static ItemType GetWeaponAmmoType(ItemType type)
         {
             switch (type)
@@ -84,9 +79,9 @@ namespace SCPTroubleInTerroristTown.TTT.Map
                     return ItemType.None;
             }
         }
-        private static List<ItemPickup> safeSpawnPickup(ItemType type, Vector3 position)
+        private static List<Pickup> safeSpawnPickup(ItemType type, Vector3 position)
         {
-            List<ItemPickup> pickups = new List<ItemPickup>();
+            List<Pickup> pickups = new List<Pickup>();
             if (position == null)
             {
                 return pickups;
@@ -96,11 +91,12 @@ namespace SCPTroubleInTerroristTown.TTT.Map
                 return pickups;
             }
 
-            var p = ItemPickup.Create(type, position, Quaternion.Euler(0, 0, 0));
+    
+            var p = Pickup.Create(type, position, Quaternion.Euler(0, 0, 0));
 
             if (type.ToString().StartsWith("Ammo"))
             {
-                AmmoPickup aPickup = (AmmoPickup)p.OriginalObject;
+                InventorySystem.Items.Firearms.Ammo.AmmoPickup aPickup = (InventorySystem.Items.Firearms.Ammo.AmmoPickup)p.Base;
                 aPickup.NetworkSavedAmmo = 60;
             }
             p.Spawn();
@@ -122,32 +118,39 @@ namespace SCPTroubleInTerroristTown.TTT.Map
             return pickups;
         }
         private static System.Random rnd = new System.Random();
-        public static List<ItemPickup> SpawnRandomWeapons(MapGeneration.FacilityZone zone) // Awful temporary code! Forgive me my sins
+        public static List<Pickup> SpawnRandomWeapons(MapGeneration.FacilityZone zone) // Awful temporary code! Forgive me my sins
         {
-
-            List<ItemPickup> spawned = new List<ItemPickup>();
-            foreach (FacilityRoom room in Facility.Rooms.Where((x) => x.Zone.ZoneType == zone))
+           // RoomTPCommand
+            List<Vector3> list = new();
+            foreach (Room room in Room.List)
             {
-                if (room.Identifier.Shape == RoomShape.XShape || room.Identifier.Shape == RoomShape.TShape)
-                {
-                    Vector3 center = room.Position + Vector3.up * 2; // ::pray::
-
-                    for (int i = 0; i < 2; i++)
+                    if (room.Zone != zone) continue;
+                    Vector3 position = room.Base.transform.position;
+                    var first = room.Doors.FirstOrDefault((x) => x.Base is Interactables.Interobjects.BreakableDoor breakableDoor && !((Interactables.Interobjects.BreakableDoor)x.Base).IgnoreRemoteAdmin);
+                    if (first == default)
                     {
-                        Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
-                        var pickup = safeSpawnPickup(randomGuns.RandomItem(), center + randomOffset + Vector3.up);
-                        spawned.AddRange(pickup);
+                        list.Add(position + Vector3.up);
+                        continue;
                     }
-                    for (int i = 0; i < 1; i++)
-                    {
-                        Vector3 randomOffset = new Vector3(rnd.Next(-1, 1), 0, rnd.Next(-1, 1));
-                        var pickup = safeSpawnPickup(randomEtc.RandomItem(), center + randomOffset + Vector3.right + Vector3.up);
-                        spawned.AddRange(pickup);
-                    }
-                }
 
+                    Vector3 position2 = first.Base.transform.position;
+                    Vector3 vector = (position - position2).NormalizeIgnoreY();
+                    list.Add(position2 + vector + Vector3.up);
             }
-            Log.Debug("Spawned " + spawned.Count + " weapons!");
+
+            if (list.Count == 0) return new List<Pickup>();
+
+            List<Pickup> spawned = new List<Pickup>();
+            foreach (var spawnPositions in list)
+            {
+
+                    Vector3 randomOffset = new Vector3(rnd.Next(-1, 2), 0, rnd.Next(-1, 2));
+                    ItemType type = rnd.Next(0, 2) == 1 ? randomGuns.RandomItem() : randomEtc.RandomItem();
+
+                    spawned.AddRange(safeSpawnPickup(type, spawnPositions + randomOffset + Vector3.up));
+            }
+            
+            LabApi.Features.Console.Logger.Debug("Spawned " + spawned.Count + " weapons!");
             return spawned;
         }
     }

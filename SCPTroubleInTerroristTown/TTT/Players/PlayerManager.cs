@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using MapGeneration;
-
+using LabApi.Features.Wrappers;
 namespace SCPTroubleInTerroristTown.TTT.Players
 {
     public class PlayerManager
@@ -19,8 +19,8 @@ namespace SCPTroubleInTerroristTown.TTT.Players
             badgeManager = new BadgeManager(round);
             notificationManager = new NotificationManager(round);
         }
-        public Dictionary<PluginAPI.Core.Player, DateTime> spawnTimes = new Dictionary<PluginAPI.Core.Player, DateTime>();
-        public DateTime getSpawnTime(PluginAPI.Core.Player pl)
+        public Dictionary<Player, DateTime> spawnTimes = new Dictionary<Player, DateTime>();
+        public DateTime getSpawnTime(Player pl)
         {
             if (!spawnTimes.ContainsKey(pl))
             {
@@ -28,7 +28,7 @@ namespace SCPTroubleInTerroristTown.TTT.Players
             }
             return spawnTimes[pl];
         }
-        public void setSpawnTime(PluginAPI.Core.Player pl)
+        public void setSpawnTime(Player pl)
         {
             if (!spawnTimes.ContainsKey(pl))
             {
@@ -39,7 +39,7 @@ namespace SCPTroubleInTerroristTown.TTT.Players
         }
 
        
-        public void teamSetRole(PluginAPI.Core.Player pl, RoleTypeId spawnPointRole = RoleTypeId.None)
+        public void teamSetRole(Player pl, RoleTypeId spawnPointRole = RoleTypeId.None)
         {
             var plTeam = round.teamManager.GetTeam(pl);
 
@@ -52,10 +52,12 @@ namespace SCPTroubleInTerroristTown.TTT.Players
 
             pl.ReferenceHub.roleManager.ServerSetRole(role, RoleChangeReason.Respawn, RoleSpawnFlags.None);
 
-            Util.Util.gotoRoleSpawn(pl, spawnPointRole);
+
+            //Util.Util.gotoRoleSpawn(pl, spawnPointRole);
         }
-        public void Spawn(PluginAPI.Core.Player pl, RoomName spawnPoint = RoomName.Unnamed)
+        public void Spawn(Player pl, RoomName spawnPoint = RoomName.Unnamed)
         {
+            Util.Util.gotoRoom(pl, spawnPoint);
             teamSetRole(pl);
             Util.Util.gotoRoom(pl, spawnPoint);
             round.teamManager.loadoutManager.GiveLoadout(pl);

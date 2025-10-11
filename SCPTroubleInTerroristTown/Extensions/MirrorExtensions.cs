@@ -13,23 +13,12 @@ namespace Exiled.API.Extensions
     using System.Linq;
     using System.Reflection;
     using System.Reflection.Emit;
-    using System.Text;
-
-
-    using InventorySystem.Items.Firearms;
 
     using Mirror;
 
     using PlayerRoles;
-    using PlayerRoles.FirstPersonControl;
-    using PlayerRoles.PlayableScps.Scp049.Zombies;
-    using RelativePositioning;
 
-    using Respawning;
-
-    using UnityEngine;
-
-    using PluginAPI.Core;
+    using LabApi.Features.Wrappers;
     
 
     /// <summary>

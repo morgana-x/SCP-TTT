@@ -1,8 +1,6 @@
-﻿using PluginAPI.Core;
-using System.Collections.Generic;
-using PlayerStatsSystem;
-using PluginAPI.Enums;
-
+﻿using System.Collections.Generic;
+using LabApi.Features.Console;
+using SCPTroubleInTerroristTown.TTT;
 namespace SCPTroubleInTerroristTown.TTT.Award
 {
 
@@ -171,7 +169,7 @@ namespace SCPTroubleInTerroristTown.TTT.Award
                     break;
                 AwardTranslation translation = round.config.awardConfig.AwardTranslation[award.Key];
                 string awardstr = $"<color=yellow>{translation.Title}</color>\n<size=22><color={round.config.teamsConfig.TeamColor[award.Value.team]}>{award.Value.name}</color> {translation.Description}</size>".Replace("{num}", $"<color=blue>{award.Value.num.ToString()}</color>");
-                Log.Debug("Added " + awardstr + " to award final!");
+                Logger.Debug("Added " + awardstr + " to award final!");
                 finalAwards.Add(awardstr);
             }
         }

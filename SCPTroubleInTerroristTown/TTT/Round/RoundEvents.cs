@@ -1,9 +1,10 @@
 ﻿using PlayerRoles;
 using PlayerRoles.Ragdolls;
 using PlayerStatsSystem;
-using PluginAPI.Core;
+using LabApi.Features.Wrappers;
 using SCPTroubleInTerroristTown.TTT.Util;
 using System;
+using LabApi.Features.Console;
 
 namespace SCPTroubleInTerroristTown.TTT.Round
 {
@@ -16,7 +17,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
             mapManager.onMapLoaded();
             traitorTester.Init();
         }
-        public void On_Player_Leave(PluginAPI.Core.Player player)
+        public void On_Player_Leave(Player player)
         {
             if (teamManager.playerTeams.ContainsKey(player))
                 teamManager.playerTeams.Remove(player);
@@ -33,7 +34,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
 
             hudManager.RemovePlayer(player);
         }
-        public void On_Player_Joined(PluginAPI.Core.Player player)
+        public void On_Player_Joined(Player player)
         {
             karmaManager.SetupKarma(player);
             if (currentRoundState == RoundState.Preperation)
@@ -71,7 +72,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
             if (config.spawnDebugNPCS)
                 NPC.SpawnNpcs(12);
         }
-        public void OnPlayerSpawned(PluginAPI.Core.Player pl)
+        public void OnPlayerSpawned(Player pl)
         {
             if (pl == null)
                 return;
@@ -82,13 +83,13 @@ namespace SCPTroubleInTerroristTown.TTT.Round
             }
             catch (Exception e)
             {
-                Log.Debug(e.ToString());
+                Logger.Debug(e.ToString());
             }
         }
-        public void OnPlayerHurt(PluginAPI.Core.Player victim, PluginAPI.Core.Player attacker, DamageHandlerBase damageType)
+        public void OnPlayerHurt(Player victim, Player attacker, DamageHandlerBase damageType)
         {
         }
-        public void OnPlayerDeath(PluginAPI.Core.Player victim, PluginAPI.Core.Player attacker, DamageHandlerBase damageBase)
+        public void OnPlayerDeath(Player victim, Player attacker, DamageHandlerBase damageBase)
         {
             teamManager.SetTeam(victim, Team.Team.Spectator, false, true);
             //playerManager.badgeManager.SyncPlayer(victim);
@@ -100,14 +101,14 @@ namespace SCPTroubleInTerroristTown.TTT.Round
                    // creditManager.AddCredits(attacker, config.creditConfig.KillAwardCredit);
                     karmaManager.KarmaPunishCheck(victim, attacker);
                 }
-                awardManager.OnPlayerKill(victim.DisplayNickname, teamManager.GetPreviousTeam(victim), attacker.DisplayNickname, teamManager.GetPreviousTeam(attacker), Util.Util.getDamageTypeFromHandler(damageBase));
+                awardManager.OnPlayerKill(victim.DisplayName, teamManager.GetPreviousTeam(victim), attacker.DisplayName, teamManager.GetPreviousTeam(attacker), Util.Util.getDamageTypeFromHandler(damageBase));
             }
             else
             {
-                awardManager.OnPlayerKill(victim.DisplayNickname, teamManager.GetPreviousTeam(victim), victim.DisplayNickname, teamManager.GetPreviousTeam(victim), Util.Util.getDamageTypeFromHandler(damageBase));
+                awardManager.OnPlayerKill(victim.DisplayName, teamManager.GetPreviousTeam(victim), victim.DisplayName, teamManager.GetPreviousTeam(victim), Util.Util.getDamageTypeFromHandler(damageBase));
             }
         }
-        public void OnPlayerChangeRole(PluginAPI.Core.Player victim, RoleTypeId newrole, RoleChangeReason reason)
+        public void OnPlayerChangeRole(Player victim, RoleTypeId newrole, RoleChangeReason reason)
         {
             playerManager.badgeManager.SyncPlayer(victim);
             if (reason == RoleChangeReason.Respawn || reason == RoleChangeReason.RoundStart)
@@ -127,15 +128,15 @@ namespace SCPTroubleInTerroristTown.TTT.Round
                 return;
             }*/
         }
-        public bool Scp914Activated(PluginAPI.Core.Player player)
+        public bool Scp914Activated(Player player)
         {
             return traitorTester.shouldActivate(this, player);
         }
-        public void Scp914ProcessPlayer(PluginAPI.Core.Player player)
+        public void Scp914ProcessPlayer(Player player)
         {
             traitorTester.ProcessPlayer(this, player);
         }
-        public void OnSpawnedCorpse(ReferenceHub hub, BasicRagdoll ragdoll)
+        public void OnSpawnedCorpse(Player hub, Ragdoll ragdoll)
         {
             corpseManager.OnCorpseSpawn(hub, ragdoll);
         }

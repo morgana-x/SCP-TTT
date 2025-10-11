@@ -1,6 +1,4 @@
 ﻿using MapGeneration;
-using PlayerRoles;
-using PluginAPI.Core.Zones;
 
 namespace SCPTroubleInTerroristTown.TTT.Map
 {

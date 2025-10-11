@@ -1,10 +1,11 @@
 ﻿using PlayerStatsSystem;
 using System;
 using System.Collections.Generic;
-using PluginAPI.Core;
+using LabApi.Features.Wrappers;
 using MEC;
 using InventorySystem.Configs;
 using SCPTroubleInTerroristTown.TTT.Util;
+using LabApi.Features.Console;
 
 namespace SCPTroubleInTerroristTown.TTT.Round
 {
@@ -16,7 +17,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
 
     public partial class Round
     {
-        private Dictionary<PluginAPI.Core.Player, DeathReason> deathReason = new Dictionary<PluginAPI.Core.Player, DeathReason>();
+        private Dictionary<Player, DeathReason> deathReason = new Dictionary<Player, DeathReason>();
 
         private MEC.CoroutineHandle think_task;
 
@@ -99,7 +100,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
         }
         private void SpawnPlayers()
         {
-            foreach (PluginAPI.Core.Player pl in PluginAPI.Core.Player.GetPlayers()) // Set player models, using Roles
+            foreach (Player pl in Player.GetAll()) // Set player models, using Roles
             {
                 if (pl == null)
                 {
@@ -112,7 +113,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
                 }
                 if (!config.teamsConfig.TeamRole.ContainsKey(teamManager.GetTeam(pl)))
                 {
-                    Log.Debug($"Player's team {teamManager.GetTeam(pl)} does not have an ingame role set!");
+                    Logger.Debug($"Player's team {teamManager.GetTeam(pl)} does not have an ingame role set!");
                     continue;
                 }
                 // Player should already be spawned with correct role
@@ -121,24 +122,24 @@ namespace SCPTroubleInTerroristTown.TTT.Round
         }
         public void Start()
         {
-            Log.Debug("Setting up the round!");
+            Logger.Debug("Setting up the round!");
 
             karmaManager.ReplenishKarma();
             teamManager.AssignRoles();
 
             SpawnPlayers();
 
-            PluginAPI.Core.Server.FriendlyFire = true;
+            LabApi.Features.Wrappers.Server.FriendlyFire = true;
             SetRoundState(RoundState.Running);
 
-            Log.Info("Started the round!");
+            Logger.Info("Started the round!");
         }
 
         public void End(Team.Team winningTeam = Team.Team.Spectator)
         {
             winner = winningTeam;
             SetRoundState(RoundState.Finished);
-            Log.Info(config.teamsConfig.TeamName[winningTeam] + " won! Starting new round!");
+            Logger.Info(config.teamsConfig.TeamName[winningTeam] + " won! Starting new round!");
         }
         public void RestartRound()
         {
@@ -162,15 +163,15 @@ namespace SCPTroubleInTerroristTown.TTT.Round
         }
         private void Cleanup_Round()
         {
-            Log.Debug("Cleaning up round!");
+            Logger.Debug("Cleaning up round!");
             CleanupPlayerCache();
             Cleanup_Coroutines();
         }
         private void CheckWinConditions()
         {
-            List<PluginAPI.Core.Player> Innocents = teamManager.GetTeamPlayers(Team.Team.Innocent);
-            List<PluginAPI.Core.Player> Detectives = teamManager.GetTeamPlayers(Team.Team.Detective);
-            List<PluginAPI.Core.Player> Traitors = teamManager.GetTeamPlayers(Team.Team.Traitor);
+            List<Player> Innocents = teamManager.GetTeamPlayers(Team.Team.Innocent);
+            List<Player> Detectives = teamManager.GetTeamPlayers(Team.Team.Detective);
+            List<Player> Traitors = teamManager.GetTeamPlayers(Team.Team.Traitor);
 
             if (DateTime.Now > NextRoundState) // Stalemate
             {
@@ -242,13 +243,13 @@ namespace SCPTroubleInTerroristTown.TTT.Round
         private void prepare()
         {
             // Make sure old round checking logic is gone 
-            PluginAPI.Core.Round.IsLocked = true;
+            LabApi.Features.Wrappers.Round.IsLocked = true;
             // Disable friendly fire (Until the round actually starts, nice easy way to stop people killing before round starts)
             Server.FriendlyFire = false;
             winner = Team.Team.Undecided;
             mapManager.InitMap();
 
-            foreach (PluginAPI.Core.Player pl in PluginAPI.Core.Player.GetPlayers())
+            foreach (Player pl in Player.GetAll())
             {
                 if (!karmaManager.AllowedSpawnKarmaCheck(pl))
                 {
@@ -267,7 +268,7 @@ namespace SCPTroubleInTerroristTown.TTT.Round
         private void initround()
         {
             // Make double sure old round checking logic is gone 
-            PluginAPI.Core.Round.IsLocked = true;
+            LabApi.Features.Wrappers.Round.IsLocked = true;
             // Make sure players can hold 2 firearms by default
             InventoryLimits.StandardCategoryLimits[ItemCategory.Firearm] = 2;
             CleanupPlayerCache();

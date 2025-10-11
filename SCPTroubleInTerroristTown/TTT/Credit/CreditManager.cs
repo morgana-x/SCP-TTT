@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using PluginAPI.Core;
+using LabApi.Features.Wrappers;
 namespace SCPTroubleInTerroristTown.TTT.Credit
 {
     public class CreditManager
