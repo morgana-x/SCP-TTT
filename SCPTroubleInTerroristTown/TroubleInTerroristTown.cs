@@ -94,6 +94,9 @@ namespace SCPTroubleInTerroristTown
             LabApi.Events.Handlers.Scp914Events.Activating -= Scp914Activate;
             LabApi.Events.Handlers.Scp914Events.ProcessedPlayer -= Scp914ProcessPlayer;
             LabApi.Events.Handlers.PlayerEvents.SpawnedRagdoll -= OnRagdollSpawn;
+
+
+            PatchEvents.onPlayerTogglingNoclip -= OnPlayerNoclip;
         }
 
 

@@ -1,26 +1,9 @@
-﻿using System;
-using Mirror;
-using PlayerRoles;
-using UnityEngine;
+﻿using PlayerRoles;
 using LabApi.Features.Wrappers;
 using NetworkManagerUtils.Dummies;
-using LabApi.Features.Console;
 
 namespace SCPTroubleInTerroristTown.TTT.Util
 {
-    public class FakeConnection : NetworkConnectionToClient
-    {
-        public override string address => "localhost";
-
-        public FakeConnection(int networkConnectionId)
-            : base(networkConnectionId)
-        {
-        }
-
-        public override void Send(ArraySegment<byte> segment, int channelId = 0)
-        {
-        }
-    }
     internal class NPC
     {
         public static Player Spawn(string name, RoleTypeId role)

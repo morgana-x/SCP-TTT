@@ -1,18 +1,9 @@
-﻿using InventorySystem.Items.Firearms.Ammo;
-using MapGeneration;
-using LabApi.Features.Wrappers;
+﻿using LabApi.Features.Wrappers;
+using SCPTroubleInTerroristTown.TTT.Round;
 using System.Collections.Generic;
 using System.Linq;
-using LabApi.Features.Console;
-using LabApi.Features;
 using UnityEngine;
-using InventorySystem.Items.Pickups;
-using CommandSystem.Commands.RemoteAdmin;
-using Discord;
-using Interactables.Interobjects.DoorUtils;
-using UnityEngine.Pool;
 using Utils.NonAllocLINQ;
-using Interactables.Interobjects;
 
 namespace SCPTroubleInTerroristTown.TTT.Map
 {
@@ -24,36 +15,6 @@ namespace SCPTroubleInTerroristTown.TTT.Map
     }
     public class TTTWeaponSpawner
     {
-        private static List<ItemType> randomGuns = new List<ItemType>() {
-
-           // ItemType.GunA7, messes up death reason
-            ItemType.GunAK,
-            ItemType.GunCOM15,
-            ItemType.GunCOM18,
-            ItemType.GunCrossvec,
-            ItemType.GunE11SR,
-            ItemType.GunFSP9,
-           // ItemType.GunFRMG0, messes up death reason
-            ItemType.GunLogicer,
-            ItemType.GunRevolver,
-            ItemType.GunShotgun,
-        };
-
-
-        private static List<ItemType> randomEtc = new List<ItemType>()
-        {
-            ItemType.ArmorLight,
-            ItemType.Coin,
-            ItemType.Flashlight,
-            ItemType.GrenadeFlash,
-            ItemType.GrenadeHE,
-           // ItemType.Jailbird,
-            ItemType.Lantern,
-        };
-
-
-
-    
         private static ItemType GetWeaponAmmoType(ItemType type)
         {
             switch (type)
@@ -145,7 +106,7 @@ namespace SCPTroubleInTerroristTown.TTT.Map
             {
 
                     Vector3 randomOffset = new Vector3(rnd.Next(-1, 2), 0, rnd.Next(-1, 2));
-                    ItemType type = rnd.Next(0, 2) == 1 ? randomGuns.RandomItem() : randomEtc.RandomItem();
+                    ItemType type = rnd.Next(0, 2) == 1 ? Round.Round.Singleton.config.mapConfig.randomGunItemSpawns.RandomItem() : Round.Round.Singleton.config.mapConfig.randomOtherItemSpawns.RandomItem();
 
                     spawned.AddRange(safeSpawnPickup(type, spawnPositions + randomOffset + Vector3.up));
             }

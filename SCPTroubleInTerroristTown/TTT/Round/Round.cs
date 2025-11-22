@@ -55,8 +55,11 @@ namespace SCPTroubleInTerroristTown.TTT.Round
             Finished,
             Reset
         }
+
+        public static Round Singleton;
         public Round(TTTConfig config)
         {
+            Singleton = this;
             this.config = config;
 
             hudManager = new Hud.Hud(this);
